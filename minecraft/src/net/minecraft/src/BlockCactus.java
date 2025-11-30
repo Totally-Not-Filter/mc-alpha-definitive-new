@@ -45,7 +45,7 @@ public class BlockCactus extends Block {
 		return false;
 	}
 
-	public boolean allowsAttachment() {
+	public boolean isOpaqueCube() {
 		return false;
 	}
 

@@ -11,17 +11,17 @@ import org.lwjgl.util.glu.GLU;
 
 public class GuiMainMenu extends GuiScreen {
 	private static final Random rand = new Random();
-	String[] logoBlockLayers = new String[]{"   *   * ***    *** *   *** * * ***  ",
-											"   ** ** *      * * *   * * * * * *  ",
-											"   * * * *      *** *   *** *** ***  ",
-											"   *   * *      * * *   *   * * * *  ",
-											"   *   * ***    * * *** *   * * * *  ",
-											"                                     ",
-											" **  *** *** * *  * * *** *** * * ***",
-											" * * *   *   * ** * *  *   *  * * *  ",
-											" * * **  **  * * ** *  *   *  * * ** ",
-											" * * *   *   * *  * *  *   *  * * *  ",
-											" **  *** *   * *  * *  *  ***  *  ***",};
+	String[] logoBlockLayers = new String[]{"  *   * ***  *** *   *** * * ***  ",
+											"  ** ** *    * * *   * * * * * *  ",
+											"  * * * *    *** *   *** *** ***  ",
+											"  *   * *    * * *   *   * * * *  ",
+											"  *   * ***  * * *** *   * * * *  ",
+											"                                  ",
+											"**  *** *** * *  * * *** * * * ***",
+											"* * *   *   * ** * *  *  * * * *  ",
+											"* * **  **  * * ** *  *  * * * ** ",
+											"* * *   *   * *  * *  *  * * * *  ",
+											"**  *** *   * *  * *  *  *  *  ***",};
 	private LogoEffectRandomizer[][] logoEffects;
 	private float updateCounter = 0.0F;
 	private String splashString = "missingno";
@@ -92,22 +92,15 @@ public class GuiMainMenu extends GuiScreen {
 	protected void actionPerformed(GuiButton var1) {
 		if(var1.id == 0) {
 			this.mc.displayGuiScreen(new GuiOptions(this, this.mc.options));
-		} else if(var1.id == 1) {
+		}
+
+		if(var1.id == 1) {
 			this.mc.displayGuiScreen(new GuiSelectWorld(this));
-		} else if(var1.id == 2) {
+		}
+
+		if(var1.id == 2) {
 			this.mc.displayGuiScreen(new GuiMultiplayer(this));
 		}
-//		if(var1.id == 0) {
-//			this.mc.displayGuiScreen(new GuiOptions(this, this.mc.options));
-//		}
-
-//		if(var1.id == 1) {
-//			this.mc.displayGuiScreen(new GuiSelectWorld(this));
-//		}
-
-//		if(var1.id == 2) {
-//			this.mc.displayGuiScreen(new GuiMultiplayer(this));
-//		}
 
 	}
 

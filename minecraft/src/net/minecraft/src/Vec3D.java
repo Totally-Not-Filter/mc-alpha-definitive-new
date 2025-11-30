@@ -29,22 +29,15 @@ public class Vec3D {
 	private Vec3D(double var1, double var3, double var5) {
 		if(var1 == -0.0D) {
 			var1 = 0.0D;
-		} else if(var3 == -0.0D){
+		}
+
+		if(var3 == -0.0D) {
 			var3 = 0.0D;
-		} else if(var5 == -0.0D){
+		}
+
+		if(var5 == -0.0D) {
 			var5 = 0.0D;
 		}
-//		if(var1 == -0.0D) {
-//			var1 = 0.0D;
-//		}
-
-//		if(var3 == -0.0D) {
-//			var3 = 0.0D;
-//		}
-
-//		if(var5 == -0.0D) {
-//			var5 = 0.0D;
-//		}
 
 		this.xCoord = var1;
 		this.yCoord = var3;

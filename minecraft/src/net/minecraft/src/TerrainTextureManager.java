@@ -106,19 +106,12 @@ public class TerrainTextureManager {
 											if(var12 >= 0 && var12 <= 32 && this.waterBuf[var27] <= var14) {
 												this.waterBuf[var27] = var14;
 												this.waterBr[var27] = (int)(var26 * 127.0F);
-											} else if(var12 >= -1 && var12 <= 31 && this.waterBuf[var27 + 1] <= var14) {
+											}
+
+											if(var12 >= -1 && var12 <= 31 && this.waterBuf[var27 + 1] <= var14) {
 												this.waterBuf[var27 + 1] = var14;
 												this.waterBr[var27 + 1] = (int)(var26 * 127.0F);
 											}
-										//	if(var12 >= 0 && var12 <= 32 && this.waterBuf[var27] <= var14) {
-										//		this.waterBuf[var27] = var14;
-										//		this.waterBr[var27] = (int)(var26 * 127.0F);
-										//	}
-
-										//	if(var12 >= -1 && var12 <= 31 && this.waterBuf[var27 + 1] <= var14) {
-										//		this.waterBuf[var27 + 1] = var14;
-										//		this.waterBr[var27 + 1] = (int)(var26 * 127.0F);
-										//	}
 
 											var13 = false;
 										}
@@ -127,16 +120,11 @@ public class TerrainTextureManager {
 									if(var13) {
 										if(var15 < this.yBuf[var12]) {
 											this.yBuf[var12] = var15;
-										} else if(var15 < this.yBuf[var12 + 1]) {
+										}
+
+										if(var15 < this.yBuf[var12 + 1]) {
 											this.yBuf[var12 + 1] = var15;
 										}
-									//	if(var15 < this.yBuf[var12]) {
-									//		this.yBuf[var12] = var15;
-									//	}
-
-									//	if(var15 < this.yBuf[var12 + 1]) {
-									//		this.yBuf[var12 + 1] = var15;
-									//	}
 									}
 
 									float var17 = (float)var14 / 127.0F * 0.6F + 0.4F;

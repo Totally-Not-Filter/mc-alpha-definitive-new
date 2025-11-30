@@ -15,40 +15,27 @@ public class ItemBlock extends Item {
 		} else {
 			if(var7 == 0) {
 				--var5;
-			} else if(var7 == 1) {
+			}
+
+			if(var7 == 1) {
 				++var5;
-			} else if(var7 == 2) {
+			}
+
+			if(var7 == 2) {
 				--var6;
-			} else if(var7 == 3) {
+			}
+
+			if(var7 == 3) {
 				++var6;
-			} else if(var7 == 4) {
+			}
+
+			if(var7 == 4) {
 				--var4;
-			} else if(var7 == 5) {
+			}
+
+			if(var7 == 5) {
 				++var4;
 			}
-//			if(var7 == 0) {
-//				--var5;
-//			}
-
-//			if(var7 == 1) {
-//				++var5;
-//			}
-
-//			if(var7 == 2) {
-//				--var6;
-//			}
-
-//			if(var7 == 3) {
-//				++var6;
-//			}
-
-//			if(var7 == 4) {
-//				--var4;
-//			}
-
-//			if(var7 == 5) {
-//				++var4;
-//			}
 		}
 
 		if(var1.stackSize == 0) {

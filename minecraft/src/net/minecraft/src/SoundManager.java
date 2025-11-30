@@ -86,14 +86,14 @@ public class SoundManager {
 	public void playRandomMusicIfReady() {
 		if(loaded && this.options.musicVolume != 0.0F) {
 			if(!sndSystem.playing("BgMusic") && !sndSystem.playing("streaming")) {
-			//	if(this.ticksBeforeMusic > 0) {
-			//		--this.ticksBeforeMusic;
-			//		return;
-			//	}
+//				if(this.ticksBeforeMusic > 0) {
+//					--this.ticksBeforeMusic;
+//					return;
+//				}
 
 				SoundPoolEntry var1 = this.soundPoolMusic.getRandomSound();
 				if(var1 != null) {
-				//	this.ticksBeforeMusic = this.rand.nextInt(24000) + 24000;
+//					this.ticksBeforeMusic = this.rand.nextInt(24000) + 24000;
 					sndSystem.backgroundMusic("BgMusic", var1.soundUrl, var1.soundName, false);
 					sndSystem.setVolume("BgMusic", this.options.musicVolume);
 					sndSystem.play("BgMusic");

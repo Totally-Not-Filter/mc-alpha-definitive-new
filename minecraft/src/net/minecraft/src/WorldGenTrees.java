@@ -15,16 +15,11 @@ public class WorldGenTrees extends WorldGenerator {
 				byte var9 = 1;
 				if(var8 == var4) {
 					var9 = 0;
-				} else if(var8 >= var4 + 1 + var6 - 2) {
+				}
+
+				if(var8 >= var4 + 1 + var6 - 2) {
 					var9 = 2;
 				}
-//				if(var8 == var4) {
-//					var9 = 0;
-//				}
-
-//				if(var8 >= var4 + 1 + var6 - 2) {
-//					var9 = 2;
-//				}
 
 				for(var10 = var3 - var9; var10 <= var3 + var9 && var7; ++var10) {
 					for(var11 = var5 - var9; var11 <= var5 + var9 && var7; ++var11) {
