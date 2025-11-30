@@ -120,7 +120,7 @@ public class GuiMainMenu extends GuiScreen {
 		GL11.glScalef(var5, var5, var5);
 		this.drawCenteredString(this.fontRenderer, this.splashString, 0, -8, 16776960);
 		GL11.glPopMatrix();
-		String var6 = "Copyright Mojang Specifications. Do not distribute.";
+		String var6 = "Originally by Mojang Specifications.";
 		this.drawString(this.fontRenderer, var6, this.width - this.fontRenderer.getStringWidth(var6) - 2, this.height - 10, 16777215);
 		long var7 = Runtime.getRuntime().maxMemory();
 		long var9 = Runtime.getRuntime().totalMemory();
