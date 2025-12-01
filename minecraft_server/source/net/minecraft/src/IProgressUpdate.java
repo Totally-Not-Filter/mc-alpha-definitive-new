@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
 public interface IProgressUpdate {
-	void displayProgressMessage(String var1);
+	void func_438_a(String var1);
 
-	void displayLoadingString(String var1);
+	void func_439_b(String var1);
 
-	void setLoadingProgress(int var1);
+	void func_437_a(int var1);
 }

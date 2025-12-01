@@ -7,24 +7,24 @@ public class ModelRenderer {
 	private TexturedQuad[] faces;
 	private int textureOffsetX;
 	private int textureOffsetY;
-	public float rotationPointX;
-	public float rotationPointY;
-	public float rotationPointZ;
+	public float offsetX;
+	public float offsetY;
+	public float offsetZ;
 	public float rotateAngleX;
 	public float rotateAngleY;
 	public float rotateAngleZ;
 	private boolean compiled = false;
 	private int displayList = 0;
 	public boolean mirror = false;
-	public boolean showModel = true;
-	public boolean isHidden = false;
+	public boolean field_1403_h = true;
+	public boolean field_1402_i = false;
 
 	public ModelRenderer(int var1, int var2) {
 		this.textureOffsetX = var1;
 		this.textureOffsetY = var2;
 	}
 
-	public void addBox(float var1, float var2, float var3, int var4, int var5, int var6) {
+	public void func_921_a(float var1, float var2, float var3, int var4, int var5, int var6) {
 		this.addBox(var1, var2, var3, var4, var5, var6, 0.0F);
 	}
 
@@ -70,36 +70,36 @@ public class ModelRenderer {
 		this.faces[5] = new TexturedQuad(new PositionTexureVertex[]{var15, var16, var17, var18}, this.textureOffsetX + var6 + var4 + var6, this.textureOffsetY + var6, this.textureOffsetX + var6 + var4 + var6 + var4, this.textureOffsetY + var6 + var5);
 		if(this.mirror) {
 			for(int var19 = 0; var19 < this.faces.length; ++var19) {
-				this.faces[var19].flipFace();
+				this.faces[var19].func_809_a();
 			}
 		}
 
 	}
 
-	public void setRotationPoint(float var1, float var2, float var3) {
-		this.rotationPointX = var1;
-		this.rotationPointY = var2;
-		this.rotationPointZ = var3;
+	public void setPosition(float var1, float var2, float var3) {
+		this.offsetX = var1;
+		this.offsetY = var2;
+		this.offsetZ = var3;
 	}
 
 	public void render(float var1) {
-		if(!this.isHidden) {
-			if(this.showModel) {
+		if(!this.field_1402_i) {
+			if(this.field_1403_h) {
 				if(!this.compiled) {
 					this.compileDisplayList(var1);
 				}
 
 				if(this.rotateAngleX == 0.0F && this.rotateAngleY == 0.0F && this.rotateAngleZ == 0.0F) {
-					if(this.rotationPointX == 0.0F && this.rotationPointY == 0.0F && this.rotationPointZ == 0.0F) {
+					if(this.offsetX == 0.0F && this.offsetY == 0.0F && this.offsetZ == 0.0F) {
 						GL11.glCallList(this.displayList);
 					} else {
-						GL11.glTranslatef(this.rotationPointX * var1, this.rotationPointY * var1, this.rotationPointZ * var1);
+						GL11.glTranslatef(this.offsetX * var1, this.offsetY * var1, this.offsetZ * var1);
 						GL11.glCallList(this.displayList);
-						GL11.glTranslatef(-this.rotationPointX * var1, -this.rotationPointY * var1, -this.rotationPointZ * var1);
+						GL11.glTranslatef(-this.offsetX * var1, -this.offsetY * var1, -this.offsetZ * var1);
 					}
 				} else {
 					GL11.glPushMatrix();
-					GL11.glTranslatef(this.rotationPointX * var1, this.rotationPointY * var1, this.rotationPointZ * var1);
+					GL11.glTranslatef(this.offsetX * var1, this.offsetY * var1, this.offsetZ * var1);
 					if(this.rotateAngleZ != 0.0F) {
 						GL11.glRotatef(this.rotateAngleZ * (180.0F / (float)Math.PI), 0.0F, 0.0F, 1.0F);
 					}
@@ -120,19 +120,19 @@ public class ModelRenderer {
 		}
 	}
 
-	public void renderWithRotation(float var1) {
-		if(!this.isHidden) {
-			if(this.showModel) {
+	public void func_926_b(float var1) {
+		if(!this.field_1402_i) {
+			if(this.field_1403_h) {
 				if(!this.compiled) {
 					this.compileDisplayList(var1);
 				}
 
 				if(this.rotateAngleX == 0.0F && this.rotateAngleY == 0.0F && this.rotateAngleZ == 0.0F) {
-					if(this.rotationPointX != 0.0F || this.rotationPointY != 0.0F || this.rotationPointZ != 0.0F) {
-						GL11.glTranslatef(this.rotationPointX * var1, this.rotationPointY * var1, this.rotationPointZ * var1);
+					if(this.offsetX != 0.0F || this.offsetY != 0.0F || this.offsetZ != 0.0F) {
+						GL11.glTranslatef(this.offsetX * var1, this.offsetY * var1, this.offsetZ * var1);
 					}
 				} else {
-					GL11.glTranslatef(this.rotationPointX * var1, this.rotationPointY * var1, this.rotationPointZ * var1);
+					GL11.glTranslatef(this.offsetX * var1, this.offsetY * var1, this.offsetZ * var1);
 					if(this.rotateAngleZ != 0.0F) {
 						GL11.glRotatef(this.rotateAngleZ * (180.0F / (float)Math.PI), 0.0F, 0.0F, 1.0F);
 					}
@@ -156,7 +156,7 @@ public class ModelRenderer {
 		Tessellator var2 = Tessellator.instance;
 
 		for(int var3 = 0; var3 < this.faces.length; ++var3) {
-			this.faces[var3].draw(var2, var1);
+			this.faces[var3].func_808_a(var2, var1);
 		}
 
 		GL11.glEndList();

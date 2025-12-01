@@ -10,35 +10,35 @@ import java.util.logging.Logger;
 public class PropertyManager {
 	public static Logger logger = Logger.getLogger("Minecraft");
 	private Properties serverProperties = new Properties();
-	private File propertiesFile;
+	private File serverPropertiesFile;
 
 	public PropertyManager(File var1) {
-		this.propertiesFile = var1;
+		this.serverPropertiesFile = var1;
 		if(var1.exists()) {
 			try {
 				this.serverProperties.load(new FileInputStream(var1));
 			} catch (Exception var3) {
 				logger.log(Level.WARNING, "Failed to load " + var1, var3);
-				this.generateAndSaveProperties();
+				this.generateNewProperties();
 			}
 		} else {
 			logger.log(Level.WARNING, var1 + " does not exist");
-			this.generateAndSaveProperties();
+			this.generateNewProperties();
 		}
 
 	}
 
-	public void generateAndSaveProperties() {
+	public void generateNewProperties() {
 		logger.log(Level.INFO, "Generating new properties file");
 		this.saveProperties();
 	}
 
 	public void saveProperties() {
 		try {
-			this.serverProperties.store(new FileOutputStream(this.propertiesFile), "Minecraft server properties");
+			this.serverProperties.store(new FileOutputStream(this.serverPropertiesFile), "Minecraft server properties");
 		} catch (Exception var2) {
-			logger.log(Level.WARNING, "Failed to save " + this.propertiesFile, var2);
-			this.generateAndSaveProperties();
+			logger.log(Level.WARNING, "Failed to save " + this.serverPropertiesFile, var2);
+			this.generateNewProperties();
 		}
 
 	}

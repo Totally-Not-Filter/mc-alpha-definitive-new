@@ -11,7 +11,7 @@ public class ItemBoat extends Item {
 		float var5 = var3.prevRotationPitch + (var3.rotationPitch - var3.prevRotationPitch) * var4;
 		float var6 = var3.prevRotationYaw + (var3.rotationYaw - var3.prevRotationYaw) * var4;
 		double var7 = var3.prevPosX + (var3.posX - var3.prevPosX) * (double)var4;
-		double var9 = var3.prevPosY + (var3.posY - var3.prevPosY) * (double)var4;
+		double var9 = var3.prevPosY + (var3.posY - var3.prevPosY) * (double)var4 + 1.62D - (double)var3.yOffset;
 		double var11 = var3.prevPosZ + (var3.posZ - var3.prevPosZ) * (double)var4;
 		Vec3D var13 = Vec3D.createVector(var7, var9, var11);
 		float var14 = MathHelper.cos(-var6 * ((float)Math.PI / 180.0F) - (float)Math.PI);
@@ -22,7 +22,7 @@ public class ItemBoat extends Item {
 		float var20 = var14 * var16;
 		double var21 = 5.0D;
 		Vec3D var23 = var13.addVector((double)var18 * var21, (double)var17 * var21, (double)var20 * var21);
-		MovingObjectPosition var24 = var2.rayTraceBlocks_do(var13, var23, true);
+		MovingObjectPosition var24 = var2.rayTraceBlocks(var13, var23, true);
 		if(var24 == null) {
 			return var1;
 		} else {
@@ -30,7 +30,10 @@ public class ItemBoat extends Item {
 				int var25 = var24.blockX;
 				int var26 = var24.blockY;
 				int var27 = var24.blockZ;
-				var2.spawnEntityInWorld(new EntityBoat(var2, (double)((float)var25 + 0.5F), (double)((float)var26 + 1.5F), (double)((float)var27 + 0.5F)));
+				if(!var2.multiplayerWorld) {
+					var2.entityJoinedWorld(new EntityBoat(var2, (double)((float)var25 + 0.5F), (double)((float)var26 + 1.5F), (double)((float)var27 + 0.5F)));
+				}
+
 				--var1.stackSize;
 			}
 

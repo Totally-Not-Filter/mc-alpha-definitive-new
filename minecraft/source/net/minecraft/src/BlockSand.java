@@ -29,7 +29,7 @@ public class BlockSand extends Block {
 					var8.onUpdate();
 				}
 			} else {
-				var1.spawnEntityInWorld(var8);
+				var1.entityJoinedWorld(var8);
 			}
 		}
 
@@ -46,7 +46,7 @@ public class BlockSand extends Block {
 		} else if(var4 == Block.fire.blockID) {
 			return true;
 		} else {
-			Material var5 = Block.blocksList[var4].material;
+			Material var5 = Block.blocksList[var4].blockMaterial;
 			return var5 == Material.water ? true : var5 == Material.lava;
 		}
 	}

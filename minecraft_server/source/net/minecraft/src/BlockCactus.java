@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class BlockCactus extends Block {
 	protected BlockCactus(int var1, int var2) {
-		super(var1, var2, Material.cactus);
+		super(var1, var2, Material.field_4214_u);
 		this.setTickOnLoad(true);
 	}
 
@@ -36,12 +36,8 @@ public class BlockCactus extends Block {
 		return var1 == 1 ? this.blockIndexInTexture - 1 : (var1 == 0 ? this.blockIndexInTexture + 1 : this.blockIndexInTexture);
 	}
 
-	public boolean isOpaqueCube() {
+	public boolean allowsAttachment() {
 		return false;
-	}
-
-	public int getRenderType() {
-		return 13;
 	}
 
 	public boolean canPlaceBlockAt(World var1, int var2, int var3, int var4) {
@@ -57,13 +53,13 @@ public class BlockCactus extends Block {
 	}
 
 	public boolean canBlockStay(World var1, int var2, int var3, int var4) {
-		if(var1.getBlockMaterial(var2 - 1, var3, var4).isSolid()) {
+		if(var1.getBlockMaterial(var2 - 1, var3, var4).func_216_a()) {
 			return false;
-		} else if(var1.getBlockMaterial(var2 + 1, var3, var4).isSolid()) {
+		} else if(var1.getBlockMaterial(var2 + 1, var3, var4).func_216_a()) {
 			return false;
-		} else if(var1.getBlockMaterial(var2, var3, var4 - 1).isSolid()) {
+		} else if(var1.getBlockMaterial(var2, var3, var4 - 1).func_216_a()) {
 			return false;
-		} else if(var1.getBlockMaterial(var2, var3, var4 + 1).isSolid()) {
+		} else if(var1.getBlockMaterial(var2, var3, var4 + 1).func_216_a()) {
 			return false;
 		} else {
 			int var5 = var1.getBlockId(var2, var3 - 1, var4);
@@ -72,6 +68,6 @@ public class BlockCactus extends Block {
 	}
 
 	public void onEntityCollidedWithBlock(World var1, int var2, int var3, int var4, Entity var5) {
-		var5.attackEntityFrom((Entity)null, 1);
+		var5.attackEntity((Entity)null, 1);
 	}
 }

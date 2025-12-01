@@ -19,7 +19,7 @@ public class Packet15Place extends Packet {
 		this.direction = var1.read();
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeShort(this.id);
 		var1.writeInt(this.xPosition);
 		var1.write(this.yPosition);

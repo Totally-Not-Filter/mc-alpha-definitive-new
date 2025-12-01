@@ -4,23 +4,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EntityList {
-	private static Map stringToClassMapping = new HashMap();
-	private static Map classToStringMapping = new HashMap();
-	private static Map IDtoClassMapping = new HashMap();
-	private static Map classToIDMapping = new HashMap();
+	private static Map field_849_a = new HashMap();
+	private static Map field_848_b = new HashMap();
+	private static Map field_851_c = new HashMap();
+	private static Map field_850_d = new HashMap();
 
-	private static void addMapping(Class var0, String var1, int var2) {
-		stringToClassMapping.put(var1, var0);
-		classToStringMapping.put(var0, var1);
-		IDtoClassMapping.put(Integer.valueOf(var2), var0);
-		classToIDMapping.put(var0, Integer.valueOf(var2));
+	private static void func_563_a(Class var0, String var1, int var2) {
+		field_849_a.put(var1, var0);
+		field_848_b.put(var0, var1);
+		field_851_c.put(Integer.valueOf(var2), var0);
+		field_850_d.put(var0, Integer.valueOf(var2));
 	}
 
-	public static Entity createEntityByName(String var0, World var1) {
+	public static Entity func_567_a(String var0, World var1) {
 		Entity var2 = null;
 
 		try {
-			Class var3 = (Class)stringToClassMapping.get(var0);
+			Class var3 = (Class)field_849_a.get(var0);
 			if(var3 != null) {
 				var2 = (Entity)var3.getConstructor(new Class[]{World.class}).newInstance(new Object[]{var1});
 			}
@@ -31,11 +31,11 @@ public class EntityList {
 		return var2;
 	}
 
-	public static Entity createEntityFromNBT(NBTTagCompound var0, World var1) {
+	public static Entity func_566_a(NBTTagCompound var0, World var1) {
 		Entity var2 = null;
 
 		try {
-			Class var3 = (Class)stringToClassMapping.get(var0.getString("id"));
+			Class var3 = (Class)field_849_a.get(var0.getString("id"));
 			if(var3 != null) {
 				var2 = (Entity)var3.getConstructor(new Class[]{World.class}).newInstance(new Object[]{var1});
 			}
@@ -52,34 +52,36 @@ public class EntityList {
 		return var2;
 	}
 
-	public static int getEntityID(Entity var0) {
-		return ((Integer)classToIDMapping.get(var0.getClass())).intValue();
+	public static int func_565_a(Entity var0) {
+		return ((Integer)field_850_d.get(var0.getClass())).intValue();
 	}
 
-	public static String getEntityString(Entity var0) {
-		return (String)classToStringMapping.get(var0.getClass());
+	public static String func_564_b(Entity var0) {
+		return (String)field_848_b.get(var0.getClass());
 	}
 
 	static {
-		addMapping(EntityArrow.class, "Arrow", 10);
-		addMapping(EntitySnowball.class, "Snowball", 11);
-		addMapping(EntityItem.class, "Item", 1);
-		addMapping(EntityPainting.class, "Painting", 9);
-		addMapping(EntityLiving.class, "Mob", 48);
-		addMapping(EntityMob.class, "Monster", 49);
-		addMapping(EntityCreeper.class, "Creeper", 50);
-		addMapping(EntitySkeleton.class, "Skeleton", 51);
-		addMapping(EntitySpider.class, "Spider", 52);
-		addMapping(EntityGiantZombie.class, "Giant", 53);
-		addMapping(EntityZombie.class, "Zombie", 54);
-		addMapping(EntitySlime.class, "Slime", 55);
-		addMapping(EntityPig.class, "Pig", 90);
-		addMapping(EntitySheep.class, "Sheep", 91);
-		addMapping(EntityCow.class, "Cow", 91);
-		addMapping(EntityChicken.class, "Chicken", 91);
-		addMapping(EntityTNTPrimed.class, "PrimedTnt", 20);
-		addMapping(EntityFallingSand.class, "FallingSand", 21);
-		addMapping(EntityMinecart.class, "Minecart", 40);
-		addMapping(EntityBoat.class, "Boat", 41);
+		func_563_a(EntityArrow.class, "Arrow", 10);
+		func_563_a(EntitySnowball.class, "Snowball", 11);
+		func_563_a(EntityItem.class, "Item", 1);
+		func_563_a(EntityPainting.class, "Painting", 9);
+		func_563_a(EntityLiving.class, "Mob", 48);
+		func_563_a(EntityMobs.class, "Monster", 49);
+		func_563_a(EntityCreeper.class, "Creeper", 50);
+		func_563_a(EntitySkeleton.class, "Skeleton", 51);
+		func_563_a(EntitySpider.class, "Spider", 52);
+		func_563_a(EntityZombieSimple.class, "Giant", 53);
+		func_563_a(EntityZombie.class, "Zombie", 54);
+		func_563_a(EntitySlime.class, "Slime", 55);
+		func_563_a(EntityGhast.class, "Ghast", 56);
+		func_563_a(EntityPigZombie.class, "PigZombie", 57);
+		func_563_a(EntityPig.class, "Pig", 90);
+		func_563_a(EntitySheep.class, "Sheep", 91);
+		func_563_a(EntityCow.class, "Cow", 92);
+		func_563_a(EntityChicken.class, "Chicken", 93);
+		func_563_a(EntityTNTPrimed.class, "PrimedTnt", 20);
+		func_563_a(EntityFallingSand.class, "FallingSand", 21);
+		func_563_a(EntityMinecart.class, "Minecart", 40);
+		func_563_a(EntityBoat.class, "Boat", 41);
 	}
 }

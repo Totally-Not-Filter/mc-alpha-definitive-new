@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 public class MaterialLogic extends Material {
-	public boolean isSolid() {
+	public boolean func_216_a() {
 		return false;
 	}
 
@@ -9,7 +9,7 @@ public class MaterialLogic extends Material {
 		return false;
 	}
 
-	public boolean getIsSolid() {
+	public boolean func_218_c() {
 		return false;
 	}
 }

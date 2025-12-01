@@ -20,36 +20,36 @@ public class MinecraftApplet extends Applet {
 		}
 
 		this.mc = new MinecraftAppletImpl(this, this, this.mcCanvas, this, this.getWidth(), this.getHeight(), var1);
-		this.mc.minecraftUri = this.getDocumentBase().getHost();
+		this.mc.field_6319_j = this.getDocumentBase().getHost();
 		if(this.getDocumentBase().getPort() > 0) {
-			this.mc.minecraftUri = this.mc.minecraftUri + ":" + this.getDocumentBase().getPort();
+			this.mc.field_6319_j = this.mc.field_6319_j + ":" + this.getDocumentBase().getPort();
 		}
 
 		if(this.getParameter("username") != null && this.getParameter("sessionid") != null) {
-			this.mc.session = new Session(this.getParameter("username"), this.getParameter("sessionid"));
-			System.out.println("Setting user: " + this.mc.session.username + ", " + this.mc.session.sessionId);
+			this.mc.field_6320_i = new Session(this.getParameter("username"), this.getParameter("sessionid"));
+			System.out.println("Setting user: " + this.mc.field_6320_i.inventory + ", " + this.mc.field_6320_i.field_6543_c);
 			if(this.getParameter("mppass") != null) {
-				this.mc.session.mpPassParameter = this.getParameter("mppass");
+				this.mc.field_6320_i.field_6542_d = this.getParameter("mppass");
 			}
 		} else {
-			this.mc.session = new Session("Player", "");
+			this.mc.field_6320_i = new Session("Player", "");
 		}
 
 		if(this.getParameter("loadmap_user") != null && this.getParameter("loadmap_id") != null) {
-			this.mc.loadMapUser = this.getParameter("loadmap_user");
-			this.mc.loadMapID = Integer.parseInt(this.getParameter("loadmap_id"));
+			this.mc.field_6310_s = this.getParameter("loadmap_user");
+			this.mc.field_6309_t = Integer.parseInt(this.getParameter("loadmap_id"));
 		} else if(this.getParameter("server") != null && this.getParameter("port") != null) {
-			this.mc.setServer(this.getParameter("server"), Integer.parseInt(this.getParameter("port")));
+			this.mc.func_6258_a(this.getParameter("server"), Integer.parseInt(this.getParameter("port")));
 		}
 
-		this.mc.appletMode = true;
+		this.mc.field_6317_l = true;
 		this.setLayout(new BorderLayout());
 		this.add(this.mcCanvas, "Center");
 		this.mcCanvas.setFocusable(true);
 		this.validate();
 	}
 
-	public void startMainThread() {
+	public void func_6233_a() {
 		if(this.mcThread == null) {
 			this.mcThread = new Thread(this.mc, "Minecraft main thread");
 			this.mcThread.start();
@@ -58,14 +58,14 @@ public class MinecraftApplet extends Applet {
 
 	public void start() {
 		if(this.mc != null) {
-			this.mc.isGamePaused = false;
+			this.mc.field_6316_m = false;
 		}
 
 	}
 
 	public void stop() {
 		if(this.mc != null) {
-			this.mc.isGamePaused = true;
+			this.mc.field_6316_m = true;
 		}
 
 	}
@@ -82,7 +82,7 @@ public class MinecraftApplet extends Applet {
 				this.mcThread.join(10000L);
 			} catch (InterruptedException var4) {
 				try {
-					this.mc.shutdownMinecraftApplet();
+					this.mc.func_6266_c();
 				} catch (Exception var3) {
 					var3.printStackTrace();
 				}
@@ -92,7 +92,7 @@ public class MinecraftApplet extends Applet {
 		}
 	}
 
-	public void clearApplet() {
+	public void func_6231_c() {
 		this.mcCanvas = null;
 		this.mc = null;
 		this.mcThread = null;

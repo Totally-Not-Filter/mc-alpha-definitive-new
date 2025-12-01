@@ -3,95 +3,96 @@ package net.minecraft.src;
 import java.io.IOException;
 
 public class ChunkProviderLoadOrGenerate implements IChunkProvider {
-	private Chunk blankChunk;
-	private IChunkProvider chunkProvider;
-	private IChunkLoader chunkLoader;
+	private Chunk field_723_c;
+	private IChunkProvider field_722_d;
+	private IChunkLoader field_721_e;
 	private Chunk[] chunks = new Chunk[1024];
 	private World worldObj;
-	int lastQueriedChunkXPos = -999999999;
-	int lastQueriedChunkZPos = -999999999;
-	private Chunk lastQueriedChunk;
+	int field_717_a = -999999999;
+	int field_716_b = -999999999;
+	private Chunk field_718_h;
 
 	public ChunkProviderLoadOrGenerate(World var1, IChunkLoader var2, IChunkProvider var3) {
-		this.blankChunk = new Chunk(var1, new byte[-Short.MIN_VALUE], 0, 0);
-		this.blankChunk.isChunkRendered = true;
-		this.blankChunk.neverSave = true;
+		this.field_723_c = new Chunk(var1, new byte[-Short.MIN_VALUE], 0, 0);
+		this.field_723_c.field_678_q = true;
+		this.field_723_c.field_679_p = true;
 		this.worldObj = var1;
-		this.chunkLoader = var2;
-		this.chunkProvider = var3;
+		this.field_721_e = var2;
+		this.field_722_d = var3;
 	}
 
 	public boolean chunkExists(int var1, int var2) {
-		if(var1 == this.lastQueriedChunkXPos && var2 == this.lastQueriedChunkZPos && this.lastQueriedChunk != null) {
+		if(var1 == this.field_717_a && var2 == this.field_716_b && this.field_718_h != null) {
 			return true;
 		} else {
 			int var3 = var1 & 31;
 			int var4 = var2 & 31;
 			int var5 = var3 + var4 * 32;
-			return this.chunks[var5] != null && (this.chunks[var5] == this.blankChunk || this.chunks[var5].isAtLocation(var1, var2));
+			return this.chunks[var5] != null && (this.chunks[var5] == this.field_723_c || this.chunks[var5].func_351_a(var1, var2));
 		}
 	}
 
-	public Chunk provideChunk(int var1, int var2) {
-		if(var1 == this.lastQueriedChunkXPos && var2 == this.lastQueriedChunkZPos && this.lastQueriedChunk != null) {
-			return this.lastQueriedChunk;
+	public Chunk func_363_b(int var1, int var2) {
+		if(var1 == this.field_717_a && var2 == this.field_716_b && this.field_718_h != null) {
+			return this.field_718_h;
 		} else {
 			int var3 = var1 & 31;
 			int var4 = var2 & 31;
 			int var5 = var3 + var4 * 32;
 			if(!this.chunkExists(var1, var2)) {
 				if(this.chunks[var5] != null) {
-					this.chunks[var5].onChunkUnload();
-					this.saveChunk(this.chunks[var5]);
-					this.saveExtraChunkData(this.chunks[var5]);
+					this.chunks[var5].func_331_d();
+					this.func_370_b(this.chunks[var5]);
+					this.func_371_a(this.chunks[var5]);
 				}
 
-				Chunk var6 = this.getChunkAt(var1, var2);
+				Chunk var6 = this.func_4059_c(var1, var2);
 				if(var6 == null) {
-					if(this.chunkProvider == null) {
-						var6 = this.blankChunk;
+					if(this.field_722_d == null) {
+						var6 = this.field_723_c;
 					} else {
-						var6 = this.chunkProvider.provideChunk(var1, var2);
+						var6 = this.field_722_d.func_363_b(var1, var2);
 					}
 				}
 
 				this.chunks[var5] = var6;
+				var6.func_4053_c();
 				if(this.chunks[var5] != null) {
-					this.chunks[var5].onChunkLoad();
+					this.chunks[var5].func_358_c();
 				}
 
 				if(!this.chunks[var5].isTerrainPopulated && this.chunkExists(var1 + 1, var2 + 1) && this.chunkExists(var1, var2 + 1) && this.chunkExists(var1 + 1, var2)) {
 					this.populate(this, var1, var2);
 				}
 
-				if(this.chunkExists(var1 - 1, var2) && !this.provideChunk(var1 - 1, var2).isTerrainPopulated && this.chunkExists(var1 - 1, var2 + 1) && this.chunkExists(var1, var2 + 1) && this.chunkExists(var1 - 1, var2)) {
+				if(this.chunkExists(var1 - 1, var2) && !this.func_363_b(var1 - 1, var2).isTerrainPopulated && this.chunkExists(var1 - 1, var2 + 1) && this.chunkExists(var1, var2 + 1) && this.chunkExists(var1 - 1, var2)) {
 					this.populate(this, var1 - 1, var2);
 				}
 
-				if(this.chunkExists(var1, var2 - 1) && !this.provideChunk(var1, var2 - 1).isTerrainPopulated && this.chunkExists(var1 + 1, var2 - 1) && this.chunkExists(var1, var2 - 1) && this.chunkExists(var1 + 1, var2)) {
+				if(this.chunkExists(var1, var2 - 1) && !this.func_363_b(var1, var2 - 1).isTerrainPopulated && this.chunkExists(var1 + 1, var2 - 1) && this.chunkExists(var1, var2 - 1) && this.chunkExists(var1 + 1, var2)) {
 					this.populate(this, var1, var2 - 1);
 				}
 
-				if(this.chunkExists(var1 - 1, var2 - 1) && !this.provideChunk(var1 - 1, var2 - 1).isTerrainPopulated && this.chunkExists(var1 - 1, var2 - 1) && this.chunkExists(var1, var2 - 1) && this.chunkExists(var1 - 1, var2)) {
+				if(this.chunkExists(var1 - 1, var2 - 1) && !this.func_363_b(var1 - 1, var2 - 1).isTerrainPopulated && this.chunkExists(var1 - 1, var2 - 1) && this.chunkExists(var1, var2 - 1) && this.chunkExists(var1 - 1, var2)) {
 					this.populate(this, var1 - 1, var2 - 1);
 				}
 			}
 
-			this.lastQueriedChunkXPos = var1;
-			this.lastQueriedChunkZPos = var2;
-			this.lastQueriedChunk = this.chunks[var5];
+			this.field_717_a = var1;
+			this.field_716_b = var2;
+			this.field_718_h = this.chunks[var5];
 			return this.chunks[var5];
 		}
 	}
 
-	private Chunk getChunkAt(int var1, int var2) {
-		if(this.chunkLoader == null) {
+	private Chunk func_4059_c(int var1, int var2) {
+		if(this.field_721_e == null) {
 			return null;
 		} else {
 			try {
-				Chunk var3 = this.chunkLoader.loadChunk(this.worldObj, var1, var2);
+				Chunk var3 = this.field_721_e.func_659_a(this.worldObj, var1, var2);
 				if(var3 != null) {
-					var3.lastSaveTime = this.worldObj.worldTime;
+					var3.field_676_s = this.worldObj.worldTime;
 				}
 
 				return var3;
@@ -102,10 +103,10 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 		}
 	}
 
-	private void saveExtraChunkData(Chunk var1) {
-		if(this.chunkLoader != null) {
+	private void func_371_a(Chunk var1) {
+		if(this.field_721_e != null) {
 			try {
-				this.chunkLoader.saveExtraChunkData(this.worldObj, var1);
+				this.field_721_e.func_4104_b(this.worldObj, var1);
 			} catch (Exception var3) {
 				var3.printStackTrace();
 			}
@@ -113,11 +114,11 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 		}
 	}
 
-	private void saveChunk(Chunk var1) {
-		if(this.chunkLoader != null) {
+	private void func_370_b(Chunk var1) {
+		if(this.field_721_e != null) {
 			try {
-				var1.lastSaveTime = this.worldObj.worldTime;
-				this.chunkLoader.saveChunk(this.worldObj, var1);
+				var1.field_676_s = this.worldObj.worldTime;
+				this.field_721_e.func_662_a(this.worldObj, var1);
 			} catch (IOException var3) {
 				var3.printStackTrace();
 			}
@@ -126,24 +127,24 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 	}
 
 	public void populate(IChunkProvider var1, int var2, int var3) {
-		Chunk var4 = this.provideChunk(var2, var3);
+		Chunk var4 = this.func_363_b(var2, var3);
 		if(!var4.isTerrainPopulated) {
 			var4.isTerrainPopulated = true;
-			if(this.chunkProvider != null) {
-				this.chunkProvider.populate(var1, var2, var3);
-				var4.setChunkModified();
+			if(this.field_722_d != null) {
+				this.field_722_d.populate(var1, var2, var3);
+				var4.func_336_e();
 			}
 		}
 
 	}
 
-	public boolean saveChunks(boolean var1, IProgressUpdate var2) {
+	public boolean saveWorld(boolean var1, IProgressUpdate var2) {
 		int var3 = 0;
 		int var4 = 0;
 		int var5;
 		if(var2 != null) {
 			for(var5 = 0; var5 < this.chunks.length; ++var5) {
-				if(this.chunks[var5] != null && this.chunks[var5].needsSaving(var1)) {
+				if(this.chunks[var5] != null && this.chunks[var5].func_347_a(var1)) {
 					++var4;
 				}
 			}
@@ -153,12 +154,12 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 
 		for(int var6 = 0; var6 < this.chunks.length; ++var6) {
 			if(this.chunks[var6] != null) {
-				if(var1 && !this.chunks[var6].neverSave) {
-					this.saveExtraChunkData(this.chunks[var6]);
+				if(var1 && !this.chunks[var6].field_679_p) {
+					this.func_371_a(this.chunks[var6]);
 				}
 
-				if(this.chunks[var6].needsSaving(var1)) {
-					this.saveChunk(this.chunks[var6]);
+				if(this.chunks[var6].func_347_a(var1)) {
+					this.func_370_b(this.chunks[var6]);
 					this.chunks[var6].isModified = false;
 					++var3;
 					if(var3 == 2 && !var1) {
@@ -168,7 +169,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 					if(var2 != null) {
 						++var5;
 						if(var5 % 10 == 0) {
-							var2.setLoadingProgress(var5 * 100 / var4);
+							var2.func_437_a(var5 * 100 / var4);
 						}
 					}
 				}
@@ -176,25 +177,25 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 		}
 
 		if(var1) {
-			if(this.chunkLoader == null) {
+			if(this.field_721_e == null) {
 				return true;
 			}
 
-			this.chunkLoader.saveExtraData();
+			this.field_721_e.func_660_b();
 		}
 
 		return true;
 	}
 
-	public boolean unload100OldestChunks() {
-		if(this.chunkLoader != null) {
-			this.chunkLoader.chunkTick();
+	public boolean func_361_a() {
+		if(this.field_721_e != null) {
+			this.field_721_e.func_661_a();
 		}
 
-		return this.chunkProvider.unload100OldestChunks();
+		return this.field_722_d.func_361_a();
 	}
 
-	public boolean canSave() {
+	public boolean func_364_b() {
 		return true;
 	}
 }

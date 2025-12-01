@@ -1,14 +1,15 @@
 package net.minecraft.src;
 
-public class EntityCreeper extends EntityMob {
-	int timeSinceIgnited;
-	int lastActiveTime;
-	int fuseDuration = 30;
-	int creeperState = -1;
+public class EntityCreeper extends EntityMobs {
+	int field_406_a;
+	int field_405_b;
+	int field_408_ad = 30;
+	int field_407_ae = -1;
+	int field_12011_e = -1;
 
 	public EntityCreeper(World var1) {
 		super(var1);
-		this.texture = "/mob/creeper.png";
+		this.field_9119_aG = "/mob/creeper.png";
 	}
 
 	public void writeEntityToNBT(NBTTagCompound var1) {
@@ -19,19 +20,48 @@ public class EntityCreeper extends EntityMob {
 		super.readEntityFromNBT(var1);
 	}
 
-	protected void updateEntityActionState() {
-		this.lastActiveTime = this.timeSinceIgnited;
-		if(this.timeSinceIgnited > 0 && this.creeperState < 0) {
-			--this.timeSinceIgnited;
+	public void onUpdate() {
+		this.field_405_b = this.field_406_a;
+		if(this.worldObj.multiplayerWorld) {
+			this.field_406_a += this.field_407_ae;
+			if(this.field_406_a < 0) {
+				this.field_406_a = 0;
+			}
+
+			if(this.field_406_a >= this.field_408_ad) {
+				this.field_406_a = this.field_408_ad;
+			}
 		}
 
-		if(this.creeperState >= 0) {
-			this.creeperState = 2;
+		super.onUpdate();
+	}
+
+	protected void func_152_d_() {
+		if(this.field_12011_e != this.field_407_ae) {
+			this.field_12011_e = this.field_407_ae;
+			if(this.field_407_ae > 0) {
+				this.worldObj.func_9206_a(this, (byte)4);
+			} else {
+				this.worldObj.func_9206_a(this, (byte)5);
+			}
 		}
 
-		super.updateEntityActionState();
-		if(this.creeperState != 1) {
-			this.creeperState = -1;
+		this.field_405_b = this.field_406_a;
+		if(this.worldObj.multiplayerWorld) {
+			super.func_152_d_();
+		} else {
+			if(this.field_406_a > 0 && this.field_407_ae < 0) {
+				--this.field_406_a;
+			}
+
+			if(this.field_407_ae >= 0) {
+				this.field_407_ae = 2;
+			}
+
+			super.func_152_d_();
+			if(this.field_407_ae != 1) {
+				this.field_407_ae = -1;
+			}
 		}
 
 	}
@@ -47,30 +77,30 @@ public class EntityCreeper extends EntityMob {
 	public void onDeath(Entity var1) {
 		super.onDeath(var1);
 		if(var1 instanceof EntitySkeleton) {
-			this.dropItem(Item.record13.shiftedIndex + this.rand.nextInt(2), 1);
+			this.dropItem(Item.record13.swiftedIndex + this.field_9064_W.nextInt(2), 1);
 		}
 
 	}
 
-	protected void attackEntity(Entity var1, float var2) {
-		if(this.creeperState <= 0 && var2 < 3.0F || this.creeperState > 0 && var2 < 7.0F) {
-			if(this.timeSinceIgnited == 0) {
+	protected void func_157_a(Entity var1, float var2) {
+		if(this.field_407_ae <= 0 && var2 < 3.0F || this.field_407_ae > 0 && var2 < 7.0F) {
+			if(this.field_406_a == 0) {
 				this.worldObj.playSoundAtEntity(this, "random.fuse", 1.0F, 0.5F);
 			}
 
-			this.creeperState = 1;
-			++this.timeSinceIgnited;
-			if(this.timeSinceIgnited == this.fuseDuration) {
-				this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 3.0F);
+			this.field_407_ae = 1;
+			++this.field_406_a;
+			if(this.field_406_a == this.field_408_ad) {
+				this.worldObj.func_12013_a(this, this.posX, this.posY, this.posZ, 3.0F);
 				this.setEntityDead();
 			}
 
-			this.hasAttacked = true;
+			this.field_387_ah = true;
 		}
 
 	}
 
 	protected int getDropItemId() {
-		return Item.gunpowder.shiftedIndex;
+		return Item.gunpowder.swiftedIndex;
 	}
 }

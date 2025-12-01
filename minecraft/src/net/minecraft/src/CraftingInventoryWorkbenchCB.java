@@ -19,7 +19,7 @@ public class CraftingInventoryWorkbenchCB extends CraftingInventoryCB {
 			}
 		}
 
-		this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(var2));
+		this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().craft(var2));
 	}
 
 	public void onCraftGuiClosed(EntityPlayer var1) {

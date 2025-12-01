@@ -2,31 +2,31 @@ package net.minecraft.src;
 
 public class EntityCreature extends EntityLiving {
 	private PathEntity pathToEntity;
-	protected Entity entityToAttack;
+	protected Entity playerToAttack;
 	protected boolean hasAttacked = false;
 
 	public EntityCreature(World var1) {
 		super(var1);
 	}
 
-	protected void updateEntityActionState() {
+	protected void func_418_b_() {
 		this.hasAttacked = false;
 		float var1 = 16.0F;
-		if(this.entityToAttack == null) {
-			this.entityToAttack = this.findPlayerToAttack();
-			if(this.entityToAttack != null) {
-				this.pathToEntity = this.worldObj.getPathToEntity(this, this.entityToAttack, var1);
+		if(this.playerToAttack == null) {
+			this.playerToAttack = this.findPlayerToAttack();
+			if(this.playerToAttack != null) {
+				this.pathToEntity = this.worldObj.getPathToEntity(this, this.playerToAttack, var1);
 			}
-		} else if(!this.entityToAttack.isEntityAlive()) {
-			this.entityToAttack = null;
+		} else if(!this.playerToAttack.isEntityAlive()) {
+			this.playerToAttack = null;
 		} else {
-			float var2 = this.entityToAttack.getDistanceToEntity(this);
-			if(this.canEntityBeSeen(this.entityToAttack)) {
-				this.attackEntity(this.entityToAttack, var2);
+			float var2 = this.playerToAttack.getDistanceToEntity(this);
+			if(this.canEntityBeSeen(this.playerToAttack)) {
+				this.attackEntity(this.playerToAttack, var2);
 			}
 		}
 
-		if(this.hasAttacked || this.entityToAttack == null || this.pathToEntity != null && this.rand.nextInt(20) != 0) {
+		if(this.hasAttacked || this.playerToAttack == null || this.pathToEntity != null && this.rand.nextInt(20) != 0) {
 			if(this.pathToEntity == null && this.rand.nextInt(80) == 0 || this.rand.nextInt(80) == 0) {
 				boolean var21 = false;
 				int var3 = -1;
@@ -38,7 +38,7 @@ public class EntityCreature extends EntityLiving {
 					int var8 = MathHelper.floor_double(this.posX + (double)this.rand.nextInt(13) - 6.0D);
 					int var9 = MathHelper.floor_double(this.posY + (double)this.rand.nextInt(7) - 3.0D);
 					int var10 = MathHelper.floor_double(this.posZ + (double)this.rand.nextInt(13) - 6.0D);
-					float var11 = this.getBlockPathWeight(var8, var9, var10);
+					float var11 = this.func_439_a(var8, var9, var10);
 					if(var11 > var6) {
 						var6 = var11;
 						var3 = var8;
@@ -53,7 +53,7 @@ public class EntityCreature extends EntityLiving {
 				}
 			}
 		} else {
-			this.pathToEntity = this.worldObj.getPathToEntity(this, this.entityToAttack, var1);
+			this.pathToEntity = this.worldObj.getPathToEntity(this, this.playerToAttack, var1);
 		}
 
 		int var22 = MathHelper.floor_double(this.boundingBox.minY);
@@ -82,7 +82,7 @@ public class EntityCreature extends EntityLiving {
 				float var14 = (float)(Math.atan2(var28, var27) * 180.0D / (double)((float)Math.PI)) - 90.0F;
 				float var15 = var14 - this.rotationYaw;
 
-				for(this.moveForward = this.moveSpeed; var15 < -180.0F; var15 += 360.0F) {
+				for(this.field_9340_ai = this.field_9333_am; var15 < -180.0F; var15 += 360.0F) {
 				}
 
 				while(var15 >= 180.0F) {
@@ -98,14 +98,14 @@ public class EntityCreature extends EntityLiving {
 				}
 
 				this.rotationYaw += var15;
-				if(this.hasAttacked && this.entityToAttack != null) {
-					double var16 = this.entityToAttack.posX - this.posX;
-					double var18 = this.entityToAttack.posZ - this.posZ;
+				if(this.hasAttacked && this.playerToAttack != null) {
+					double var16 = this.playerToAttack.posX - this.posX;
+					double var18 = this.playerToAttack.posZ - this.posZ;
 					float var20 = this.rotationYaw;
 					this.rotationYaw = (float)(Math.atan2(var18, var16) * 180.0D / (double)((float)Math.PI)) - 90.0F;
 					var15 = (var20 - this.rotationYaw + 90.0F) * (float)Math.PI / 180.0F;
-					this.moveStrafing = -MathHelper.sin(var15) * this.moveForward * 1.0F;
-					this.moveForward = MathHelper.cos(var15) * this.moveForward * 1.0F;
+					this.field_9342_ah = -MathHelper.sin(var15) * this.field_9340_ai * 1.0F;
+					this.field_9340_ai = MathHelper.cos(var15) * this.field_9340_ai * 1.0F;
 				}
 
 				if(var12 > 0.0D) {
@@ -113,11 +113,11 @@ public class EntityCreature extends EntityLiving {
 				}
 			}
 
-			if(this.entityToAttack != null) {
-				this.faceEntity(this.entityToAttack, 30.0F);
+			if(this.playerToAttack != null) {
+				this.faceEntity(this.playerToAttack, 30.0F);
 			}
 
-			if(this.isCollidedHorizontally) {
+			if(this.field_9297_aI) {
 				this.isJumping = true;
 			}
 
@@ -126,7 +126,7 @@ public class EntityCreature extends EntityLiving {
 			}
 
 		} else {
-			super.updateEntityActionState();
+			super.func_418_b_();
 			this.pathToEntity = null;
 		}
 	}
@@ -134,7 +134,7 @@ public class EntityCreature extends EntityLiving {
 	protected void attackEntity(Entity var1, float var2) {
 	}
 
-	protected float getBlockPathWeight(int var1, int var2, int var3) {
+	protected float func_439_a(int var1, int var2, int var3) {
 		return 0.0F;
 	}
 
@@ -146,6 +146,6 @@ public class EntityCreature extends EntityLiving {
 		int var1 = MathHelper.floor_double(this.posX);
 		int var2 = MathHelper.floor_double(this.boundingBox.minY);
 		int var3 = MathHelper.floor_double(this.posZ);
-		return super.getCanSpawnHere() && this.getBlockPathWeight(var1, var2, var3) >= 0.0F;
+		return super.getCanSpawnHere() && this.func_439_a(var1, var2, var3) >= 0.0F;
 	}
 }

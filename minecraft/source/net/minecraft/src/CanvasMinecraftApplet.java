@@ -12,7 +12,7 @@ public class CanvasMinecraftApplet extends Canvas {
 
 	public synchronized void addNotify() {
 		super.addNotify();
-		this.mcApplet.startMainThread();
+		this.mcApplet.func_6233_a();
 	}
 
 	public synchronized void removeNotify() {

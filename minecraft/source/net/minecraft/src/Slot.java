@@ -26,11 +26,15 @@ public class Slot {
 		this.onSlotChanged();
 	}
 
-	public int getBackgroundIconIndex() {
+	public int func_775_c() {
 		return -1;
 	}
 
 	public void onSlotChanged() {
 		this.inventory.onInventoryChanged();
+	}
+
+	public int getSlotStackLimit() {
+		return this.inventory.getInventoryStackLimit();
 	}
 }

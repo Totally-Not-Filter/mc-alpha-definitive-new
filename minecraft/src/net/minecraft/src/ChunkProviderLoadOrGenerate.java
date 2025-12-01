@@ -14,7 +14,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 
 	public ChunkProviderLoadOrGenerate(World var1, IChunkLoader var2, IChunkProvider var3) {
 		this.blankChunk = new Chunk(var1, new byte[-Short.MIN_VALUE], 0, 0);
-		this.blankChunk.isChunkRendered = true;
+		this.blankChunk.field_1524_q = true;
 		this.blankChunk.neverSave = true;
 		this.worldObj = var1;
 		this.chunkLoader = var2;
@@ -46,7 +46,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 					this.saveExtraChunkData(this.chunks[var5]);
 				}
 
-				Chunk var6 = this.getChunkAt(var1, var2);
+				Chunk var6 = this.func_542_c(var1, var2);
 				if(var6 == null) {
 					if(this.chunkProvider == null) {
 						var6 = this.blankChunk;
@@ -56,6 +56,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 				}
 
 				this.chunks[var5] = var6;
+				var6.func_4143_d();
 				if(this.chunks[var5] != null) {
 					this.chunks[var5].onChunkLoad();
 				}
@@ -84,7 +85,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 		}
 	}
 
-	private Chunk getChunkAt(int var1, int var2) {
+	private Chunk func_542_c(int var1, int var2) {
 		if(this.chunkLoader == null) {
 			return null;
 		} else {
@@ -186,15 +187,15 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 		return true;
 	}
 
-	public boolean unload100OldestChunks() {
+	public boolean func_532_a() {
 		if(this.chunkLoader != null) {
-			this.chunkLoader.chunkTick();
+			this.chunkLoader.func_814_a();
 		}
 
-		return this.chunkProvider.unload100OldestChunks();
+		return this.chunkProvider.func_532_a();
 	}
 
-	public boolean canSave() {
+	public boolean func_536_b() {
 		return true;
 	}
 }

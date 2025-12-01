@@ -5,13 +5,13 @@ import java.util.List;
 
 public class Session {
 	public static List registeredBlocksList = new ArrayList();
-	public String username;
-	public String sessionId;
-	public String mpPassParameter;
+	public String inventory;
+	public String field_6543_c;
+	public String field_6542_d;
 
 	public Session(String var1, String var2) {
-		this.username = var1;
-		this.sessionId = var2;
+		this.inventory = var1;
+		this.field_6543_c = var2;
 	}
 
 	static {
@@ -22,7 +22,7 @@ public class Session {
 		registeredBlocksList.add(Block.planks);
 		registeredBlocksList.add(Block.wood);
 		registeredBlocksList.add(Block.leaves);
-		registeredBlocksList.add(Block.torch);
+		registeredBlocksList.add(Block.torchWood);
 		registeredBlocksList.add(Block.stairSingle);
 		registeredBlocksList.add(Block.glass);
 		registeredBlocksList.add(Block.cobblestoneMossy);
@@ -40,7 +40,7 @@ public class Session {
 		registeredBlocksList.add(Block.oreGold);
 		registeredBlocksList.add(Block.blockSteel);
 		registeredBlocksList.add(Block.blockGold);
-		registeredBlocksList.add(Block.bookshelf);
+		registeredBlocksList.add(Block.bookShelf);
 		registeredBlocksList.add(Block.tnt);
 		registeredBlocksList.add(Block.obsidian);
 		System.out.println(registeredBlocksList.size());

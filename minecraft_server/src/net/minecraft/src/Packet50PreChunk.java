@@ -25,7 +25,7 @@ public class Packet50PreChunk extends Packet {
 		this.mode = var1.read() != 0;
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeInt(this.xPosition);
 		var1.writeInt(this.yPosition);
 		var1.write(this.mode ? 1 : 0);

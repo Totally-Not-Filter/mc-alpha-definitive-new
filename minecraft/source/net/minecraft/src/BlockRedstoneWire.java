@@ -31,7 +31,7 @@ public class BlockRedstoneWire extends Block {
 	}
 
 	public boolean canPlaceBlockAt(World var1, int var2, int var3, int var4) {
-		return var1.isBlockNormalCube(var2, var3 - 1, var4);
+		return var1.isBlockOpaqueCube(var2, var3 - 1, var4);
 	}
 
 	private void updateAndPropagateCurrentStrength(World var1, int var2, int var3, int var4) {
@@ -66,9 +66,9 @@ public class BlockRedstoneWire extends Block {
 				}
 
 				var6 = this.getMaxCurrentStrength(var1, var9, var3, var10, var6);
-				if(var1.isBlockNormalCube(var9, var3, var10) && !var1.isBlockNormalCube(var2, var3 + 1, var4)) {
+				if(var1.isBlockOpaqueCube(var9, var3, var10) && !var1.isBlockOpaqueCube(var2, var3 + 1, var4)) {
 					var6 = this.getMaxCurrentStrength(var1, var9, var3 + 1, var10, var6);
-				} else if(!var1.isBlockNormalCube(var9, var3, var10)) {
+				} else if(!var1.isBlockOpaqueCube(var9, var3, var10)) {
 					var6 = this.getMaxCurrentStrength(var1, var9, var3 - 1, var10, var6);
 				}
 			}
@@ -82,7 +82,7 @@ public class BlockRedstoneWire extends Block {
 
 		if(var5 != var6) {
 			var1.setBlockMetadataWithNotify(var2, var3, var4, var6);
-			var1.markBlocksDirty(var2, var3, var4, var2, var3, var4);
+			var1.func_701_b(var2, var3, var4, var2, var3, var4);
 			if(var6 > 0) {
 				--var6;
 			}
@@ -107,7 +107,7 @@ public class BlockRedstoneWire extends Block {
 					++var10;
 				}
 
-				if(var1.isBlockNormalCube(var9, var3, var10)) {
+				if(var1.isBlockOpaqueCube(var9, var3, var10)) {
 					var11 += 2;
 				}
 
@@ -149,72 +149,76 @@ public class BlockRedstoneWire extends Block {
 
 	public void onBlockAdded(World var1, int var2, int var3, int var4) {
 		super.onBlockAdded(var1, var2, var3, var4);
-		this.updateAndPropagateCurrentStrength(var1, var2, var3, var4);
-		var1.notifyBlocksOfNeighborChange(var2, var3 + 1, var4, this.blockID);
-		var1.notifyBlocksOfNeighborChange(var2, var3 - 1, var4, this.blockID);
-		this.notifyWireNeighborsOfNeighborChange(var1, var2 - 1, var3, var4);
-		this.notifyWireNeighborsOfNeighborChange(var1, var2 + 1, var3, var4);
-		this.notifyWireNeighborsOfNeighborChange(var1, var2, var3, var4 - 1);
-		this.notifyWireNeighborsOfNeighborChange(var1, var2, var3, var4 + 1);
-		if(var1.isBlockNormalCube(var2 - 1, var3, var4)) {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2 - 1, var3 + 1, var4);
-		} else {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2 - 1, var3 - 1, var4);
-		}
+		if(!var1.multiplayerWorld) {
+			this.updateAndPropagateCurrentStrength(var1, var2, var3, var4);
+			var1.notifyBlocksOfNeighborChange(var2, var3 + 1, var4, this.blockID);
+			var1.notifyBlocksOfNeighborChange(var2, var3 - 1, var4, this.blockID);
+			this.notifyWireNeighborsOfNeighborChange(var1, var2 - 1, var3, var4);
+			this.notifyWireNeighborsOfNeighborChange(var1, var2 + 1, var3, var4);
+			this.notifyWireNeighborsOfNeighborChange(var1, var2, var3, var4 - 1);
+			this.notifyWireNeighborsOfNeighborChange(var1, var2, var3, var4 + 1);
+			if(var1.isBlockOpaqueCube(var2 - 1, var3, var4)) {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2 - 1, var3 + 1, var4);
+			} else {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2 - 1, var3 - 1, var4);
+			}
 
-		if(var1.isBlockNormalCube(var2 + 1, var3, var4)) {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2 + 1, var3 + 1, var4);
-		} else {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2 + 1, var3 - 1, var4);
-		}
+			if(var1.isBlockOpaqueCube(var2 + 1, var3, var4)) {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2 + 1, var3 + 1, var4);
+			} else {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2 + 1, var3 - 1, var4);
+			}
 
-		if(var1.isBlockNormalCube(var2, var3, var4 - 1)) {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 + 1, var4 - 1);
-		} else {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 - 1, var4 - 1);
-		}
+			if(var1.isBlockOpaqueCube(var2, var3, var4 - 1)) {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 + 1, var4 - 1);
+			} else {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 - 1, var4 - 1);
+			}
 
-		if(var1.isBlockNormalCube(var2, var3, var4 + 1)) {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 + 1, var4 + 1);
-		} else {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 - 1, var4 + 1);
-		}
+			if(var1.isBlockOpaqueCube(var2, var3, var4 + 1)) {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 + 1, var4 + 1);
+			} else {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 - 1, var4 + 1);
+			}
 
+		}
 	}
 
 	public void onBlockRemoval(World var1, int var2, int var3, int var4) {
 		super.onBlockRemoval(var1, var2, var3, var4);
-		var1.notifyBlocksOfNeighborChange(var2, var3 + 1, var4, this.blockID);
-		var1.notifyBlocksOfNeighborChange(var2, var3 - 1, var4, this.blockID);
-		this.updateAndPropagateCurrentStrength(var1, var2, var3, var4);
-		this.notifyWireNeighborsOfNeighborChange(var1, var2 - 1, var3, var4);
-		this.notifyWireNeighborsOfNeighborChange(var1, var2 + 1, var3, var4);
-		this.notifyWireNeighborsOfNeighborChange(var1, var2, var3, var4 - 1);
-		this.notifyWireNeighborsOfNeighborChange(var1, var2, var3, var4 + 1);
-		if(var1.isBlockNormalCube(var2 - 1, var3, var4)) {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2 - 1, var3 + 1, var4);
-		} else {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2 - 1, var3 - 1, var4);
-		}
+		if(!var1.multiplayerWorld) {
+			var1.notifyBlocksOfNeighborChange(var2, var3 + 1, var4, this.blockID);
+			var1.notifyBlocksOfNeighborChange(var2, var3 - 1, var4, this.blockID);
+			this.updateAndPropagateCurrentStrength(var1, var2, var3, var4);
+			this.notifyWireNeighborsOfNeighborChange(var1, var2 - 1, var3, var4);
+			this.notifyWireNeighborsOfNeighborChange(var1, var2 + 1, var3, var4);
+			this.notifyWireNeighborsOfNeighborChange(var1, var2, var3, var4 - 1);
+			this.notifyWireNeighborsOfNeighborChange(var1, var2, var3, var4 + 1);
+			if(var1.isBlockOpaqueCube(var2 - 1, var3, var4)) {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2 - 1, var3 + 1, var4);
+			} else {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2 - 1, var3 - 1, var4);
+			}
 
-		if(var1.isBlockNormalCube(var2 + 1, var3, var4)) {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2 + 1, var3 + 1, var4);
-		} else {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2 + 1, var3 - 1, var4);
-		}
+			if(var1.isBlockOpaqueCube(var2 + 1, var3, var4)) {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2 + 1, var3 + 1, var4);
+			} else {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2 + 1, var3 - 1, var4);
+			}
 
-		if(var1.isBlockNormalCube(var2, var3, var4 - 1)) {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 + 1, var4 - 1);
-		} else {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 - 1, var4 - 1);
-		}
+			if(var1.isBlockOpaqueCube(var2, var3, var4 - 1)) {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 + 1, var4 - 1);
+			} else {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 - 1, var4 - 1);
+			}
 
-		if(var1.isBlockNormalCube(var2, var3, var4 + 1)) {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 + 1, var4 + 1);
-		} else {
-			this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 - 1, var4 + 1);
-		}
+			if(var1.isBlockOpaqueCube(var2, var3, var4 + 1)) {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 + 1, var4 + 1);
+			} else {
+				this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 - 1, var4 + 1);
+			}
 
+		}
 	}
 
 	private int getMaxCurrentStrength(World var1, int var2, int var3, int var4, int var5) {
@@ -227,16 +231,18 @@ public class BlockRedstoneWire extends Block {
 	}
 
 	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
-		int var6 = var1.getBlockMetadata(var2, var3, var4);
-		boolean var7 = this.canPlaceBlockAt(var1, var2, var3, var4);
-		if(!var7) {
-			this.dropBlockAsItem(var1, var2, var3, var4, var6);
-			var1.setBlockWithNotify(var2, var3, var4, 0);
-		} else {
-			this.updateAndPropagateCurrentStrength(var1, var2, var3, var4);
-		}
+		if(!var1.multiplayerWorld) {
+			int var6 = var1.getBlockMetadata(var2, var3, var4);
+			boolean var7 = this.canPlaceBlockAt(var1, var2, var3, var4);
+			if(!var7) {
+				this.dropBlockAsItem(var1, var2, var3, var4, var6);
+				var1.setBlockWithNotify(var2, var3, var4, 0);
+			} else {
+				this.updateAndPropagateCurrentStrength(var1, var2, var3, var4);
+			}
 
-		super.onNeighborBlockChange(var1, var2, var3, var4, var5);
+			super.onNeighborBlockChange(var1, var2, var3, var4, var5);
+		}
 	}
 
 	public int idDropped(int var1, Random var2) {
@@ -255,24 +261,24 @@ public class BlockRedstoneWire extends Block {
 		} else if(var5 == 1) {
 			return true;
 		} else {
-			boolean var6 = isPowerProviderOrWire(var1, var2 - 1, var3, var4) || !var1.isBlockNormalCube(var2 - 1, var3, var4) && isPowerProviderOrWire(var1, var2 - 1, var3 - 1, var4);
-			boolean var7 = isPowerProviderOrWire(var1, var2 + 1, var3, var4) || !var1.isBlockNormalCube(var2 + 1, var3, var4) && isPowerProviderOrWire(var1, var2 + 1, var3 - 1, var4);
-			boolean var8 = isPowerProviderOrWire(var1, var2, var3, var4 - 1) || !var1.isBlockNormalCube(var2, var3, var4 - 1) && isPowerProviderOrWire(var1, var2, var3 - 1, var4 - 1);
-			boolean var9 = isPowerProviderOrWire(var1, var2, var3, var4 + 1) || !var1.isBlockNormalCube(var2, var3, var4 + 1) && isPowerProviderOrWire(var1, var2, var3 - 1, var4 + 1);
-			if(!var1.isBlockNormalCube(var2, var3 + 1, var4)) {
-				if(var1.isBlockNormalCube(var2 - 1, var3, var4) && isPowerProviderOrWire(var1, var2 - 1, var3 + 1, var4)) {
+			boolean var6 = isPowerProviderOrWire(var1, var2 - 1, var3, var4) || !var1.isBlockOpaqueCube(var2 - 1, var3, var4) && isPowerProviderOrWire(var1, var2 - 1, var3 - 1, var4);
+			boolean var7 = isPowerProviderOrWire(var1, var2 + 1, var3, var4) || !var1.isBlockOpaqueCube(var2 + 1, var3, var4) && isPowerProviderOrWire(var1, var2 + 1, var3 - 1, var4);
+			boolean var8 = isPowerProviderOrWire(var1, var2, var3, var4 - 1) || !var1.isBlockOpaqueCube(var2, var3, var4 - 1) && isPowerProviderOrWire(var1, var2, var3 - 1, var4 - 1);
+			boolean var9 = isPowerProviderOrWire(var1, var2, var3, var4 + 1) || !var1.isBlockOpaqueCube(var2, var3, var4 + 1) && isPowerProviderOrWire(var1, var2, var3 - 1, var4 + 1);
+			if(!var1.isBlockOpaqueCube(var2, var3 + 1, var4)) {
+				if(var1.isBlockOpaqueCube(var2 - 1, var3, var4) && isPowerProviderOrWire(var1, var2 - 1, var3 + 1, var4)) {
 					var6 = true;
 				}
 
-				if(var1.isBlockNormalCube(var2 + 1, var3, var4) && isPowerProviderOrWire(var1, var2 + 1, var3 + 1, var4)) {
+				if(var1.isBlockOpaqueCube(var2 + 1, var3, var4) && isPowerProviderOrWire(var1, var2 + 1, var3 + 1, var4)) {
 					var7 = true;
 				}
 
-				if(var1.isBlockNormalCube(var2, var3, var4 - 1) && isPowerProviderOrWire(var1, var2, var3 + 1, var4 - 1)) {
+				if(var1.isBlockOpaqueCube(var2, var3, var4 - 1) && isPowerProviderOrWire(var1, var2, var3 + 1, var4 - 1)) {
 					var8 = true;
 				}
 
-				if(var1.isBlockNormalCube(var2, var3, var4 + 1) && isPowerProviderOrWire(var1, var2, var3 + 1, var4 + 1)) {
+				if(var1.isBlockOpaqueCube(var2, var3, var4 + 1) && isPowerProviderOrWire(var1, var2, var3 + 1, var4 + 1)) {
 					var9 = true;
 				}
 			}

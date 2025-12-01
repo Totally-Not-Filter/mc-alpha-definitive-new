@@ -15,7 +15,7 @@ public class Packet23VehicleSpawn extends Packet {
 	}
 
 	public Packet23VehicleSpawn(Entity var1, int var2) {
-		this.entityId = var1.entityID;
+		this.entityId = var1.field_331_c;
 		this.xPosition = MathHelper.floor_double(var1.posX * 32.0D);
 		this.yPosition = MathHelper.floor_double(var1.posY * 32.0D);
 		this.zPosition = MathHelper.floor_double(var1.posZ * 32.0D);
@@ -30,7 +30,7 @@ public class Packet23VehicleSpawn extends Packet {
 		this.zPosition = var1.readInt();
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeInt(this.entityId);
 		var1.writeByte(this.type);
 		var1.writeInt(this.xPosition);

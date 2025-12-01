@@ -9,12 +9,12 @@ import java.util.Map;
 public class ChunkProviderClient implements IChunkProvider {
 	private Chunk blankChunk;
 	private Map chunkMapping = new HashMap();
-	private List chunkListing = new ArrayList();
+	private List unusedChunkList = new ArrayList();
 	private World worldObj;
 
 	public ChunkProviderClient(World var1) {
 		this.blankChunk = new Chunk(var1, new byte[-Short.MIN_VALUE], 0, 0);
-		this.blankChunk.isChunkRendered = true;
+		this.blankChunk.field_1524_q = true;
 		this.blankChunk.neverSave = true;
 		this.worldObj = var1;
 	}
@@ -24,17 +24,17 @@ public class ChunkProviderClient implements IChunkProvider {
 		return this.chunkMapping.containsKey(var3);
 	}
 
-	public void unloadChunk(int var1, int var2) {
+	public void func_539_c(int var1, int var2) {
 		Chunk var3 = this.provideChunk(var1, var2);
-		if(!var3.isChunkRendered) {
+		if(!var3.field_1524_q) {
 			var3.onChunkUnload();
 		}
 
 		this.chunkMapping.remove(new ChunkCoordinates(var1, var2));
-		this.chunkListing.remove(var3);
+		this.unusedChunkList.remove(var3);
 	}
 
-	public Chunk loadChunk(int var1, int var2) {
+	public Chunk func_538_d(int var1, int var2) {
 		ChunkCoordinates var3 = new ChunkCoordinates(var1, var2);
 		byte[] var4 = new byte[-Short.MIN_VALUE];
 		Chunk var5 = new Chunk(this.worldObj, var4, var1, var2);
@@ -54,11 +54,11 @@ public class ChunkProviderClient implements IChunkProvider {
 		return true;
 	}
 
-	public boolean unload100OldestChunks() {
+	public boolean func_532_a() {
 		return false;
 	}
 
-	public boolean canSave() {
+	public boolean func_536_b() {
 		return false;
 	}
 

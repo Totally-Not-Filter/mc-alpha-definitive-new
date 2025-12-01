@@ -7,10 +7,10 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 class GuiLogFormatter extends Formatter {
-	final GuiLogOutputHandler handler;
+	final GuiLogOutputHandler outputHandler;
 
 	GuiLogFormatter(GuiLogOutputHandler var1) {
-		this.handler = var1;
+		this.outputHandler = var1;
 	}
 
 	public String format(LogRecord var1) {

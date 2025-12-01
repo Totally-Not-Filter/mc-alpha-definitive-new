@@ -13,12 +13,12 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public class CompressedStreamTools {
-	public static NBTTagCompound readCompressed(InputStream var0) throws IOException {
+	public static NBTTagCompound func_1138_a(InputStream var0) throws IOException {
 		DataInputStream var1 = new DataInputStream(new GZIPInputStream(var0));
 
 		NBTTagCompound var2;
 		try {
-			var2 = read(var1);
+			var2 = func_1141_a(var1);
 		} finally {
 			var1.close();
 		}
@@ -26,23 +26,23 @@ public class CompressedStreamTools {
 		return var2;
 	}
 
-	public static void writeCompressed(NBTTagCompound var0, OutputStream var1) throws IOException {
+	public static void writeGzippedCompoundToOutputStream(NBTTagCompound var0, OutputStream var1) throws IOException {
 		DataOutputStream var2 = new DataOutputStream(new GZIPOutputStream(var1));
 
 		try {
-			write(var0, var2);
+			func_1139_a(var0, var2);
 		} finally {
 			var2.close();
 		}
 
 	}
 
-	public static NBTTagCompound decompress(byte[] var0) throws IOException {
+	public static NBTTagCompound func_1140_a(byte[] var0) throws IOException {
 		DataInputStream var1 = new DataInputStream(new GZIPInputStream(new ByteArrayInputStream(var0)));
 
 		NBTTagCompound var2;
 		try {
-			var2 = read(var1);
+			var2 = func_1141_a(var1);
 		} finally {
 			var1.close();
 		}
@@ -50,12 +50,12 @@ public class CompressedStreamTools {
 		return var2;
 	}
 
-	public static byte[] compress(NBTTagCompound var0) throws IOException {
+	public static byte[] func_1142_a(NBTTagCompound var0) throws IOException {
 		ByteArrayOutputStream var1 = new ByteArrayOutputStream();
 		DataOutputStream var2 = new DataOutputStream(new GZIPOutputStream(var1));
 
 		try {
-			write(var0, var2);
+			func_1139_a(var0, var2);
 		} finally {
 			var2.close();
 		}
@@ -63,8 +63,8 @@ public class CompressedStreamTools {
 		return var1.toByteArray();
 	}
 
-	public static NBTTagCompound read(DataInput var0) throws IOException {
-		NBTBase var1 = NBTBase.readNamedTag(var0);
+	public static NBTTagCompound func_1141_a(DataInput var0) throws IOException {
+		NBTBase var1 = NBTBase.readTag(var0);
 		if(var1 instanceof NBTTagCompound) {
 			return (NBTTagCompound)var1;
 		} else {
@@ -72,7 +72,7 @@ public class CompressedStreamTools {
 		}
 	}
 
-	public static void write(NBTTagCompound var0, DataOutput var1) throws IOException {
-		NBTBase.writeNamedTag(var0, var1);
+	public static void func_1139_a(NBTTagCompound var0, DataOutput var1) throws IOException {
+		NBTBase.writeTag(var0, var1);
 	}
 }

@@ -16,7 +16,7 @@ public class ConsoleLogManager {
 		logger.addHandler(var1);
 
 		try {
-			FileHandler var2 = new FileHandler("server.log");
+			FileHandler var2 = new FileHandler("server.log", true);
 			var2.setFormatter(var0);
 			logger.addHandler(var2);
 		} catch (Exception var3) {

@@ -7,7 +7,7 @@ public class GuiConnecting extends GuiScreen {
 	private boolean cancelled = false;
 
 	public GuiConnecting(Minecraft var1, String var2, int var3) {
-		var1.changeWorld1((World)null);
+		var1.func_6261_a((World)null);
 		(new ThreadConnectToServer(this, var1, var2, var3)).start();
 	}
 
@@ -45,7 +45,7 @@ public class GuiConnecting extends GuiScreen {
 			this.drawCenteredString(this.fontRenderer, "", this.width / 2, this.height / 2 - 10, 16777215);
 		} else {
 			this.drawCenteredString(this.fontRenderer, "Logging in...", this.width / 2, this.height / 2 - 50, 16777215);
-			this.drawCenteredString(this.fontRenderer, this.clientHandler.loginProgress, this.width / 2, this.height / 2 - 10, 16777215);
+			this.drawCenteredString(this.fontRenderer, this.clientHandler.field_1209_a, this.width / 2, this.height / 2 - 10, 16777215);
 		}
 
 		super.drawScreen(var1, var2, var3);

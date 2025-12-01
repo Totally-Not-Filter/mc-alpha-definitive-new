@@ -14,8 +14,8 @@ public class Packet51MapChunk extends Packet {
 	public int xSize;
 	public int ySize;
 	public int zSize;
-	public byte[] chunkData;
-	private int tempLength;
+	public byte[] chunk;
+	private int chunkSize;
 
 	public Packet51MapChunk() {
 		this.isChunkDataPacket = true;
@@ -29,14 +29,14 @@ public class Packet51MapChunk extends Packet {
 		this.xSize = var4;
 		this.ySize = var5;
 		this.zSize = var6;
-		byte[] var8 = var7.getChunkData(var1, var2, var3, var4, var5, var6);
+		byte[] var8 = var7.func_504_c(var1, var2, var3, var4, var5, var6);
 		Deflater var9 = new Deflater(1);
 
 		try {
 			var9.setInput(var8);
 			var9.finish();
-			this.chunkData = new byte[var4 * var5 * var6 * 5 / 2];
-			this.tempLength = var9.deflate(this.chunkData);
+			this.chunk = new byte[var4 * var5 * var6 * 5 / 2];
+			this.chunkSize = var9.deflate(this.chunk);
 		} finally {
 			var9.end();
 		}
@@ -53,12 +53,12 @@ public class Packet51MapChunk extends Packet {
 		int var2 = var1.readInt();
 		byte[] var3 = new byte[var2];
 		var1.readFully(var3);
-		this.chunkData = new byte[this.xSize * this.ySize * this.zSize * 5 / 2];
+		this.chunk = new byte[this.xSize * this.ySize * this.zSize * 5 / 2];
 		Inflater var4 = new Inflater();
 		var4.setInput(var3);
 
 		try {
-			var4.inflate(this.chunkData);
+			var4.inflate(this.chunk);
 		} catch (DataFormatException var9) {
 			throw new IOException("Bad compressed data format");
 		} finally {
@@ -67,15 +67,15 @@ public class Packet51MapChunk extends Packet {
 
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeInt(this.xPosition);
 		var1.writeShort(this.yPosition);
 		var1.writeInt(this.zPosition);
 		var1.write(this.xSize - 1);
 		var1.write(this.ySize - 1);
 		var1.write(this.zSize - 1);
-		var1.writeInt(this.tempLength);
-		var1.write(this.chunkData, 0, this.tempLength);
+		var1.writeInt(this.chunkSize);
+		var1.write(this.chunk, 0, this.chunkSize);
 	}
 
 	public void processPacket(NetHandler var1) {
@@ -83,6 +83,6 @@ public class Packet51MapChunk extends Packet {
 	}
 
 	public int getPacketSize() {
-		return 17 + this.tempLength;
+		return 17 + this.chunkSize;
 	}
 }

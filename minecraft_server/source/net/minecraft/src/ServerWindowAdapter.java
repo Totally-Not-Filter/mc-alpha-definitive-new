@@ -12,9 +12,9 @@ final class ServerWindowAdapter extends WindowAdapter {
 	}
 
 	public void windowClosing(WindowEvent var1) {
-		this.mcServer.stopRunning();
+		this.mcServer.func_6016_a();
 
-		while(!this.mcServer.serverStopped) {
+		while(!this.mcServer.field_6032_g) {
 			try {
 				Thread.sleep(100L);
 			} catch (InterruptedException var3) {

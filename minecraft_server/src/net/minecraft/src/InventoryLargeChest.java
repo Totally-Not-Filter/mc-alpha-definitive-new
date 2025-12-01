@@ -11,11 +11,11 @@ public class InventoryLargeChest implements IInventory {
 		this.lowerChest = var3;
 	}
 
-	public int getSizeInventory() {
-		return this.upperChest.getSizeInventory() + this.lowerChest.getSizeInventory();
+	public int func_83_a() {
+		return this.upperChest.func_83_a() + this.lowerChest.func_83_a();
 	}
 
 	public ItemStack getStackInSlot(int var1) {
-		return var1 >= this.upperChest.getSizeInventory() ? this.lowerChest.getStackInSlot(var1 - this.upperChest.getSizeInventory()) : this.upperChest.getStackInSlot(var1);
+		return var1 >= this.upperChest.func_83_a() ? this.lowerChest.getStackInSlot(var1 - this.upperChest.func_83_a()) : this.upperChest.getStackInSlot(var1);
 	}
 }

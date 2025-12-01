@@ -3,11 +3,11 @@ package net.minecraft.src;
 import java.util.Random;
 
 public class BlockStep extends Block {
-	private boolean blockType;
+	private boolean field_666_a;
 
 	public BlockStep(int var1, boolean var2) {
 		super(var1, 6, Material.rock);
-		this.blockType = var2;
+		this.field_666_a = var2;
 		if(!var2) {
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
 		}
@@ -19,8 +19,8 @@ public class BlockStep extends Block {
 		return var1 <= 1 ? 6 : 5;
 	}
 
-	public boolean isOpaqueCube() {
-		return this.blockType;
+	public boolean allowsAttachment() {
+		return this.field_666_a;
 	}
 
 	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
@@ -45,11 +45,11 @@ public class BlockStep extends Block {
 		return Block.stairSingle.blockID;
 	}
 
-	public boolean shouldSideBeRendered(IBlockAccess var1, int var2, int var3, int var4, int var5) {
+	public boolean isSideInsideCoordinate(IBlockAccess var1, int var2, int var3, int var4, int var5) {
 		if(this != Block.stairSingle) {
-			super.shouldSideBeRendered(var1, var2, var3, var4, var5);
+			super.isSideInsideCoordinate(var1, var2, var3, var4, var5);
 		}
 
-		return var5 == 1 ? true : (!super.shouldSideBeRendered(var1, var2, var3, var4, var5) ? false : (var5 == 0 ? true : var1.getBlockId(var2, var3, var4) != this.blockID));
+		return var5 == 1 ? true : (!super.isSideInsideCoordinate(var1, var2, var3, var4, var5) ? false : (var5 == 0 ? true : var1.getBlockId(var2, var3, var4) != this.blockID));
 	}
 }

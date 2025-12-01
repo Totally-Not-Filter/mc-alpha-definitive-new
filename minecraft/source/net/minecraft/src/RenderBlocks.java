@@ -240,7 +240,7 @@ public class RenderBlocks {
 		double var29;
 		double var31;
 		double var33;
-		if(!this.blockAccess.isBlockNormalCube(var2, var3 - 1, var4) && !Block.fire.canBlockCatchFire(this.blockAccess, var2, var3 - 1, var4)) {
+		if(!this.blockAccess.isBlockOpaqueCube(var2, var3 - 1, var4) && !Block.fire.canBlockCatchFire(this.blockAccess, var2, var3 - 1, var4)) {
 			float var37 = 0.2F;
 			float var20 = 1.0F / 16.0F;
 			if((var2 + var3 + var4 & 1) == 1) {
@@ -422,24 +422,24 @@ public class RenderBlocks {
 		double var16 = (double)(((float)var9 + 15.99F) / 256.0F);
 		float var18 = 0.0F;
 		float var19 = 0.03125F;
-		boolean var20 = BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2 - 1, var3, var4) || !this.blockAccess.isBlockNormalCube(var2 - 1, var3, var4) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2 - 1, var3 - 1, var4);
-		boolean var21 = BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2 + 1, var3, var4) || !this.blockAccess.isBlockNormalCube(var2 + 1, var3, var4) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2 + 1, var3 - 1, var4);
-		boolean var22 = BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2, var3, var4 - 1) || !this.blockAccess.isBlockNormalCube(var2, var3, var4 - 1) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2, var3 - 1, var4 - 1);
-		boolean var23 = BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2, var3, var4 + 1) || !this.blockAccess.isBlockNormalCube(var2, var3, var4 + 1) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2, var3 - 1, var4 + 1);
-		if(!this.blockAccess.isBlockNormalCube(var2, var3 + 1, var4)) {
-			if(this.blockAccess.isBlockNormalCube(var2 - 1, var3, var4) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2 - 1, var3 + 1, var4)) {
+		boolean var20 = BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2 - 1, var3, var4) || !this.blockAccess.isBlockOpaqueCube(var2 - 1, var3, var4) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2 - 1, var3 - 1, var4);
+		boolean var21 = BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2 + 1, var3, var4) || !this.blockAccess.isBlockOpaqueCube(var2 + 1, var3, var4) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2 + 1, var3 - 1, var4);
+		boolean var22 = BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2, var3, var4 - 1) || !this.blockAccess.isBlockOpaqueCube(var2, var3, var4 - 1) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2, var3 - 1, var4 - 1);
+		boolean var23 = BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2, var3, var4 + 1) || !this.blockAccess.isBlockOpaqueCube(var2, var3, var4 + 1) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2, var3 - 1, var4 + 1);
+		if(!this.blockAccess.isBlockOpaqueCube(var2, var3 + 1, var4)) {
+			if(this.blockAccess.isBlockOpaqueCube(var2 - 1, var3, var4) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2 - 1, var3 + 1, var4)) {
 				var20 = true;
 			}
 
-			if(this.blockAccess.isBlockNormalCube(var2 + 1, var3, var4) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2 + 1, var3 + 1, var4)) {
+			if(this.blockAccess.isBlockOpaqueCube(var2 + 1, var3, var4) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2 + 1, var3 + 1, var4)) {
 				var21 = true;
 			}
 
-			if(this.blockAccess.isBlockNormalCube(var2, var3, var4 - 1) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2, var3 + 1, var4 - 1)) {
+			if(this.blockAccess.isBlockOpaqueCube(var2, var3, var4 - 1) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2, var3 + 1, var4 - 1)) {
 				var22 = true;
 			}
 
-			if(this.blockAccess.isBlockNormalCube(var2, var3, var4 + 1) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2, var3 + 1, var4 + 1)) {
+			if(this.blockAccess.isBlockOpaqueCube(var2, var3, var4 + 1) && BlockRedstoneWire.isPowerProviderOrWire(this.blockAccess, var2, var3 + 1, var4 + 1)) {
 				var23 = true;
 			}
 		}
@@ -524,29 +524,29 @@ public class RenderBlocks {
 		var12 = (double)(((float)(var8 + 16) + 15.99F) / 256.0F);
 		var14 = (double)((float)var9 / 256.0F);
 		var16 = (double)(((float)var9 + 15.99F) / 256.0F);
-		if(!this.blockAccess.isBlockNormalCube(var2, var3 + 1, var4)) {
-			if(this.blockAccess.isBlockNormalCube(var2 - 1, var3, var4) && this.blockAccess.getBlockId(var2 - 1, var3 + 1, var4) == Block.redstoneWire.blockID) {
+		if(!this.blockAccess.isBlockOpaqueCube(var2, var3 + 1, var4)) {
+			if(this.blockAccess.isBlockOpaqueCube(var2 - 1, var3, var4) && this.blockAccess.getBlockId(var2 - 1, var3 + 1, var4) == Block.redstoneWire.blockID) {
 				var5.addVertexWithUV((double)((float)var2 + var19), (double)((float)(var3 + 1) + var18), (double)((float)(var4 + 1) + var18), var12, var14);
 				var5.addVertexWithUV((double)((float)var2 + var19), (double)((float)(var3 + 0) - var18), (double)((float)(var4 + 1) + var18), var10, var14);
 				var5.addVertexWithUV((double)((float)var2 + var19), (double)((float)(var3 + 0) - var18), (double)((float)(var4 + 0) - var18), var10, var16);
 				var5.addVertexWithUV((double)((float)var2 + var19), (double)((float)(var3 + 1) + var18), (double)((float)(var4 + 0) - var18), var12, var16);
 			}
 
-			if(this.blockAccess.isBlockNormalCube(var2 + 1, var3, var4) && this.blockAccess.getBlockId(var2 + 1, var3 + 1, var4) == Block.redstoneWire.blockID) {
+			if(this.blockAccess.isBlockOpaqueCube(var2 + 1, var3, var4) && this.blockAccess.getBlockId(var2 + 1, var3 + 1, var4) == Block.redstoneWire.blockID) {
 				var5.addVertexWithUV((double)((float)(var2 + 1) - var19), (double)((float)(var3 + 0) - var18), (double)((float)(var4 + 1) + var18), var10, var16);
 				var5.addVertexWithUV((double)((float)(var2 + 1) - var19), (double)((float)(var3 + 1) + var18), (double)((float)(var4 + 1) + var18), var12, var16);
 				var5.addVertexWithUV((double)((float)(var2 + 1) - var19), (double)((float)(var3 + 1) + var18), (double)((float)(var4 + 0) - var18), var12, var14);
 				var5.addVertexWithUV((double)((float)(var2 + 1) - var19), (double)((float)(var3 + 0) - var18), (double)((float)(var4 + 0) - var18), var10, var14);
 			}
 
-			if(this.blockAccess.isBlockNormalCube(var2, var3, var4 - 1) && this.blockAccess.getBlockId(var2, var3 + 1, var4 - 1) == Block.redstoneWire.blockID) {
+			if(this.blockAccess.isBlockOpaqueCube(var2, var3, var4 - 1) && this.blockAccess.getBlockId(var2, var3 + 1, var4 - 1) == Block.redstoneWire.blockID) {
 				var5.addVertexWithUV((double)((float)(var2 + 1) + var18), (double)((float)(var3 + 0) - var18), (double)((float)var4 + var19), var10, var16);
 				var5.addVertexWithUV((double)((float)(var2 + 1) + var18), (double)((float)(var3 + 1) + var18), (double)((float)var4 + var19), var12, var16);
 				var5.addVertexWithUV((double)((float)(var2 + 0) - var18), (double)((float)(var3 + 1) + var18), (double)((float)var4 + var19), var12, var14);
 				var5.addVertexWithUV((double)((float)(var2 + 0) - var18), (double)((float)(var3 + 0) - var18), (double)((float)var4 + var19), var10, var14);
 			}
 
-			if(this.blockAccess.isBlockNormalCube(var2, var3, var4 + 1) && this.blockAccess.getBlockId(var2, var3 + 1, var4 + 1) == Block.redstoneWire.blockID) {
+			if(this.blockAccess.isBlockOpaqueCube(var2, var3, var4 + 1) && this.blockAccess.getBlockId(var2, var3 + 1, var4 + 1) == Block.redstoneWire.blockID) {
 				var5.addVertexWithUV((double)((float)(var2 + 1) + var18), (double)((float)(var3 + 1) + var18), (double)((float)(var4 + 1) - var19), var12, var14);
 				var5.addVertexWithUV((double)((float)(var2 + 1) + var18), (double)((float)(var3 + 0) - var18), (double)((float)(var4 + 1) - var19), var10, var14);
 				var5.addVertexWithUV((double)((float)(var2 + 0) - var18), (double)((float)(var3 + 0) - var18), (double)((float)(var4 + 1) - var19), var10, var16);
@@ -691,7 +691,7 @@ public class RenderBlocks {
 		Tessellator var5 = Tessellator.instance;
 		float var6 = var1.getBlockBrightness(this.blockAccess, var2, var3, var4);
 		var5.setColorOpaque_F(var6, var6, var6);
-		this.renderCrossedSquares(var1, this.blockAccess.getBlockMetadata(var2, var3, var4), (double)var2, (double)var3, (double)var4);
+		this.func_1239_a(var1, this.blockAccess.getBlockMetadata(var2, var3, var4), (double)var2, (double)var3, (double)var4);
 		return true;
 	}
 
@@ -699,7 +699,7 @@ public class RenderBlocks {
 		Tessellator var5 = Tessellator.instance;
 		float var6 = var1.getBlockBrightness(this.blockAccess, var2, var3, var4);
 		var5.setColorOpaque_F(var6, var6, var6);
-		this.renderBlockCropsImpl(var1, this.blockAccess.getBlockMetadata(var2, var3, var4), (double)var2, (double)((float)var3 - 1.0F / 16.0F), (double)var4);
+		this.func_1245_b(var1, this.blockAccess.getBlockMetadata(var2, var3, var4), (double)var2, (double)((float)var3 - 1.0F / 16.0F), (double)var4);
 		return true;
 	}
 
@@ -750,7 +750,7 @@ public class RenderBlocks {
 		var12.addVertexWithUV(var28, var4 + 1.0D, var6 - var36, (double)var17, (double)var18);
 	}
 
-	public void renderCrossedSquares(Block var1, int var2, double var3, double var5, double var7) {
+	public void func_1239_a(Block var1, int var2, double var3, double var5, double var7) {
 		Tessellator var9 = Tessellator.instance;
 		int var10 = var1.getBlockTextureFromSideAndMetadata(0, var2);
 		if(this.overrideBlockTexture >= 0) {
@@ -785,7 +785,7 @@ public class RenderBlocks {
 		var9.addVertexWithUV(var21, var5 + 1.0D, var27, var15, var17);
 	}
 
-	public void renderBlockCropsImpl(Block var1, int var2, double var3, double var5, double var7) {
+	public void func_1245_b(Block var1, int var2, double var3, double var5, double var7) {
 		Tessellator var9 = Tessellator.instance;
 		int var10 = var1.getBlockTextureFromSideAndMetadata(0, var2);
 		if(this.overrideBlockTexture >= 0) {
@@ -855,12 +855,12 @@ public class RenderBlocks {
 			float var13 = 0.6F;
 			double var14 = 0.0D;
 			double var16 = 1.0D;
-			Material var18 = var1.material;
+			Material var18 = var1.blockMaterial;
 			int var19 = this.blockAccess.getBlockMetadata(var2, var3, var4);
-			float var20 = this.getFluidHeight(var2, var3, var4, var18);
-			float var21 = this.getFluidHeight(var2, var3, var4 + 1, var18);
-			float var22 = this.getFluidHeight(var2 + 1, var3, var4 + 1, var18);
-			float var23 = this.getFluidHeight(var2 + 1, var3, var4, var18);
+			float var20 = this.func_1224_a(var2, var3, var4, var18);
+			float var21 = this.func_1224_a(var2, var3, var4 + 1, var18);
+			float var22 = this.func_1224_a(var2 + 1, var3, var4 + 1, var18);
+			float var23 = this.func_1224_a(var2 + 1, var3, var4, var18);
 			int var24;
 			int var27;
 			float var32;
@@ -869,7 +869,7 @@ public class RenderBlocks {
 			if(this.renderAllFaces || var6) {
 				var9 = true;
 				var24 = var1.getBlockTextureFromSideAndMetadata(1, var19);
-				float var25 = (float)BlockFluid.getFlowDirection(this.blockAccess, var2, var3, var4, var18);
+				float var25 = (float)BlockFluids.func_293_a(this.blockAccess, var2, var3, var4, var18);
 				if(var25 > -999.0F) {
 					var24 = var1.getBlockTextureFromSideAndMetadata(2, var19);
 				}
@@ -985,7 +985,7 @@ public class RenderBlocks {
 		}
 	}
 
-	private float getFluidHeight(int var1, int var2, int var3, Material var4) {
+	private float func_1224_a(int var1, int var2, int var3, Material var4) {
 		int var5 = 0;
 		float var6 = 0.0F;
 
@@ -998,18 +998,18 @@ public class RenderBlocks {
 
 			Material var11 = this.blockAccess.getBlockMaterial(var8, var2, var10);
 			if(var11 != var4) {
-				if(!var11.isSolid()) {
+				if(!var11.func_878_a()) {
 					++var6;
 					++var5;
 				}
 			} else {
 				int var12 = this.blockAccess.getBlockMetadata(var8, var2, var10);
 				if(var12 >= 8 || var12 == 0) {
-					var6 += BlockFluid.getFluidHeightPercent(var12) * 10.0F;
+					var6 += BlockFluids.func_288_b(var12) * 10.0F;
 					var5 += 10;
 				}
 
-				var6 += BlockFluid.getFluidHeightPercent(var12);
+				var6 += BlockFluids.func_288_b(var12);
 				++var5;
 			}
 		}
@@ -1017,7 +1017,7 @@ public class RenderBlocks {
 		return 1.0F - var6 / (float)var5;
 	}
 
-	public void renderBlockFallingSand(Block var1, World var2, int var3, int var4, int var5) {
+	public void func_1243_a(Block var1, World var2, int var3, int var4, int var5) {
 		float var6 = 0.5F;
 		float var7 = 1.0F;
 		float var8 = 0.8F;
@@ -1085,34 +1085,40 @@ public class RenderBlocks {
 		float var11 = 1.0F;
 		float var12 = 0.8F;
 		float var13 = 0.6F;
-		float var14 = var10 * var5;
-		float var15 = var11 * var5;
-		float var16 = var12 * var5;
-		float var17 = var13 * var5;
-		float var18 = var10 * var6;
-		float var19 = var11 * var6;
-		float var20 = var12 * var6;
-		float var21 = var13 * var6;
-		float var22 = var10 * var7;
-		float var23 = var11 * var7;
+		float var14 = var11 * var5;
+		float var15 = var11 * var6;
+		float var16 = var11 * var7;
+		if(var1 == Block.grass) {
+			var7 = 1.0F;
+			var6 = var7;
+			var5 = var7;
+		}
+
+		float var17 = var10 * var5;
+		float var18 = var12 * var5;
+		float var19 = var13 * var5;
+		float var20 = var10 * var6;
+		float var21 = var12 * var6;
+		float var22 = var13 * var6;
+		float var23 = var10 * var7;
 		float var24 = var12 * var7;
 		float var25 = var13 * var7;
 		float var26 = var1.getBlockBrightness(this.blockAccess, var2, var3, var4);
 		float var27;
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3 - 1, var4, 0)) {
 			var27 = var1.getBlockBrightness(this.blockAccess, var2, var3 - 1, var4);
-			var8.setColorOpaque_F(var14 * var27, var18 * var27, var22 * var27);
+			var8.setColorOpaque_F(var17 * var27, var20 * var27, var23 * var27);
 			this.renderBottomFace(var1, (double)var2, (double)var3, (double)var4, var1.getBlockTexture(this.blockAccess, var2, var3, var4, 0));
 			var9 = true;
 		}
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3 + 1, var4, 1)) {
 			var27 = var1.getBlockBrightness(this.blockAccess, var2, var3 + 1, var4);
-			if(var1.maxY != 1.0D && !var1.material.getIsLiquid()) {
+			if(var1.maxY != 1.0D && !var1.blockMaterial.getIsLiquid()) {
 				var27 = var26;
 			}
 
-			var8.setColorOpaque_F(var15 * var27, var19 * var27, var23 * var27);
+			var8.setColorOpaque_F(var14 * var27, var15 * var27, var16 * var27);
 			this.renderTopFace(var1, (double)var2, (double)var3, (double)var4, var1.getBlockTexture(this.blockAccess, var2, var3, var4, 1));
 			var9 = true;
 		}
@@ -1123,7 +1129,7 @@ public class RenderBlocks {
 				var27 = var26;
 			}
 
-			var8.setColorOpaque_F(var16 * var27, var20 * var27, var24 * var27);
+			var8.setColorOpaque_F(var18 * var27, var21 * var27, var24 * var27);
 			this.renderEastFace(var1, (double)var2, (double)var3, (double)var4, var1.getBlockTexture(this.blockAccess, var2, var3, var4, 2));
 			var9 = true;
 		}
@@ -1134,18 +1140,18 @@ public class RenderBlocks {
 				var27 = var26;
 			}
 
-			var8.setColorOpaque_F(var16 * var27, var20 * var27, var24 * var27);
+			var8.setColorOpaque_F(var18 * var27, var21 * var27, var24 * var27);
 			this.renderWestFace(var1, (double)var2, (double)var3, (double)var4, var1.getBlockTexture(this.blockAccess, var2, var3, var4, 3));
 			var9 = true;
 		}
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2 - 1, var3, var4, 4)) {
 			var27 = var1.getBlockBrightness(this.blockAccess, var2 - 1, var3, var4);
-			if(var1.minX > 0.0D) {
+			if(var1.field_370_bf > 0.0D) {
 				var27 = var26;
 			}
 
-			var8.setColorOpaque_F(var17 * var27, var21 * var27, var25 * var27);
+			var8.setColorOpaque_F(var19 * var27, var22 * var27, var25 * var27);
 			this.renderNorthFace(var1, (double)var2, (double)var3, (double)var4, var1.getBlockTexture(this.blockAccess, var2, var3, var4, 4));
 			var9 = true;
 		}
@@ -1156,7 +1162,7 @@ public class RenderBlocks {
 				var27 = var26;
 			}
 
-			var8.setColorOpaque_F(var17 * var27, var21 * var27, var25 * var27);
+			var8.setColorOpaque_F(var19 * var27, var22 * var27, var25 * var27);
 			this.renderSouthFace(var1, (double)var2, (double)var3, (double)var4, var1.getBlockTexture(this.blockAccess, var2, var3, var4, 5));
 			var9 = true;
 		}
@@ -1169,10 +1175,10 @@ public class RenderBlocks {
 		float var6 = (float)(var5 >> 16 & 255) / 255.0F;
 		float var7 = (float)(var5 >> 8 & 255) / 255.0F;
 		float var8 = (float)(var5 & 255) / 255.0F;
-		return this.renderBlockCactusImpl(var1, var2, var3, var4, var6, var7, var8);
+		return this.func_1230_b(var1, var2, var3, var4, var6, var7, var8);
 	}
 
-	public boolean renderBlockCactusImpl(Block var1, int var2, int var3, int var4, float var5, float var6, float var7) {
+	public boolean func_1230_b(Block var1, int var2, int var3, int var4, float var5, float var6, float var7) {
 		Tessellator var8 = Tessellator.instance;
 		boolean var9 = false;
 		float var10 = 0.5F;
@@ -1203,7 +1209,7 @@ public class RenderBlocks {
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3 + 1, var4, 1)) {
 			var28 = var1.getBlockBrightness(this.blockAccess, var2, var3 + 1, var4);
-			if(var1.maxY != 1.0D && !var1.material.getIsLiquid()) {
+			if(var1.maxY != 1.0D && !var1.blockMaterial.getIsLiquid()) {
 				var28 = var27;
 			}
 
@@ -1240,7 +1246,7 @@ public class RenderBlocks {
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2 - 1, var3, var4, 4)) {
 			var28 = var1.getBlockBrightness(this.blockAccess, var2 - 1, var3, var4);
-			if(var1.minX > 0.0D) {
+			if(var1.field_370_bf > 0.0D) {
 				var28 = var27;
 			}
 
@@ -1426,7 +1432,7 @@ public class RenderBlocks {
 		var7 = true;
 		this.flipTexture = false;
 		var13 = var1.getBlockBrightness(this.blockAccess, var2 - 1, var3, var4);
-		if(var6.minX > 0.0D) {
+		if(var6.field_370_bf > 0.0D) {
 			var13 = var12;
 		}
 
@@ -1474,11 +1480,11 @@ public class RenderBlocks {
 
 		int var10 = (var8 & 15) << 4;
 		int var11 = var8 & 240;
-		double var12 = ((double)var10 + var1.minX * 16.0D) / 256.0D;
+		double var12 = ((double)var10 + var1.field_370_bf * 16.0D) / 256.0D;
 		double var14 = ((double)var10 + var1.maxX * 16.0D - 0.01D) / 256.0D;
 		double var16 = ((double)var11 + var1.minZ * 16.0D) / 256.0D;
 		double var18 = ((double)var11 + var1.maxZ * 16.0D - 0.01D) / 256.0D;
-		if(var1.minX < 0.0D || var1.maxX > 1.0D) {
+		if(var1.field_370_bf < 0.0D || var1.maxX > 1.0D) {
 			var12 = (double)(((float)var10 + 0.0F) / 256.0F);
 			var14 = (double)(((float)var10 + 15.99F) / 256.0F);
 		}
@@ -1488,7 +1494,7 @@ public class RenderBlocks {
 			var18 = (double)(((float)var11 + 15.99F) / 256.0F);
 		}
 
-		double var20 = var2 + var1.minX;
+		double var20 = var2 + var1.field_370_bf;
 		double var22 = var2 + var1.maxX;
 		double var24 = var4 + var1.minY;
 		double var26 = var6 + var1.minZ;
@@ -1507,11 +1513,11 @@ public class RenderBlocks {
 
 		int var10 = (var8 & 15) << 4;
 		int var11 = var8 & 240;
-		double var12 = ((double)var10 + var1.minX * 16.0D) / 256.0D;
+		double var12 = ((double)var10 + var1.field_370_bf * 16.0D) / 256.0D;
 		double var14 = ((double)var10 + var1.maxX * 16.0D - 0.01D) / 256.0D;
 		double var16 = ((double)var11 + var1.minZ * 16.0D) / 256.0D;
 		double var18 = ((double)var11 + var1.maxZ * 16.0D - 0.01D) / 256.0D;
-		if(var1.minX < 0.0D || var1.maxX > 1.0D) {
+		if(var1.field_370_bf < 0.0D || var1.maxX > 1.0D) {
 			var12 = (double)(((float)var10 + 0.0F) / 256.0F);
 			var14 = (double)(((float)var10 + 15.99F) / 256.0F);
 		}
@@ -1521,7 +1527,7 @@ public class RenderBlocks {
 			var18 = (double)(((float)var11 + 15.99F) / 256.0F);
 		}
 
-		double var20 = var2 + var1.minX;
+		double var20 = var2 + var1.field_370_bf;
 		double var22 = var2 + var1.maxX;
 		double var24 = var4 + var1.maxY;
 		double var26 = var6 + var1.minZ;
@@ -1540,7 +1546,7 @@ public class RenderBlocks {
 
 		int var10 = (var8 & 15) << 4;
 		int var11 = var8 & 240;
-		double var12 = ((double)var10 + var1.minX * 16.0D) / 256.0D;
+		double var12 = ((double)var10 + var1.field_370_bf * 16.0D) / 256.0D;
 		double var14 = ((double)var10 + var1.maxX * 16.0D - 0.01D) / 256.0D;
 		double var16 = ((double)var11 + var1.minY * 16.0D) / 256.0D;
 		double var18 = ((double)var11 + var1.maxY * 16.0D - 0.01D) / 256.0D;
@@ -1551,7 +1557,7 @@ public class RenderBlocks {
 			var14 = var20;
 		}
 
-		if(var1.minX < 0.0D || var1.maxX > 1.0D) {
+		if(var1.field_370_bf < 0.0D || var1.maxX > 1.0D) {
 			var12 = (double)(((float)var10 + 0.0F) / 256.0F);
 			var14 = (double)(((float)var10 + 15.99F) / 256.0F);
 		}
@@ -1561,7 +1567,7 @@ public class RenderBlocks {
 			var18 = (double)(((float)var11 + 15.99F) / 256.0F);
 		}
 
-		var20 = var2 + var1.minX;
+		var20 = var2 + var1.field_370_bf;
 		double var22 = var2 + var1.maxX;
 		double var24 = var4 + var1.minY;
 		double var26 = var4 + var1.maxY;
@@ -1580,7 +1586,7 @@ public class RenderBlocks {
 
 		int var10 = (var8 & 15) << 4;
 		int var11 = var8 & 240;
-		double var12 = ((double)var10 + var1.minX * 16.0D) / 256.0D;
+		double var12 = ((double)var10 + var1.field_370_bf * 16.0D) / 256.0D;
 		double var14 = ((double)var10 + var1.maxX * 16.0D - 0.01D) / 256.0D;
 		double var16 = ((double)var11 + var1.minY * 16.0D) / 256.0D;
 		double var18 = ((double)var11 + var1.maxY * 16.0D - 0.01D) / 256.0D;
@@ -1591,7 +1597,7 @@ public class RenderBlocks {
 			var14 = var20;
 		}
 
-		if(var1.minX < 0.0D || var1.maxX > 1.0D) {
+		if(var1.field_370_bf < 0.0D || var1.maxX > 1.0D) {
 			var12 = (double)(((float)var10 + 0.0F) / 256.0F);
 			var14 = (double)(((float)var10 + 15.99F) / 256.0F);
 		}
@@ -1601,7 +1607,7 @@ public class RenderBlocks {
 			var18 = (double)(((float)var11 + 15.99F) / 256.0F);
 		}
 
-		var20 = var2 + var1.minX;
+		var20 = var2 + var1.field_370_bf;
 		double var22 = var2 + var1.maxX;
 		double var24 = var4 + var1.minY;
 		double var26 = var4 + var1.maxY;
@@ -1641,7 +1647,7 @@ public class RenderBlocks {
 			var18 = (double)(((float)var11 + 15.99F) / 256.0F);
 		}
 
-		var20 = var2 + var1.minX;
+		var20 = var2 + var1.field_370_bf;
 		double var22 = var4 + var1.minY;
 		double var24 = var4 + var1.maxY;
 		double var26 = var6 + var1.minZ;
@@ -1692,11 +1698,11 @@ public class RenderBlocks {
 		var9.addVertexWithUV(var20, var24, var28, var12, var16);
 	}
 
-	public void renderBlockAsItem(Block var1, float var2) {
+	public void func_1238_a(Block var1, float var2) {
 		int var3 = var1.getRenderType();
 		Tessellator var4 = Tessellator.instance;
 		if(var3 == 0) {
-			var1.setBlockBoundsForItemRender();
+			var1.func_237_e();
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			float var5 = 0.5F;
 			float var6 = 1.0F;
@@ -1719,12 +1725,12 @@ public class RenderBlocks {
 
 	}
 
-	public void renderBlockOnInventory(Block var1) {
+	public void func_1227_a(Block var1) {
 		byte var2 = -1;
 		Tessellator var3 = Tessellator.instance;
 		int var4 = var1.getRenderType();
 		if(var4 == 0) {
-			var1.setBlockBoundsForItemRender();
+			var1.func_237_e();
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			var3.startDrawingQuads();
 			var3.setNormal(0.0F, -1.0F, 0.0F);
@@ -1754,10 +1760,10 @@ public class RenderBlocks {
 		} else if(var4 == 1) {
 			var3.startDrawingQuads();
 			var3.setNormal(0.0F, -1.0F, 0.0F);
-			this.renderCrossedSquares(var1, var2, -0.5D, -0.5D, -0.5D);
+			this.func_1239_a(var1, var2, -0.5D, -0.5D, -0.5D);
 			var3.draw();
 		} else if(var4 == 13) {
-			var1.setBlockBoundsForItemRender();
+			var1.func_237_e();
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			float var5 = 1.0F / 16.0F;
 			var3.startDrawingQuads();
@@ -1796,7 +1802,7 @@ public class RenderBlocks {
 		} else if(var4 == 6) {
 			var3.startDrawingQuads();
 			var3.setNormal(0.0F, -1.0F, 0.0F);
-			this.renderBlockCropsImpl(var1, var2, -0.5D, -0.5D, -0.5D);
+			this.func_1245_b(var1, var2, -0.5D, -0.5D, -0.5D);
 			var3.draw();
 		} else if(var4 == 2) {
 			var3.startDrawingQuads();
@@ -1896,7 +1902,7 @@ public class RenderBlocks {
 
 	}
 
-	public static boolean renderItemIn3d(int var0) {
+	public static boolean func_1219_a(int var0) {
 		return var0 == 0 ? true : (var0 == 13 ? true : (var0 == 10 ? true : var0 == 11));
 	}
 }

@@ -7,95 +7,95 @@ import org.lwjgl.opengl.GL11;
 
 public class WorldRenderer {
 	public World worldObj;
-	private int glRenderList = -1;
-	private static Tessellator tessellator = Tessellator.instance;
-	public static int chunksUpdated = 0;
-	public int posX;
-	public int posY;
-	public int posZ;
-	public int sizeWidth;
-	public int sizeHeight;
-	public int sizeDepth;
-	public int posXMinus;
-	public int posYMinus;
-	public int posZMinus;
-	public int posXClip;
-	public int posYClip;
-	public int posZClip;
-	public boolean isInFrustum = false;
-	public boolean[] skipRenderPass = new boolean[2];
-	public int posXPlus;
-	public int posYPlus;
-	public int posZPlus;
-	public float rendererRadius;
+	private int field_1744_C = -1;
+	private static Tessellator field_1742_D = Tessellator.instance;
+	public static int field_1762_b = 0;
+	public int field_1761_c;
+	public int field_1760_d;
+	public int field_1759_e;
+	public int field_1758_f;
+	public int field_1757_g;
+	public int field_1756_h;
+	public int field_1755_i;
+	public int field_1754_j;
+	public int field_1753_k;
+	public int field_1752_l;
+	public int field_1751_m;
+	public int field_1750_n;
+	public boolean field_1749_o = false;
+	public boolean[] field_1748_p = new boolean[2];
+	public int field_1746_q;
+	public int field_1743_r;
+	public int field_1741_s;
+	public float field_1740_t;
 	public boolean needsUpdate;
-	public AxisAlignedBB rendererBoundingBox;
-	public int chunkIndex;
-	public boolean isVisible = true;
-	public boolean isWaitingOnOcclusionQuery;
-	public int glOcclusionQuery;
-	public boolean isChunkLit;
-	private boolean isInitialized = false;
-	public List tileEntityRenderers = new ArrayList();
-	private List tileEntities;
+	public AxisAlignedBB field_1736_v;
+	public int field_1735_w;
+	public boolean field_1734_x = true;
+	public boolean field_1733_y;
+	public int field_1732_z;
+	public boolean field_1747_A;
+	private boolean field_1739_E = false;
+	public List field_1745_B = new ArrayList();
+	private List field_1737_F;
 
 	public WorldRenderer(World var1, List var2, int var3, int var4, int var5, int var6, int var7) {
 		this.worldObj = var1;
-		this.tileEntities = var2;
-		this.sizeWidth = this.sizeHeight = this.sizeDepth = var6;
-		this.rendererRadius = MathHelper.sqrt_float((float)(this.sizeWidth * this.sizeWidth + this.sizeHeight * this.sizeHeight + this.sizeDepth * this.sizeDepth)) / 2.0F;
-		this.glRenderList = var7;
-		this.posX = -999;
-		this.setPosition(var3, var4, var5);
+		this.field_1737_F = var2;
+		this.field_1758_f = this.field_1757_g = this.field_1756_h = var6;
+		this.field_1740_t = MathHelper.sqrt_float((float)(this.field_1758_f * this.field_1758_f + this.field_1757_g * this.field_1757_g + this.field_1756_h * this.field_1756_h)) / 2.0F;
+		this.field_1744_C = var7;
+		this.field_1761_c = -999;
+		this.func_1197_a(var3, var4, var5);
 		this.needsUpdate = false;
 	}
 
-	public void setPosition(int var1, int var2, int var3) {
-		if(var1 != this.posX || var2 != this.posY || var3 != this.posZ) {
-			this.setDontDraw();
-			this.posX = var1;
-			this.posY = var2;
-			this.posZ = var3;
-			this.posXPlus = var1 + this.sizeWidth / 2;
-			this.posYPlus = var2 + this.sizeHeight / 2;
-			this.posZPlus = var3 + this.sizeDepth / 2;
-			this.posXClip = var1 & 1023;
-			this.posYClip = var2;
-			this.posZClip = var3 & 1023;
-			this.posXMinus = var1 - this.posXClip;
-			this.posYMinus = var2 - this.posYClip;
-			this.posZMinus = var3 - this.posZClip;
+	public void func_1197_a(int var1, int var2, int var3) {
+		if(var1 != this.field_1761_c || var2 != this.field_1760_d || var3 != this.field_1759_e) {
+			this.func_1195_b();
+			this.field_1761_c = var1;
+			this.field_1760_d = var2;
+			this.field_1759_e = var3;
+			this.field_1746_q = var1 + this.field_1758_f / 2;
+			this.field_1743_r = var2 + this.field_1757_g / 2;
+			this.field_1741_s = var3 + this.field_1756_h / 2;
+			this.field_1752_l = var1 & 1023;
+			this.field_1751_m = var2;
+			this.field_1750_n = var3 & 1023;
+			this.field_1755_i = var1 - this.field_1752_l;
+			this.field_1754_j = var2 - this.field_1751_m;
+			this.field_1753_k = var3 - this.field_1750_n;
 			float var4 = 2.0F;
-			this.rendererBoundingBox = AxisAlignedBB.getBoundingBox((double)((float)var1 - var4), (double)((float)var2 - var4), (double)((float)var3 - var4), (double)((float)(var1 + this.sizeWidth) + var4), (double)((float)(var2 + this.sizeHeight) + var4), (double)((float)(var3 + this.sizeDepth) + var4));
-			GL11.glNewList(this.glRenderList + 2, GL11.GL_COMPILE);
-			RenderItem.renderAABB(AxisAlignedBB.getBoundingBoxFromPool((double)((float)this.posXClip - var4), (double)((float)this.posYClip - var4), (double)((float)this.posZClip - var4), (double)((float)(this.posXClip + this.sizeWidth) + var4), (double)((float)(this.posYClip + this.sizeHeight) + var4), (double)((float)(this.posZClip + this.sizeDepth) + var4)));
+			this.field_1736_v = AxisAlignedBB.getBoundingBox((double)((float)var1 - var4), (double)((float)var2 - var4), (double)((float)var3 - var4), (double)((float)(var1 + this.field_1758_f) + var4), (double)((float)(var2 + this.field_1757_g) + var4), (double)((float)(var3 + this.field_1756_h) + var4));
+			GL11.glNewList(this.field_1744_C + 2, GL11.GL_COMPILE);
+			RenderItem.renderAABB(AxisAlignedBB.getBoundingBoxFromPool((double)((float)this.field_1752_l - var4), (double)((float)this.field_1751_m - var4), (double)((float)this.field_1750_n - var4), (double)((float)(this.field_1752_l + this.field_1758_f) + var4), (double)((float)(this.field_1751_m + this.field_1757_g) + var4), (double)((float)(this.field_1750_n + this.field_1756_h) + var4)));
 			GL11.glEndList();
-			this.markDirty();
+			this.MarkDirty();
 		}
 	}
 
-	private void setupGLTranslation() {
-		GL11.glTranslatef((float)this.posXClip, (float)this.posYClip, (float)this.posZClip);
+	private void func_1203_g() {
+		GL11.glTranslatef((float)this.field_1752_l, (float)this.field_1751_m, (float)this.field_1750_n);
 	}
 
-	public void updateRenderer() {
+	public void func_1198_a() {
 		if(this.needsUpdate) {
-			++chunksUpdated;
-			int var1 = this.posX;
-			int var2 = this.posY;
-			int var3 = this.posZ;
-			int var4 = this.posX + this.sizeWidth;
-			int var5 = this.posY + this.sizeHeight;
-			int var6 = this.posZ + this.sizeDepth;
+			++field_1762_b;
+			int var1 = this.field_1761_c;
+			int var2 = this.field_1760_d;
+			int var3 = this.field_1759_e;
+			int var4 = this.field_1761_c + this.field_1758_f;
+			int var5 = this.field_1760_d + this.field_1757_g;
+			int var6 = this.field_1759_e + this.field_1756_h;
 
 			for(int var7 = 0; var7 < 2; ++var7) {
-				this.skipRenderPass[var7] = true;
+				this.field_1748_p[var7] = true;
 			}
 
-			Chunk.isLit = false;
+			Chunk.field_1540_a = false;
 			HashSet var21 = new HashSet();
-			var21.addAll(this.tileEntityRenderers);
-			this.tileEntityRenderers.clear();
+			var21.addAll(this.field_1745_B);
+			this.field_1745_B.clear();
 			byte var8 = 1;
 			ChunkCache var9 = new ChunkCache(this.worldObj, var1 - var8, var2 - var8, var3 - var8, var4 + var8, var5 + var8, var6 + var8);
 			RenderBlocks var10 = new RenderBlocks(var9);
@@ -112,26 +112,26 @@ public class WorldRenderer {
 							if(var18 > 0) {
 								if(!var14) {
 									var14 = true;
-									GL11.glNewList(this.glRenderList + var11, GL11.GL_COMPILE);
+									GL11.glNewList(this.field_1744_C + var11, GL11.GL_COMPILE);
 									GL11.glPushMatrix();
-									this.setupGLTranslation();
+									this.func_1203_g();
 									float var19 = 1.000001F;
-									GL11.glTranslatef((float)(-this.sizeDepth) / 2.0F, (float)(-this.sizeHeight) / 2.0F, (float)(-this.sizeDepth) / 2.0F);
+									GL11.glTranslatef((float)(-this.field_1756_h) / 2.0F, (float)(-this.field_1757_g) / 2.0F, (float)(-this.field_1756_h) / 2.0F);
 									GL11.glScalef(var19, var19, var19);
-									GL11.glTranslatef((float)this.sizeDepth / 2.0F, (float)this.sizeHeight / 2.0F, (float)this.sizeDepth / 2.0F);
-									tessellator.startDrawingQuads();
-									tessellator.setTranslationD((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
+									GL11.glTranslatef((float)this.field_1756_h / 2.0F, (float)this.field_1757_g / 2.0F, (float)this.field_1756_h / 2.0F);
+									field_1742_D.startDrawingQuads();
+									field_1742_D.setTranslationD((double)(-this.field_1761_c), (double)(-this.field_1760_d), (double)(-this.field_1759_e));
 								}
 
 								if(var11 == 0 && Block.isBlockContainer[var18]) {
 									TileEntity var23 = var9.getBlockTileEntity(var17, var15, var16);
 									if(TileEntityRenderer.instance.hasSpecialRenderer(var23)) {
-										this.tileEntityRenderers.add(var23);
+										this.field_1745_B.add(var23);
 									}
 								}
 
 								Block var24 = Block.blocksList[var18];
-								int var20 = var24.getRenderBlockPass();
+								int var20 = var24.func_234_g();
 								if(var20 != var11) {
 									var12 = true;
 								} else if(var20 == var11) {
@@ -143,16 +143,16 @@ public class WorldRenderer {
 				}
 
 				if(var14) {
-					tessellator.draw();
+					field_1742_D.draw();
 					GL11.glPopMatrix();
 					GL11.glEndList();
-					tessellator.setTranslationD(0.0D, 0.0D, 0.0D);
+					field_1742_D.setTranslationD(0.0D, 0.0D, 0.0D);
 				} else {
 					var13 = false;
 				}
 
 				if(var13) {
-					this.skipRenderPass[var11] = false;
+					this.field_1748_p[var11] = false;
 				}
 
 				if(!var12) {
@@ -161,54 +161,54 @@ public class WorldRenderer {
 			}
 
 			HashSet var22 = new HashSet();
-			var22.addAll(this.tileEntityRenderers);
+			var22.addAll(this.field_1745_B);
 			var22.removeAll(var21);
-			this.tileEntities.addAll(var22);
-			var21.removeAll(this.tileEntityRenderers);
-			this.tileEntities.removeAll(var21);
-			this.isChunkLit = Chunk.isLit;
-			this.isInitialized = true;
+			this.field_1737_F.addAll(var22);
+			var21.removeAll(this.field_1745_B);
+			this.field_1737_F.removeAll(var21);
+			this.field_1747_A = Chunk.field_1540_a;
+			this.field_1739_E = true;
 		}
 	}
 
-	public float distanceToEntitySquared(Entity var1) {
-		float var2 = (float)(var1.posX - (double)this.posXPlus);
-		float var3 = (float)(var1.posY - (double)this.posYPlus);
-		float var4 = (float)(var1.posZ - (double)this.posZPlus);
+	public float func_1202_a(Entity var1) {
+		float var2 = (float)(var1.posX - (double)this.field_1746_q);
+		float var3 = (float)(var1.posY - (double)this.field_1743_r);
+		float var4 = (float)(var1.posZ - (double)this.field_1741_s);
 		return var2 * var2 + var3 * var3 + var4 * var4;
 	}
 
-	public void setDontDraw() {
+	public void func_1195_b() {
 		for(int var1 = 0; var1 < 2; ++var1) {
-			this.skipRenderPass[var1] = true;
+			this.field_1748_p[var1] = true;
 		}
 
-		this.isInFrustum = false;
-		this.isInitialized = false;
+		this.field_1749_o = false;
+		this.field_1739_E = false;
 	}
 
-	public void stopRendering() {
-		this.setDontDraw();
+	public void func_1204_c() {
+		this.func_1195_b();
 		this.worldObj = null;
 	}
 
-	public int getGLCallListForPass(int var1) {
-		return !this.isInFrustum ? -1 : (!this.skipRenderPass[var1] ? this.glRenderList + var1 : -1);
+	public int func_1200_a(int var1) {
+		return !this.field_1749_o ? -1 : (!this.field_1748_p[var1] ? this.field_1744_C + var1 : -1);
 	}
 
-	public void updateInFrustum(ICamera var1) {
-		this.isInFrustum = var1.isBoundingBoxInFrustum(this.rendererBoundingBox);
+	public void func_1199_a(ICamera var1) {
+		this.field_1749_o = var1.func_342_a(this.field_1736_v);
 	}
 
-	public void callOcclusionQueryList() {
-		GL11.glCallList(this.glRenderList + 2);
+	public void func_1201_d() {
+		GL11.glCallList(this.field_1744_C + 2);
 	}
 
-	public boolean skipAllRenderPasses() {
-		return !this.isInitialized ? false : this.skipRenderPass[0] && this.skipRenderPass[1];
+	public boolean func_1196_e() {
+		return !this.field_1739_E ? false : this.field_1748_p[0] && this.field_1748_p[1];
 	}
 
-	public void markDirty() {
+	public void MarkDirty() {
 		this.needsUpdate = true;
 	}
 }

@@ -48,10 +48,10 @@ public class TileEntityRenderer {
 	}
 
 	public TileEntitySpecialRenderer getSpecialRendererForEntity(TileEntity var1) {
-		return this.getSpecialRendererForClass(var1.getClass());
+		return var1 == null ? null : this.getSpecialRendererForClass(var1.getClass());
 	}
 
-	public void cacheActiveRenderInfo(World var1, RenderEngine var2, FontRenderer var3, EntityPlayer var4, float var5) {
+	public void setRenderingContext(World var1, RenderEngine var2, FontRenderer var3, EntityPlayer var4, float var5) {
 		this.worldObj = var1;
 		this.renderEngine = var2;
 		this.entityPlayer = var4;
@@ -65,7 +65,7 @@ public class TileEntityRenderer {
 
 	public void renderTileEntity(TileEntity var1, float var2) {
 		if(var1.getDistanceFrom(this.playerX, this.playerY, this.playerZ) < 4096.0D) {
-			float var3 = this.worldObj.getBrightness(var1.xCoord, var1.yCoord, var1.zCoord);
+			float var3 = this.worldObj.getLightBrightness(var1.xCoord, var1.yCoord, var1.zCoord);
 			GL11.glColor3f(var3, var3, var3);
 			this.renderTileEntityAt(var1, (double)var1.xCoord - staticPlayerX, (double)var1.yCoord - staticPlayerY, (double)var1.zCoord - staticPlayerZ, var2);
 		}

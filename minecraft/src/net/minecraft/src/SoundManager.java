@@ -13,14 +13,14 @@ public class SoundManager {
 	private SoundPool soundPoolSounds = new SoundPool();
 	private SoundPool soundPoolStreaming = new SoundPool();
 	private SoundPool soundPoolMusic = new SoundPool();
-	private int playedSoundsCount = 0;
+	private int field_587_e = 0;
 	private GameSettings options;
 	private static boolean loaded = false;
 	private Random rand = new Random();
-//	private int ticksBeforeMusic = this.rand.nextInt(12000);
+//	private int field_583_i = this.rand.nextInt(12000);
 
-	public void loadSoundSettings(GameSettings var1) {
-		this.soundPoolStreaming.isGetRandomSound = false;
+	public void func_340_a(GameSettings var1) {
+		this.soundPoolStreaming.field_1657_b = false;
 		this.options = var1;
 		if(!loaded && (var1 == null || var1.soundVolume != 0.0F || var1.musicVolume != 0.0F)) {
 			this.tryToSetLibraryAndCodecs();
@@ -71,7 +71,7 @@ public class SoundManager {
 
 	}
 
-	public void addSound(String var1, File var2) {
+	public void func_6372_a(String var1, File var2) {
 		this.soundPoolSounds.addSound(var1, var2);
 	}
 
@@ -83,17 +83,17 @@ public class SoundManager {
 		this.soundPoolMusic.addSound(var1, var2);
 	}
 
-	public void playRandomMusicIfReady() {
+	public void func_4033_c() {
 		if(loaded && this.options.musicVolume != 0.0F) {
 			if(!sndSystem.playing("BgMusic") && !sndSystem.playing("streaming")) {
-//				if(this.ticksBeforeMusic > 0) {
-//					--this.ticksBeforeMusic;
+//				if(this.field_583_i > 0) {
+//					--this.field_583_i;
 //					return;
 //				}
 
 				SoundPoolEntry var1 = this.soundPoolMusic.getRandomSound();
 				if(var1 != null) {
-//					this.ticksBeforeMusic = this.rand.nextInt(24000) + 24000;
+//					this.field_583_i = this.rand.nextInt(12000) + 12000;
 					sndSystem.backgroundMusic("BgMusic", var1.soundUrl, var1.soundName, false);
 					sndSystem.setVolume("BgMusic", this.options.musicVolume);
 					sndSystem.play("BgMusic");
@@ -103,7 +103,7 @@ public class SoundManager {
 		}
 	}
 
-	public void setListener(EntityLiving var1, float var2) {
+	public void func_338_a(EntityLiving var1, float var2) {
 		if(loaded && this.options.soundVolume != 0.0F) {
 			if(var1 != null) {
 				float var3 = var1.prevRotationYaw + (var1.rotationYaw - var1.prevRotationYaw) * var2;
@@ -124,7 +124,7 @@ public class SoundManager {
 		}
 	}
 
-	public void playStreaming(String var1, float var2, float var3, float var4, float var5, float var6) {
+	public void func_331_a(String var1, float var2, float var3, float var4, float var5, float var6) {
 		if(loaded && this.options.soundVolume != 0.0F) {
 			String var7 = "streaming";
 			if(sndSystem.playing("streaming")) {
@@ -148,12 +148,12 @@ public class SoundManager {
 		}
 	}
 
-	public void playSound(String var1, float var2, float var3, float var4, float var5, float var6) {
+	public void func_336_b(String var1, float var2, float var3, float var4, float var5, float var6) {
 		if(loaded && this.options.soundVolume != 0.0F) {
 			SoundPoolEntry var7 = this.soundPoolSounds.getRandomSoundFromSoundPool(var1);
 			if(var7 != null && var5 > 0.0F) {
-				this.playedSoundsCount = (this.playedSoundsCount + 1) % 256;
-				String var8 = "sound_" + this.playedSoundsCount;
+				this.field_587_e = (this.field_587_e + 1) % 256;
+				String var8 = "sound_" + this.field_587_e;
 				float var9 = 16.0F;
 				if(var5 > 1.0F) {
 					var9 *= var5;
@@ -172,12 +172,12 @@ public class SoundManager {
 		}
 	}
 
-	public void playSoundFX(String var1, float var2, float var3) {
+	public void func_337_a(String var1, float var2, float var3) {
 		if(loaded && this.options.soundVolume != 0.0F) {
 			SoundPoolEntry var4 = this.soundPoolSounds.getRandomSoundFromSoundPool(var1);
 			if(var4 != null) {
-				this.playedSoundsCount = (this.playedSoundsCount + 1) % 256;
-				String var5 = "sound_" + this.playedSoundsCount;
+				this.field_587_e = (this.field_587_e + 1) % 256;
+				String var5 = "sound_" + this.field_587_e;
 				sndSystem.newSource(false, var5, var4.soundUrl, var4.soundName, false, 0.0F, 0.0F, 0.0F, 0, 0.0F);
 				if(var2 > 1.0F) {
 					var2 = 1.0F;

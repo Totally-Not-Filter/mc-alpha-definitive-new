@@ -62,8 +62,8 @@ public class TileEntity {
 		return var1;
 	}
 
-	public void onInventoryChanged() {
-		this.worldObj.updateTileEntityChunkAndDoNothing(this.xCoord, this.yCoord, this.zCoord, this);
+	public void func_183_c() {
+		this.worldObj.func_515_b(this.xCoord, this.yCoord, this.zCoord, this);
 	}
 
 	static {

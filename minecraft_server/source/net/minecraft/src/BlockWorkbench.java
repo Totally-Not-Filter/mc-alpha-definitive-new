@@ -11,7 +11,7 @@ public class BlockWorkbench extends Block {
 	}
 
 	public boolean blockActivated(World var1, int var2, int var3, int var4, EntityPlayer var5) {
-		var5.displayWorkbenchGUI();
+		var5.func_174_A();
 		return true;
 	}
 }

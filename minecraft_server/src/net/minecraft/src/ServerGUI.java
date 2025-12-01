@@ -71,14 +71,14 @@ public class ServerGUI extends JComponent implements ICommandListener {
 		var2.setEditable(false);
 		JTextField var4 = new JTextField();
 		var4.addActionListener(new ServerGuiCommandListener(this, var4));
-		var2.addFocusListener(new ServerGuiFocusadapter(this));
+		var2.addFocusListener(new ServerGuiFocusAdapter(this));
 		var1.add(var3, "Center");
 		var1.add(var4, "South");
 		var1.setBorder(new TitledBorder(new EtchedBorder(), "Log and chat"));
 		return var1;
 	}
 
-	public void addHelpCommandMessage(String var1) {
+	public void log(String var1) {
 		logger.info(var1);
 	}
 

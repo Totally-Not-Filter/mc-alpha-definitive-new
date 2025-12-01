@@ -18,7 +18,7 @@ public class Packet255KickDisconnect extends Packet {
 		this.reason = var1.readUTF();
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeUTF(this.reason);
 	}
 

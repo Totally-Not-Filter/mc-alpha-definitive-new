@@ -22,7 +22,7 @@ public class ItemSword extends Item {
 		var1.damageItem(1);
 	}
 
-	public void onBlockDestroyed(ItemStack var1, int var2, int var3, int var4, int var5) {
+	public void hitBlock(ItemStack var1, int var2, int var3, int var4, int var5) {
 		var1.damageItem(2);
 	}
 

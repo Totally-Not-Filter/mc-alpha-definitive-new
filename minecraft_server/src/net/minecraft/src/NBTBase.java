@@ -22,7 +22,7 @@ public abstract class NBTBase {
 		return this;
 	}
 
-	public static NBTBase readNamedTag(DataInput var0) throws IOException {
+	public static NBTBase readTag(DataInput var0) throws IOException {
 		byte var1 = var0.readByte();
 		if(var1 == 0) {
 			return new NBTTagEnd();
@@ -34,7 +34,7 @@ public abstract class NBTBase {
 		}
 	}
 
-	public static void writeNamedTag(NBTBase var0, DataOutput var1) throws IOException {
+	public static void writeTag(NBTBase var0, DataOutput var1) throws IOException {
 		var1.writeByte(var0.getType());
 		if(var0.getType() != 0) {
 			var1.writeUTF(var0.getKey());

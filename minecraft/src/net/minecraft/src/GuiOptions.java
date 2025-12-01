@@ -12,7 +12,7 @@ public class GuiOptions extends GuiScreen {
 
 	public void initGui() {
 		for(int var1 = 0; var1 < this.options.numberOfOptions; ++var1) {
-			int var2 = this.options.isSlider(var1);
+			int var2 = this.options.getOptionControlType(var1);
 			if(var2 == 0) {
 				this.controlList.add(new GuiSmallButton(var1, this.width / 2 - 155 + var1 % 2 * 160, this.height / 6 + 24 * (var1 >> 1), this.options.getOptionDisplayString(var1)));
 			} else {
@@ -32,10 +32,12 @@ public class GuiOptions extends GuiScreen {
 			}
 
 			if(var1.id == 100) {
+				this.mc.gameSettings.saveOptions();
 				this.mc.displayGuiScreen(new GuiControls(this, this.options));
 			}
 
 			if(var1.id == 200) {
+				this.mc.gameSettings.saveOptions();
 				this.mc.displayGuiScreen(this.parentScreen);
 			}
 

@@ -22,8 +22,8 @@ public class Packet32EntityLook extends Packet30Entity {
 		this.pitch = var1.readByte();
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
-		super.writePacket(var1);
+	public void writePacketData(DataOutputStream var1) throws IOException {
+		super.writePacketData(var1);
 		var1.writeByte(this.yaw);
 		var1.writeByte(this.pitch);
 	}

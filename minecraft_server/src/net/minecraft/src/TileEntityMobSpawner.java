@@ -2,29 +2,29 @@ package net.minecraft.src;
 
 public class TileEntityMobSpawner extends TileEntity {
 	public int delay = -1;
-	public String mobID = "Pig";
-	public double yaw;
-	public double prevYaw = 0.0D;
+	public String entityID = "Pig";
+	public double field_491_g;
+	public double field_490_h = 0.0D;
 
 	public TileEntityMobSpawner() {
 		this.delay = 20;
 	}
 
-	public boolean anyPlayerInRange() {
+	public boolean func_195_a() {
 		return this.worldObj.getClosestPlayer((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D, 16.0D) != null;
 	}
 
 	public void updateEntity() {
-		this.prevYaw = this.yaw;
-		if(this.anyPlayerInRange()) {
+		this.field_490_h = this.field_491_g;
+		if(this.func_195_a()) {
 			double var1 = (double)((float)this.xCoord + this.worldObj.rand.nextFloat());
 			double var3 = (double)((float)this.yCoord + this.worldObj.rand.nextFloat());
 			double var5 = (double)((float)this.zCoord + this.worldObj.rand.nextFloat());
 			this.worldObj.spawnParticle("smoke", var1, var3, var5, 0.0D, 0.0D, 0.0D);
 			this.worldObj.spawnParticle("flame", var1, var3, var5, 0.0D, 0.0D, 0.0D);
 
-			for(this.yaw += (double)(1000.0F / ((float)this.delay + 200.0F)); this.yaw > 360.0D; this.prevYaw -= 360.0D) {
-				this.yaw -= 360.0D;
+			for(this.field_491_g += (double)(1000.0F / ((float)this.delay + 200.0F)); this.field_491_g > 360.0D; this.field_490_h -= 360.0D) {
+				this.field_491_g -= 360.0D;
 			}
 
 			if(this.delay == -1) {
@@ -37,12 +37,12 @@ public class TileEntityMobSpawner extends TileEntity {
 				byte var7 = 4;
 
 				for(int var8 = 0; var8 < var7; ++var8) {
-					EntityLiving var9 = (EntityLiving)((EntityLiving)EntityList.createEntityByName(this.mobID, this.worldObj));
+					EntityLiving var9 = (EntityLiving)((EntityLiving)EntityList.func_567_a(this.entityID, this.worldObj));
 					if(var9 == null) {
 						return;
 					}
 
-					int var10 = this.worldObj.getEntitiesWithinAABB(var9.getClass(), AxisAlignedBB.getBoundingBoxFromPool((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 1), (double)(this.zCoord + 1)).expand(8.0D, 4.0D, 8.0D)).size();
+					int var10 = this.worldObj.getEntitiesWithinAABB(var9.getClass(), AxisAlignedBB.getBoundingBoxFromPool((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 1), (double)(this.zCoord + 1)).expands(8.0D, 4.0D, 8.0D)).size();
 					if(var10 >= 6) {
 						this.updateDelay();
 						return;
@@ -52,9 +52,9 @@ public class TileEntityMobSpawner extends TileEntity {
 						double var11 = (double)this.xCoord + (this.worldObj.rand.nextDouble() - this.worldObj.rand.nextDouble()) * 4.0D;
 						double var13 = (double)(this.yCoord + this.worldObj.rand.nextInt(3) - 1);
 						double var15 = (double)this.zCoord + (this.worldObj.rand.nextDouble() - this.worldObj.rand.nextDouble()) * 4.0D;
-						var9.setLocationAndAngles(var11, var13, var15, this.worldObj.rand.nextFloat() * 360.0F, 0.0F);
+						var9.func_107_c(var11, var13, var15, this.worldObj.rand.nextFloat() * 360.0F, 0.0F);
 						if(var9.getCanSpawnHere()) {
-							this.worldObj.spawnEntityInWorld(var9);
+							this.worldObj.entityJoinedWorld(var9);
 
 							for(int var17 = 0; var17 < 20; ++var17) {
 								var1 = (double)this.xCoord + 0.5D + ((double)this.worldObj.rand.nextFloat() - 0.5D) * 2.0D;
@@ -64,7 +64,7 @@ public class TileEntityMobSpawner extends TileEntity {
 								this.worldObj.spawnParticle("flame", var1, var3, var5, 0.0D, 0.0D, 0.0D);
 							}
 
-							var9.spawnExplosionParticle();
+							var9.func_156_D();
 							this.updateDelay();
 						}
 					}
@@ -81,13 +81,13 @@ public class TileEntityMobSpawner extends TileEntity {
 
 	public void readFromNBT(NBTTagCompound var1) {
 		super.readFromNBT(var1);
-		this.mobID = var1.getString("EntityId");
+		this.entityID = var1.getString("EntityId");
 		this.delay = var1.getShort("Delay");
 	}
 
 	public void writeToNBT(NBTTagCompound var1) {
 		super.writeToNBT(var1);
-		var1.setString("EntityId", this.mobID);
+		var1.setString("EntityId", this.entityID);
 		var1.setShort("Delay", (short)this.delay);
 	}
 }

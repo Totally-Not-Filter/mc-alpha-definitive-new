@@ -5,33 +5,33 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 public class LoadingScreenRenderer implements IProgressUpdate {
-	private String currentlyDisplayedProgress = "";
+	private String field_1004_a = "";
 	private Minecraft mc;
-	private String currentlyDisplayedText = "";
-	private long systemTime = System.currentTimeMillis();
-	private boolean noError = false;
+	private String field_1007_c = "";
+	private long field_1006_d = System.currentTimeMillis();
+	private boolean field_1005_e = false;
 
 	public LoadingScreenRenderer(Minecraft var1) {
 		this.mc = var1;
 	}
 
-	public void resetProgressAndMessage(String var1) {
-		this.noError = false;
-		this.drawScreen(var1);
+	public void func_596_a(String var1) {
+		this.field_1005_e = false;
+		this.func_597_c(var1);
 	}
 
-	public void displayProgressMessage(String var1) {
-		this.noError = true;
-		this.drawScreen(this.currentlyDisplayedText);
+	public void func_594_b(String var1) {
+		this.field_1005_e = true;
+		this.func_597_c(this.field_1007_c);
 	}
 
-	public void drawScreen(String var1) {
+	public void func_597_c(String var1) {
 		if(!this.mc.running) {
-			if(!this.noError) {
+			if(!this.field_1005_e) {
 				throw new MinecraftError();
 			}
 		} else {
-			this.currentlyDisplayedText = var1;
+			this.field_1007_c = var1;
 			ScaledResolution var2 = new ScaledResolution(this.mc.displayWidth, this.mc.displayHeight);
 			int var3 = var2.getScaledWidth();
 			int var4 = var2.getScaledHeight();
@@ -47,26 +47,26 @@ public class LoadingScreenRenderer implements IProgressUpdate {
 
 	public void displayLoadingString(String var1) {
 		if(!this.mc.running) {
-			if(!this.noError) {
+			if(!this.field_1005_e) {
 				throw new MinecraftError();
 			}
 		} else {
-			this.systemTime = 0L;
-			this.currentlyDisplayedProgress = var1;
+			this.field_1006_d = 0L;
+			this.field_1004_a = var1;
 			this.setLoadingProgress(-1);
-			this.systemTime = 0L;
+			this.field_1006_d = 0L;
 		}
 	}
 
 	public void setLoadingProgress(int var1) {
 		if(!this.mc.running) {
-			if(!this.noError) {
+			if(!this.field_1005_e) {
 				throw new MinecraftError();
 			}
 		} else {
 			long var2 = System.currentTimeMillis();
-			if(var2 - this.systemTime >= 20L) {
-				this.systemTime = var2;
+			if(var2 - this.field_1006_d >= 20L) {
+				this.field_1006_d = var2;
 				ScaledResolution var4 = new ScaledResolution(this.mc.displayWidth, this.mc.displayHeight);
 				int var5 = var4.getScaledWidth();
 				int var6 = var4.getScaledHeight();
@@ -79,7 +79,7 @@ public class LoadingScreenRenderer implements IProgressUpdate {
 				GL11.glTranslatef(0.0F, 0.0F, -200.0F);
 				GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
 				Tessellator var7 = Tessellator.instance;
-				int var8 = this.mc.renderEngine.getTexture("/dirt.png");
+				int var8 = this.mc.renderEngine.getTexture("/gui/background.png");
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, var8);
 				float var9 = 32.0F;
 				var7.startDrawingQuads();
@@ -110,8 +110,8 @@ public class LoadingScreenRenderer implements IProgressUpdate {
 					GL11.glEnable(GL11.GL_TEXTURE_2D);
 				}
 
-				this.mc.fontRenderer.drawStringWithShadow(this.currentlyDisplayedText, (var5 - this.mc.fontRenderer.getStringWidth(this.currentlyDisplayedText)) / 2, var6 / 2 - 4 - 16, 16777215);
-				this.mc.fontRenderer.drawStringWithShadow(this.currentlyDisplayedProgress, (var5 - this.mc.fontRenderer.getStringWidth(this.currentlyDisplayedProgress)) / 2, var6 / 2 - 4 + 8, 16777215);
+				this.mc.fontRenderer.drawStringWithShadow(this.field_1007_c, (var5 - this.mc.fontRenderer.getStringWidth(this.field_1007_c)) / 2, var6 / 2 - 4 - 16, 16777215);
+				this.mc.fontRenderer.drawStringWithShadow(this.field_1004_a, (var5 - this.mc.fontRenderer.getStringWidth(this.field_1004_a)) / 2, var6 / 2 - 4 + 8, 16777215);
 				Display.update();
 
 				try {

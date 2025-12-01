@@ -31,7 +31,7 @@ public class BlockPressurePlate extends Block {
 	}
 
 	public boolean canPlaceBlockAt(World var1, int var2, int var3, int var4) {
-		return var1.isBlockNormalCube(var2, var3 - 1, var4);
+		return var1.isBlockOpaqueCube(var2, var3 - 1, var4);
 	}
 
 	public void onBlockAdded(World var1, int var2, int var3, int var4) {
@@ -39,7 +39,7 @@ public class BlockPressurePlate extends Block {
 
 	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
 		boolean var6 = false;
-		if(!var1.isBlockNormalCube(var2, var3 - 1, var4)) {
+		if(!var1.isBlockOpaqueCube(var2, var3 - 1, var4)) {
 			var6 = true;
 		}
 
@@ -51,14 +51,18 @@ public class BlockPressurePlate extends Block {
 	}
 
 	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
-		if(var1.getBlockMetadata(var2, var3, var4) != 0) {
-			this.setStateIfMobInteractsWithPlate(var1, var2, var3, var4);
+		if(!var1.multiplayerWorld) {
+			if(var1.getBlockMetadata(var2, var3, var4) != 0) {
+				this.setStateIfMobInteractsWithPlate(var1, var2, var3, var4);
+			}
 		}
 	}
 
 	public void onEntityCollidedWithBlock(World var1, int var2, int var3, int var4, Entity var5) {
-		if(var1.getBlockMetadata(var2, var3, var4) != 1) {
-			this.setStateIfMobInteractsWithPlate(var1, var2, var3, var4);
+		if(!var1.multiplayerWorld) {
+			if(var1.getBlockMetadata(var2, var3, var4) != 1) {
+				this.setStateIfMobInteractsWithPlate(var1, var2, var3, var4);
+			}
 		}
 	}
 
@@ -87,7 +91,7 @@ public class BlockPressurePlate extends Block {
 			var1.setBlockMetadataWithNotify(var2, var3, var4, 1);
 			var1.notifyBlocksOfNeighborChange(var2, var3, var4, this.blockID);
 			var1.notifyBlocksOfNeighborChange(var2, var3 - 1, var4, this.blockID);
-			var1.markBlocksDirty(var2, var3, var4, var2, var3, var4);
+			var1.func_701_b(var2, var3, var4, var2, var3, var4);
 			var1.playSoundEffect((double)var2 + 0.5D, (double)var3 + 0.1D, (double)var4 + 0.5D, "random.click", 0.3F, 0.6F);
 		}
 
@@ -95,7 +99,7 @@ public class BlockPressurePlate extends Block {
 			var1.setBlockMetadataWithNotify(var2, var3, var4, 0);
 			var1.notifyBlocksOfNeighborChange(var2, var3, var4, this.blockID);
 			var1.notifyBlocksOfNeighborChange(var2, var3 - 1, var4, this.blockID);
-			var1.markBlocksDirty(var2, var3, var4, var2, var3, var4);
+			var1.func_701_b(var2, var3, var4, var2, var3, var4);
 			var1.playSoundEffect((double)var2 + 0.5D, (double)var3 + 0.1D, (double)var4 + 0.5D, "random.click", 0.3F, 0.5F);
 		}
 
@@ -138,7 +142,7 @@ public class BlockPressurePlate extends Block {
 		return true;
 	}
 
-	public void setBlockBoundsForItemRender() {
+	public void func_237_e() {
 		float var1 = 0.5F;
 		float var2 = 2.0F / 16.0F;
 		float var3 = 0.5F;

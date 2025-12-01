@@ -12,7 +12,7 @@ public class Packet18ArmAnimation extends Packet {
 	}
 
 	public Packet18ArmAnimation(Entity var1, int var2) {
-		this.entityId = var1.entityID;
+		this.entityId = var1.field_331_c;
 		this.animate = var2;
 	}
 
@@ -21,7 +21,7 @@ public class Packet18ArmAnimation extends Packet {
 		this.animate = var1.readByte();
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeInt(this.entityId);
 		var1.writeByte(this.animate);
 	}

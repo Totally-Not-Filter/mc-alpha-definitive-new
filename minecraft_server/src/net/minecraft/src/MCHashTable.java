@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 public class MCHashTable {
-	private transient MCHashEntry[] slots = new MCHashEntry[16];
+	private transient HashEntry[] slots = new HashEntry[16];
 	private transient int count;
 	private int threshold = 12;
 	private final float growFactor = 12.0F / 16.0F;
@@ -19,9 +19,9 @@ public class MCHashTable {
 	public Object lookup(int var1) {
 		int var2 = computeHash(var1);
 
-		for(MCHashEntry var3 = this.slots[getSlotIndex(var2, this.slots.length)]; var3 != null; var3 = var3.nextEntry) {
-			if(var3.hashEntry == var1) {
-				return var3.valueEntry;
+		for(HashEntry var3 = this.slots[getSlotIndex(var2, this.slots.length)]; var3 != null; var3 = var3.field_843_c) {
+			if(var3.field_841_a == var1) {
+				return var3.field_840_b;
 			}
 		}
 
@@ -32,11 +32,11 @@ public class MCHashTable {
 		return this.lookupEntry(var1) != null;
 	}
 
-	final MCHashEntry lookupEntry(int var1) {
+	final HashEntry lookupEntry(int var1) {
 		int var2 = computeHash(var1);
 
-		for(MCHashEntry var3 = this.slots[getSlotIndex(var2, this.slots.length)]; var3 != null; var3 = var3.nextEntry) {
-			if(var3.hashEntry == var1) {
+		for(HashEntry var3 = this.slots[getSlotIndex(var2, this.slots.length)]; var3 != null; var3 = var3.field_843_c) {
+			if(var3.field_841_a == var1) {
 				return var3;
 			}
 		}
@@ -48,9 +48,9 @@ public class MCHashTable {
 		int var3 = computeHash(var1);
 		int var4 = getSlotIndex(var3, this.slots.length);
 
-		for(MCHashEntry var5 = this.slots[var4]; var5 != null; var5 = var5.nextEntry) {
-			if(var5.hashEntry == var1) {
-				var5.valueEntry = var2;
+		for(HashEntry var5 = this.slots[var4]; var5 != null; var5 = var5.field_843_c) {
+			if(var5.field_841_a == var1) {
+				var5.field_840_b = var2;
 			}
 		}
 
@@ -59,32 +59,32 @@ public class MCHashTable {
 	}
 
 	private void grow(int var1) {
-		MCHashEntry[] var2 = this.slots;
+		HashEntry[] var2 = this.slots;
 		int var3 = var2.length;
 		if(var3 == 1073741824) {
 			this.threshold = Integer.MAX_VALUE;
 		} else {
-			MCHashEntry[] var4 = new MCHashEntry[var1];
+			HashEntry[] var4 = new HashEntry[var1];
 			this.copyTo(var4);
 			this.slots = var4;
 			this.threshold = (int)((float)var1 * this.growFactor);
 		}
 	}
 
-	private void copyTo(MCHashEntry[] var1) {
-		MCHashEntry[] var2 = this.slots;
+	private void copyTo(HashEntry[] var1) {
+		HashEntry[] var2 = this.slots;
 		int var3 = var1.length;
 
 		for(int var4 = 0; var4 < var2.length; ++var4) {
-			MCHashEntry var5 = var2[var4];
+			HashEntry var5 = var2[var4];
 			if(var5 != null) {
 				var2[var4] = null;
 
-				MCHashEntry var6;
+				HashEntry var6;
 				do {
-					var6 = var5.nextEntry;
-					int var7 = getSlotIndex(var5.slotHash, var3);
-					var5.nextEntry = var1[var7];
+					var6 = var5.field_843_c;
+					int var7 = getSlotIndex(var5.field_842_d, var3);
+					var5.field_843_c = var1[var7];
 					var1[var7] = var5;
 					var5 = var6;
 				} while(var6 != null);
@@ -94,26 +94,26 @@ public class MCHashTable {
 	}
 
 	public Object removeObject(int var1) {
-		MCHashEntry var2 = this.removeEntry(var1);
-		return var2 == null ? null : var2.valueEntry;
+		HashEntry var2 = this.removeEntry(var1);
+		return var2 == null ? null : var2.field_840_b;
 	}
 
-	final MCHashEntry removeEntry(int var1) {
+	final HashEntry removeEntry(int var1) {
 		int var2 = computeHash(var1);
 		int var3 = getSlotIndex(var2, this.slots.length);
-		MCHashEntry var4 = this.slots[var3];
+		HashEntry var4 = this.slots[var3];
 
-		MCHashEntry var5;
-		MCHashEntry var6;
+		HashEntry var5;
+		HashEntry var6;
 		for(var5 = var4; var5 != null; var5 = var6) {
-			var6 = var5.nextEntry;
-			if(var5.hashEntry == var1) {
+			var6 = var5.field_843_c;
+			if(var5.field_841_a == var1) {
 				++this.versionStamp;
 				--this.count;
 				if(var4 == var5) {
 					this.slots[var3] = var6;
 				} else {
-					var4.nextEntry = var6;
+					var4.field_843_c = var6;
 				}
 
 				return var5;
@@ -127,7 +127,7 @@ public class MCHashTable {
 
 	public void clearMap() {
 		++this.versionStamp;
-		MCHashEntry[] var1 = this.slots;
+		HashEntry[] var1 = this.slots;
 
 		for(int var2 = 0; var2 < var1.length; ++var2) {
 			var1[var2] = null;
@@ -137,8 +137,8 @@ public class MCHashTable {
 	}
 
 	private void insert(int var1, int var2, Object var3, int var4) {
-		MCHashEntry var5 = this.slots[var4];
-		this.slots[var4] = new MCHashEntry(var1, var2, var3, var5);
+		HashEntry var5 = this.slots[var4];
+		this.slots[var4] = new HashEntry(var1, var2, var3, var5);
 		if(this.count++ >= this.threshold) {
 			this.grow(2 * this.slots.length);
 		}

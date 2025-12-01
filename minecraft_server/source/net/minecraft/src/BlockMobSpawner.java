@@ -7,7 +7,7 @@ public class BlockMobSpawner extends BlockContainer {
 		super(var1, var2, Material.rock);
 	}
 
-	protected TileEntity getBlockEntity() {
+	protected TileEntity func_294_a_() {
 		return new TileEntityMobSpawner();
 	}
 
@@ -19,7 +19,7 @@ public class BlockMobSpawner extends BlockContainer {
 		return 0;
 	}
 
-	public boolean isOpaqueCube() {
+	public boolean allowsAttachment() {
 		return false;
 	}
 }

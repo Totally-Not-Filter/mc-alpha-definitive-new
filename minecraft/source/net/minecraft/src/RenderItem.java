@@ -5,20 +5,20 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class RenderItem extends Render {
-	private RenderBlocks itemRenderBlocks = new RenderBlocks();
+	private RenderBlocks renderBlocks = new RenderBlocks();
 	private Random random = new Random();
 
 	public RenderItem() {
-		this.shadowSize = 0.15F;
-		this.shadowOpaque = 12.0F / 16.0F;
+		this.field_9246_c = 0.15F;
+		this.field_194_c = 12.0F / 16.0F;
 	}
 
-	public void doRenderItem(EntityItem var1, double var2, double var4, double var6, float var8, float var9) {
+	public void a(EntityItem var1, double var2, double var4, double var6, float var8, float var9) {
 		this.random.setSeed(187L);
 		ItemStack var10 = var1.item;
 		GL11.glPushMatrix();
-		float var11 = MathHelper.sin(((float)var1.age + var9) / 10.0F + var1.hoverStart) * 0.1F + 0.1F;
-		float var12 = (((float)var1.age + var9) / 20.0F + var1.hoverStart) * (180.0F / (float)Math.PI);
+		float var11 = MathHelper.sin(((float)var1.age + var9) / 10.0F + var1.field_804_d) * 0.1F + 0.1F;
+		float var12 = (((float)var1.age + var9) / 20.0F + var1.field_804_d) * (180.0F / (float)Math.PI);
 		byte var13 = 1;
 		if(var1.item.stackSize > 1) {
 			var13 = 2;
@@ -37,7 +37,7 @@ public class RenderItem extends Render {
 		float var16;
 		float var17;
 		float var18;
-		if(var10.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var10.itemID].getRenderType())) {
+		if(var10.itemID < 256 && RenderBlocks.func_1219_a(Block.blocksList[var10.itemID].getRenderType())) {
 			GL11.glRotatef(var12, 0.0F, 1.0F, 0.0F);
 			this.loadTexture("/terrain.png");
 			float var27 = 0.25F;
@@ -56,7 +56,7 @@ public class RenderItem extends Render {
 					GL11.glTranslatef(var16, var17, var18);
 				}
 
-				this.itemRenderBlocks.renderBlockOnInventory(Block.blocksList[var10.itemID]);
+				this.renderBlocks.func_1227_a(Block.blocksList[var10.itemID]);
 				GL11.glPopMatrix();
 			}
 		} else {
@@ -86,7 +86,7 @@ public class RenderItem extends Render {
 					GL11.glTranslatef(var24, var25, var26);
 				}
 
-				GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+				GL11.glRotatef(180.0F - this.renderManager.field_1225_i, 0.0F, 1.0F, 0.0F);
 				var15.startDrawingQuads();
 				var15.setNormal(0.0F, 1.0F, 0.0F);
 				var15.addVertexWithUV((double)(0.0F - var21), (double)(0.0F - var22), 0.0D, (double)var16, (double)var19);
@@ -104,7 +104,7 @@ public class RenderItem extends Render {
 
 	public void renderItemIntoGUI(FontRenderer var1, RenderEngine var2, ItemStack var3, int var4, int var5) {
 		if(var3 != null) {
-			if(var3.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3.itemID].getRenderType())) {
+			if(var3.itemID < 256 && RenderBlocks.func_1219_a(Block.blocksList[var3.itemID].getRenderType())) {
 				int var6 = var3.itemID;
 				var2.bindTexture(var2.getTexture("/terrain.png"));
 				Block var7 = Block.blocksList[var6];
@@ -116,7 +116,7 @@ public class RenderItem extends Render {
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				GL11.glScalef(1.0F, 1.0F, 1.0F);
-				this.itemRenderBlocks.renderBlockOnInventory(var7);
+				this.renderBlocks.func_1227_a(var7);
 				GL11.glPopMatrix();
 			} else if(var3.getIconIndex() >= 0) {
 				GL11.glDisable(GL11.GL_LIGHTING);
@@ -126,7 +126,7 @@ public class RenderItem extends Render {
 					var2.bindTexture(var2.getTexture("/gui/items.png"));
 				}
 
-				this.renderIcon(var4, var5, var3.getIconIndex() % 16 * 16, var3.getIconIndex() / 16 * 16, 16, 16);
+				this.renderTexturedQuad(var4, var5, var3.getIconIndex() % 16 * 16, var3.getIconIndex() / 16 * 16, 16, 16);
 				GL11.glEnable(GL11.GL_LIGHTING);
 			}
 
@@ -145,9 +145,9 @@ public class RenderItem extends Render {
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
 			}
 
-			if(var3.itemDmg > 0) {
-				int var11 = 13 - var3.itemDmg * 13 / var3.getMaxDamage();
-				int var7 = 255 - var3.itemDmg * 255 / var3.getMaxDamage();
+			if(var3.itemDamage > 0) {
+				int var11 = 13 - var3.itemDamage * 13 / var3.getMaxDamage();
+				int var7 = 255 - var3.itemDamage * 255 / var3.getMaxDamage();
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -176,7 +176,7 @@ public class RenderItem extends Render {
 		var1.draw();
 	}
 
-	public void renderIcon(int var1, int var2, int var3, int var4, int var5, int var6) {
+	public void renderTexturedQuad(int var1, int var2, int var3, int var4, int var5, int var6) {
 		float var7 = 0.0F;
 		float var8 = 0.00390625F;
 		float var9 = 0.00390625F;
@@ -190,6 +190,6 @@ public class RenderItem extends Render {
 	}
 
 	public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
-		this.doRenderItem((EntityItem)var1, var2, var4, var6, var8, var9);
+		this.a((EntityItem)var1, var2, var4, var6, var8, var9);
 	}
 }

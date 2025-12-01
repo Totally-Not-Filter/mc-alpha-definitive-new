@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
-public class EntityCow extends EntityAnimal {
-	public boolean unusedBool2 = false;
+public class EntityCow extends EntityAnimals {
+	public boolean unusedBoolean = false;
 
 	public EntityCow(World var1) {
 		super(var1);

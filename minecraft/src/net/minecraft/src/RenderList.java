@@ -4,58 +4,58 @@ import java.nio.IntBuffer;
 import org.lwjgl.opengl.GL11;
 
 public class RenderList {
-	private int posX;
-	private int posY;
-	private int posZ;
-	private float playerPosX;
-	private float playerPosY;
-	private float playerPosZ;
-	private IntBuffer buffer = GLAllocation.createDirectIntBuffer(65536);
-	private boolean render = false;
-	private boolean isCached = false;
+	private int field_1242_a;
+	private int field_1241_b;
+	private int field_1240_c;
+	private float field_1239_d;
+	private float field_1238_e;
+	private float field_1237_f;
+	private IntBuffer field_1236_g = GLAllocation.createDirectIntBuffer(65536);
+	private boolean field_1235_h = false;
+	private boolean field_1234_i = false;
 
-	public void setLocation(int var1, int var2, int var3, double var4, double var6, double var8) {
-		this.render = true;
-		this.buffer.clear();
-		this.posX = var1;
-		this.posY = var2;
-		this.posZ = var3;
-		this.playerPosX = (float)var4;
-		this.playerPosY = (float)var6;
-		this.playerPosZ = (float)var8;
+	public void func_861_a(int var1, int var2, int var3, double var4, double var6, double var8) {
+		this.field_1235_h = true;
+		this.field_1236_g.clear();
+		this.field_1242_a = var1;
+		this.field_1241_b = var2;
+		this.field_1240_c = var3;
+		this.field_1239_d = (float)var4;
+		this.field_1238_e = (float)var6;
+		this.field_1237_f = (float)var8;
 	}
 
-	public boolean isRenderedAt(int var1, int var2, int var3) {
-		return !this.render ? false : var1 == this.posX && var2 == this.posY && var3 == this.posZ;
+	public boolean func_862_a(int var1, int var2, int var3) {
+		return !this.field_1235_h ? false : var1 == this.field_1242_a && var2 == this.field_1241_b && var3 == this.field_1240_c;
 	}
 
-	public void render(int var1) {
-		this.buffer.put(var1);
-		if(this.buffer.remaining() == 0) {
-			this.render();
+	public void func_858_a(int var1) {
+		this.field_1236_g.put(var1);
+		if(this.field_1236_g.remaining() == 0) {
+			this.func_860_a();
 		}
 
 	}
 
-	public void render() {
-		if(this.render) {
-			if(!this.isCached) {
-				this.buffer.flip();
-				this.isCached = true;
+	public void func_860_a() {
+		if(this.field_1235_h) {
+			if(!this.field_1234_i) {
+				this.field_1236_g.flip();
+				this.field_1234_i = true;
 			}
 
-			if(this.buffer.remaining() > 0) {
+			if(this.field_1236_g.remaining() > 0) {
 				GL11.glPushMatrix();
-				GL11.glTranslatef((float)this.posX - this.playerPosX, (float)this.posY - this.playerPosY, (float)this.posZ - this.playerPosZ);
-				GL11.glCallLists(this.buffer);
+				GL11.glTranslatef((float)this.field_1242_a - this.field_1239_d, (float)this.field_1241_b - this.field_1238_e, (float)this.field_1240_c - this.field_1237_f);
+				GL11.glCallLists(this.field_1236_g);
 				GL11.glPopMatrix();
 			}
 
 		}
 	}
 
-	public void reset() {
-		this.render = false;
-		this.isCached = false;
+	public void func_859_b() {
+		this.field_1235_h = false;
+		this.field_1234_i = false;
 	}
 }

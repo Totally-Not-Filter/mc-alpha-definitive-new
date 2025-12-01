@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.Random;
 
-public class BlockStationary extends BlockFluid {
+public class BlockStationary extends BlockFluids {
 	protected BlockStationary(int var1, Material var2) {
 		super(var1, var2);
 		this.setTickOnLoad(false);
@@ -15,22 +15,22 @@ public class BlockStationary extends BlockFluid {
 	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
 		super.onNeighborBlockChange(var1, var2, var3, var4, var5);
 		if(var1.getBlockId(var2, var3, var4) == this.blockID) {
-			this.setNotStationary(var1, var2, var3, var4);
+			this.func_15234_j(var1, var2, var3, var4);
 		}
 
 	}
 
-	private void setNotStationary(World var1, int var2, int var3, int var4) {
+	private void func_15234_j(World var1, int var2, int var3, int var4) {
 		int var5 = var1.getBlockMetadata(var2, var3, var4);
-		var1.editingBlocks = true;
+		var1.field_1043_h = true;
 		var1.setBlockAndMetadata(var2, var3, var4, this.blockID - 1, var5);
-		var1.markBlocksDirty(var2, var3, var4, var2, var3, var4);
+		var1.func_701_b(var2, var3, var4, var2, var3, var4);
 		var1.scheduleBlockUpdate(var2, var3, var4, this.blockID - 1);
-		var1.editingBlocks = false;
+		var1.field_1043_h = false;
 	}
 
 	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
-		if(this.material == Material.lava) {
+		if(this.blockMaterial == Material.lava) {
 			int var6 = var5.nextInt(3);
 
 			for(int var7 = 0; var7 < var6; ++var7) {
@@ -39,11 +39,11 @@ public class BlockStationary extends BlockFluid {
 				var4 += var5.nextInt(3) - 1;
 				int var8 = var1.getBlockId(var2, var3, var4);
 				if(var8 == 0) {
-					if(this.isFlammable(var1, var2 - 1, var3, var4) || this.isFlammable(var1, var2 + 1, var3, var4) || this.isFlammable(var1, var2, var3, var4 - 1) || this.isFlammable(var1, var2, var3, var4 + 1) || this.isFlammable(var1, var2, var3 - 1, var4) || this.isFlammable(var1, var2, var3 + 1, var4)) {
+					if(this.func_301_k(var1, var2 - 1, var3, var4) || this.func_301_k(var1, var2 + 1, var3, var4) || this.func_301_k(var1, var2, var3, var4 - 1) || this.func_301_k(var1, var2, var3, var4 + 1) || this.func_301_k(var1, var2, var3 - 1, var4) || this.func_301_k(var1, var2, var3 + 1, var4)) {
 						var1.setBlockWithNotify(var2, var3, var4, Block.fire.blockID);
 						return;
 					}
-				} else if(Block.blocksList[var8].material.getIsSolid()) {
+				} else if(Block.blocksList[var8].blockMaterial.func_880_c()) {
 					return;
 				}
 			}
@@ -51,7 +51,7 @@ public class BlockStationary extends BlockFluid {
 
 	}
 
-	private boolean isFlammable(World var1, int var2, int var3, int var4) {
-		return var1.getBlockMaterial(var2, var3, var4).getCanBurn();
+	private boolean func_301_k(World var1, int var2, int var3, int var4) {
+		return var1.getBlockMaterial(var2, var3, var4).getBurning();
 	}
 }

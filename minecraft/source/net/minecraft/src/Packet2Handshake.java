@@ -18,7 +18,7 @@ public class Packet2Handshake extends Packet {
 		this.username = var1.readUTF();
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeUTF(this.username);
 	}
 

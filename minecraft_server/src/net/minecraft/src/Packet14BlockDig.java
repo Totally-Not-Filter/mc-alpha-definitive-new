@@ -19,7 +19,7 @@ public class Packet14BlockDig extends Packet {
 		this.face = var1.read();
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.write(this.status);
 		var1.writeInt(this.xPosition);
 		var1.write(this.yPosition);

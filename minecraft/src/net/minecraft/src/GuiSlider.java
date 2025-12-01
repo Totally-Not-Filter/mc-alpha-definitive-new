@@ -19,7 +19,7 @@ public class GuiSlider extends GuiButton {
 	}
 
 	protected void mouseDragged(Minecraft var1, int var2, int var3) {
-		if(this.visible) {
+		if(this.enabled2) {
 			if(this.dragging) {
 				this.sliderValue = (float)(var2 - (this.xPosition + 4)) / (float)(this.width - 8);
 				if(this.sliderValue < 0.0F) {
@@ -30,8 +30,8 @@ public class GuiSlider extends GuiButton {
 					this.sliderValue = 1.0F;
 				}
 
-				var1.options.setOptionFloatValue(this.idFloat, this.sliderValue);
-				this.displayString = var1.options.getOptionDisplayString(this.idFloat);
+				var1.gameSettings.setOptionFloatValue(this.idFloat, this.sliderValue);
+				this.displayString = var1.gameSettings.getOptionDisplayString(this.idFloat);
 			}
 
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -51,8 +51,8 @@ public class GuiSlider extends GuiButton {
 				this.sliderValue = 1.0F;
 			}
 
-			var1.options.setOptionFloatValue(this.idFloat, this.sliderValue);
-			this.displayString = var1.options.getOptionDisplayString(this.idFloat);
+			var1.gameSettings.setOptionFloatValue(this.idFloat, this.sliderValue);
+			this.displayString = var1.gameSettings.getOptionDisplayString(this.idFloat);
 			this.dragging = true;
 			return true;
 		} else {

@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class BlockGrass extends Block {
 	protected BlockGrass(int var1) {
-		super(var1, Material.grass);
+		super(var1, Material.ground);
 		this.blockIndexInTexture = 3;
 		this.setTickOnLoad(true);
 	}
@@ -16,8 +16,15 @@ public class BlockGrass extends Block {
 			return 2;
 		} else {
 			Material var6 = var1.getBlockMaterial(var2, var3 + 1, var4);
-			return var6 != Material.snow && var6 != Material.craftedSnow ? 3 : 68;
+			return var6 != Material.snow && var6 != Material.builtSnow ? 3 : 68;
 		}
+	}
+
+	public int colorMultiplier(IBlockAccess var1, int var2, int var3, int var4) {
+		var1.func_4075_a().func_4069_a(var2, var4, 1, 1);
+		double var5 = var1.func_4075_a().temperature[0];
+		double var7 = var1.func_4075_a().humidity[0];
+		return ColorizerGrass.func_4147_a(var5, var7);
 	}
 
 	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {

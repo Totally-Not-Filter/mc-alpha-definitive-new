@@ -11,7 +11,7 @@ public class GuiButton extends Gui {
 	public String displayString;
 	public int id;
 	public boolean enabled;
-	public boolean visible;
+	public boolean enabled2;
 
 	public GuiButton(int var1, int var2, int var3, String var4) {
 		this(var1, var2, var3, 200, 20, var4);
@@ -21,7 +21,7 @@ public class GuiButton extends Gui {
 		this.width = 200;
 		this.height = 20;
 		this.enabled = true;
-		this.visible = true;
+		this.enabled2 = true;
 		this.id = var1;
 		this.xPosition = var2;
 		this.yPosition = var3;
@@ -42,7 +42,7 @@ public class GuiButton extends Gui {
 	}
 
 	public void drawButton(Minecraft var1, int var2, int var3) {
-		if(this.visible) {
+		if(this.enabled2) {
 			FontRenderer var4 = var1.fontRenderer;
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var1.renderEngine.getTexture("/gui/gui.png"));
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

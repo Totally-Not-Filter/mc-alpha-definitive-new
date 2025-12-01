@@ -17,7 +17,7 @@ public class ThreadCommandReader extends Thread {
 		String var2 = null;
 
 		try {
-			while(!this.mcServer.serverStopped && MinecraftServer.isServerRunning(this.mcServer)) {
+			while(!this.mcServer.field_6032_g && MinecraftServer.func_6015_a(this.mcServer)) {
 				var2 = var1.readLine();
 				if(var2 == null) {
 					break;

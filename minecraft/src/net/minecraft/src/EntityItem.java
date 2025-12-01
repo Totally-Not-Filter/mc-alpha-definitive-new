@@ -2,11 +2,11 @@ package net.minecraft.src;
 
 public class EntityItem extends Entity {
 	public ItemStack item;
-	private int age2;
+	private int field_803_e;
 	public int age = 0;
-	public int delayBeforeCanPickup;
+	public int field_805_c;
 	private int health = 5;
-	public float hoverStart = (float)(Math.random() * Math.PI * 2.0D);
+	public float field_804_d = (float)(Math.random() * Math.PI * 2.0D);
 
 	public EntityItem(World var1, double var2, double var4, double var6, ItemStack var8) {
 		super(var1);
@@ -18,7 +18,7 @@ public class EntityItem extends Entity {
 		this.motionX = (double)((float)(Math.random() * (double)0.2F - (double)0.1F));
 		this.motionY = (double)0.2F;
 		this.motionZ = (double)((float)(Math.random() * (double)0.2F - (double)0.1F));
-		this.canTriggerWalking = false;
+		this.entityWalks = false;
 	}
 
 	public EntityItem(World var1) {
@@ -29,8 +29,8 @@ public class EntityItem extends Entity {
 
 	public void onUpdate() {
 		super.onUpdate();
-		if(this.delayBeforeCanPickup > 0) {
-			--this.delayBeforeCanPickup;
+		if(this.field_805_c > 0) {
+			--this.field_805_c;
 		}
 
 		this.prevPosX = this.posX;
@@ -44,7 +44,7 @@ public class EntityItem extends Entity {
 			this.worldObj.playSoundAtEntity(this, "random.fizz", 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
 		}
 
-		this.pushOutOfBlocks(this.posX, this.posY, this.posZ);
+		this.func_466_g(this.posX, this.posY, this.posZ);
 		this.handleWaterMovement();
 		this.moveEntity(this.motionX, this.motionY, this.motionZ);
 		float var1 = 0.98F;
@@ -63,7 +63,7 @@ public class EntityItem extends Entity {
 			this.motionY *= -0.5D;
 		}
 
-		++this.age2;
+		++this.field_803_e;
 		++this.age;
 		if(this.age >= 6000) {
 			this.setEntityDead();
@@ -72,10 +72,10 @@ public class EntityItem extends Entity {
 	}
 
 	public boolean handleWaterMovement() {
-		return this.worldObj.handleMaterialAcceleration(this.boundingBox, Material.water, this);
+		return this.worldObj.func_682_a(this.boundingBox, Material.water, this);
 	}
 
-	private boolean pushOutOfBlocks(double var1, double var3, double var5) {
+	private boolean func_466_g(double var1, double var3, double var5) {
 		int var7 = MathHelper.floor_double(var1);
 		int var8 = MathHelper.floor_double(var3);
 		int var9 = MathHelper.floor_double(var5);
@@ -150,11 +150,12 @@ public class EntityItem extends Entity {
 		return false;
 	}
 
-	protected void dealFireDamage(int var1) {
-		this.attackEntityFrom((Entity)null, var1);
+	protected void func_355_a(int var1) {
+		this.canAttackEntity((Entity)null, var1);
 	}
 
-	public boolean attackEntityFrom(Entity var1, int var2) {
+	public boolean canAttackEntity(Entity var1, int var2) {
+		this.func_9281_M();
 		this.health -= var2;
 		if(this.health <= 0) {
 			this.setEntityDead();
@@ -179,9 +180,9 @@ public class EntityItem extends Entity {
 	public void onCollideWithPlayer(EntityPlayer var1) {
 		if(!this.worldObj.multiplayerWorld) {
 			int var2 = this.item.stackSize;
-			if(this.delayBeforeCanPickup == 0 && var1.inventory.addItemStackToInventory(this.item)) {
+			if(this.field_805_c == 0 && var1.inventory.addItemStackToInventory(this.item)) {
 				this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-				var1.onItemPickup(this, var2);
+				var1.func_443_a_(this, var2);
 				this.setEntityDead();
 			}
 

@@ -9,7 +9,7 @@ public interface IChunkProvider {
 
 	boolean saveChunks(boolean var1, IProgressUpdate var2);
 
-	boolean unload100OldestChunks();
+	boolean func_532_a();
 
-	boolean canSave();
+	boolean func_536_b();
 }

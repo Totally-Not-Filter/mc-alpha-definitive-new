@@ -23,7 +23,7 @@ public class Packet53BlockChange extends Packet {
 		this.metadata = var1.read();
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeInt(this.xPosition);
 		var1.write(this.yPosition);
 		var1.writeInt(this.zPosition);

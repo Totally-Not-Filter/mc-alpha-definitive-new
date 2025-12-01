@@ -15,7 +15,7 @@ public class ItemBucket extends Item {
 		float var5 = var3.prevRotationPitch + (var3.rotationPitch - var3.prevRotationPitch) * var4;
 		float var6 = var3.prevRotationYaw + (var3.rotationYaw - var3.prevRotationYaw) * var4;
 		double var7 = var3.prevPosX + (var3.posX - var3.prevPosX) * (double)var4;
-		double var9 = var3.prevPosY + (var3.posY - var3.prevPosY) * (double)var4;
+		double var9 = var3.prevPosY + (var3.posY - var3.prevPosY) * (double)var4 + 1.62D - (double)var3.yOffset;
 		double var11 = var3.prevPosZ + (var3.posZ - var3.prevPosZ) * (double)var4;
 		Vec3D var13 = Vec3D.createVector(var7, var9, var11);
 		float var14 = MathHelper.cos(-var6 * ((float)Math.PI / 180.0F) - (float)Math.PI);
@@ -26,7 +26,7 @@ public class ItemBucket extends Item {
 		float var20 = var14 * var16;
 		double var21 = 5.0D;
 		Vec3D var23 = var13.addVector((double)var18 * var21, (double)var17 * var21, (double)var20 * var21);
-		MovingObjectPosition var24 = var2.rayTraceBlocks_do(var13, var23, this.isFull == 0);
+		MovingObjectPosition var24 = var2.rayTraceBlocks(var13, var23, this.isFull == 0);
 		if(var24 == null) {
 			return var1;
 		} else {
@@ -34,6 +34,10 @@ public class ItemBucket extends Item {
 				int var25 = var24.blockX;
 				int var26 = var24.blockY;
 				int var27 = var24.blockZ;
+				if(!var2.func_6466_a(var3, var25, var26, var27)) {
+					return var1;
+				}
+
 				if(this.isFull == 0) {
 					if(var2.getBlockMaterial(var25, var26, var27) == Material.water && var2.getBlockMetadata(var25, var26, var27) == 0) {
 						var2.setBlockWithNotify(var25, var26, var27, 0);
@@ -73,8 +77,17 @@ public class ItemBucket extends Item {
 						++var25;
 					}
 
-					if(var2.getBlockId(var25, var26, var27) == 0 || !var2.getBlockMaterial(var25, var26, var27).isSolid()) {
-						var2.setBlockAndMetadataWithNotify(var25, var26, var27, this.isFull, 0);
+					if(var2.getBlockId(var25, var26, var27) == 0 || !var2.getBlockMaterial(var25, var26, var27).func_878_a()) {
+						if(var2.worldProvider.field_6479_d && this.isFull == Block.waterStill.blockID) {
+							var2.playSoundEffect(var7 + 0.5D, var9 + 0.5D, var11 + 0.5D, "random.fizz", 0.5F, 2.6F + (var2.rand.nextFloat() - var2.rand.nextFloat()) * 0.8F);
+
+							for(int var28 = 0; var28 < 8; ++var28) {
+								var2.spawnParticle("largesmoke", (double)var25 + Math.random(), (double)var26 + Math.random(), (double)var27 + Math.random(), 0.0D, 0.0D, 0.0D);
+							}
+						} else {
+							var2.setBlockAndMetadataWithNotify(var25, var26, var27, this.isFull, 0);
+						}
+
 						return new ItemStack(Item.bucketEmpty);
 					}
 				}

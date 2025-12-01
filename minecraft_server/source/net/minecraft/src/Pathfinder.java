@@ -157,7 +157,7 @@ public class Pathfinder {
 			for(int var7 = var3; var7 < var3 + var5.yCoord; ++var7) {
 				for(int var8 = var4; var8 < var4 + var5.zCoord; ++var8) {
 					Material var9 = this.worldMap.getBlockMaterial(var2, var3, var4);
-					if(var9.getIsSolid()) {
+					if(var9.func_218_c()) {
 						return 0;
 					}
 

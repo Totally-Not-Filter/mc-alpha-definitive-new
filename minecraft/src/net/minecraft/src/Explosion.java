@@ -3,126 +3,162 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class Explosion {
-	public void doExplosion(World var1, Entity var2, double var3, double var5, double var7, float var9) {
-		var1.playSoundEffect(var3, var5, var7, "random.explode", 4.0F, (1.0F + (var1.rand.nextFloat() - var1.rand.nextFloat()) * 0.2F) * 0.7F);
-		HashSet var10 = new HashSet();
-		float var11 = var9;
-		byte var12 = 16;
+	public boolean field_12257_a = false;
+	private Random field_12250_h = new Random();
+	private World field_12249_i;
+	public double field_12256_b;
+	public double field_12255_c;
+	public double field_12254_d;
+	public Entity field_12253_e;
+	public float field_12252_f;
+	public Set field_12251_g = new HashSet();
 
-		int var13;
-		int var14;
-		int var15;
-		double var25;
-		double var27;
-		double var29;
-		for(var13 = 0; var13 < var12; ++var13) {
-			for(var14 = 0; var14 < var12; ++var14) {
-				for(var15 = 0; var15 < var12; ++var15) {
-					if(var13 == 0 || var13 == var12 - 1 || var14 == 0 || var14 == var12 - 1 || var15 == 0 || var15 == var12 - 1) {
-						double var16 = (double)((float)var13 / ((float)var12 - 1.0F) * 2.0F - 1.0F);
-						double var18 = (double)((float)var14 / ((float)var12 - 1.0F) * 2.0F - 1.0F);
-						double var20 = (double)((float)var15 / ((float)var12 - 1.0F) * 2.0F - 1.0F);
-						double var22 = Math.sqrt(var16 * var16 + var18 * var18 + var20 * var20);
-						var16 /= var22;
-						var18 /= var22;
-						var20 /= var22;
-						float var24 = var9 * (0.7F + var1.rand.nextFloat() * 0.6F);
-						var25 = var3;
-						var27 = var5;
-						var29 = var7;
+	public Explosion(World var1, Entity var2, double var3, double var5, double var7, float var9) {
+		this.field_12249_i = var1;
+		this.field_12253_e = var2;
+		this.field_12252_f = var9;
+		this.field_12256_b = var3;
+		this.field_12255_c = var5;
+		this.field_12254_d = var7;
+	}
 
-						for(float var31 = 0.3F; var24 > 0.0F; var24 -= var31 * (12.0F / 16.0F)) {
-							int var32 = MathHelper.floor_double(var25);
-							int var33 = MathHelper.floor_double(var27);
-							int var34 = MathHelper.floor_double(var29);
-							int var35 = var1.getBlockId(var32, var33, var34);
-							if(var35 > 0) {
-								var24 -= (Block.blocksList[var35].getExplosionResistance(var2) + 0.3F) * var31;
+	public void func_12248_a() {
+		float var1 = this.field_12252_f;
+		byte var2 = 16;
+
+		int var3;
+		int var4;
+		int var5;
+		double var15;
+		double var17;
+		double var19;
+		for(var3 = 0; var3 < var2; ++var3) {
+			for(var4 = 0; var4 < var2; ++var4) {
+				for(var5 = 0; var5 < var2; ++var5) {
+					if(var3 == 0 || var3 == var2 - 1 || var4 == 0 || var4 == var2 - 1 || var5 == 0 || var5 == var2 - 1) {
+						double var6 = (double)((float)var3 / ((float)var2 - 1.0F) * 2.0F - 1.0F);
+						double var8 = (double)((float)var4 / ((float)var2 - 1.0F) * 2.0F - 1.0F);
+						double var10 = (double)((float)var5 / ((float)var2 - 1.0F) * 2.0F - 1.0F);
+						double var12 = Math.sqrt(var6 * var6 + var8 * var8 + var10 * var10);
+						var6 /= var12;
+						var8 /= var12;
+						var10 /= var12;
+						float var14 = this.field_12252_f * (0.7F + this.field_12249_i.rand.nextFloat() * 0.6F);
+						var15 = this.field_12256_b;
+						var17 = this.field_12255_c;
+						var19 = this.field_12254_d;
+
+						for(float var21 = 0.3F; var14 > 0.0F; var14 -= var21 * (12.0F / 16.0F)) {
+							int var22 = MathHelper.floor_double(var15);
+							int var23 = MathHelper.floor_double(var17);
+							int var24 = MathHelper.floor_double(var19);
+							int var25 = this.field_12249_i.getBlockId(var22, var23, var24);
+							if(var25 > 0) {
+								var14 -= (Block.blocksList[var25].func_227_a(this.field_12253_e) + 0.3F) * var21;
 							}
 
-							if(var24 > 0.0F) {
-								var10.add(new ChunkPosition(var32, var33, var34));
+							if(var14 > 0.0F) {
+								this.field_12251_g.add(new ChunkPosition(var22, var23, var24));
 							}
 
-							var25 += var16 * (double)var31;
-							var27 += var18 * (double)var31;
-							var29 += var20 * (double)var31;
+							var15 += var6 * (double)var21;
+							var17 += var8 * (double)var21;
+							var19 += var10 * (double)var21;
 						}
 					}
 				}
 			}
 		}
 
-		var9 *= 2.0F;
-		var13 = MathHelper.floor_double(var3 - (double)var9 - 1.0D);
-		var14 = MathHelper.floor_double(var3 + (double)var9 + 1.0D);
-		var15 = MathHelper.floor_double(var5 - (double)var9 - 1.0D);
-		int var45 = MathHelper.floor_double(var5 + (double)var9 + 1.0D);
-		int var17 = MathHelper.floor_double(var7 - (double)var9 - 1.0D);
-		int var46 = MathHelper.floor_double(var7 + (double)var9 + 1.0D);
-		List var19 = var1.getEntitiesWithinAABBExcludingEntity(var2, AxisAlignedBB.getBoundingBoxFromPool((double)var13, (double)var15, (double)var17, (double)var14, (double)var45, (double)var46));
-		Vec3D var47 = Vec3D.createVector(var3, var5, var7);
+		this.field_12252_f *= 2.0F;
+		var3 = MathHelper.floor_double(this.field_12256_b - (double)this.field_12252_f - 1.0D);
+		var4 = MathHelper.floor_double(this.field_12256_b + (double)this.field_12252_f + 1.0D);
+		var5 = MathHelper.floor_double(this.field_12255_c - (double)this.field_12252_f - 1.0D);
+		int var29 = MathHelper.floor_double(this.field_12255_c + (double)this.field_12252_f + 1.0D);
+		int var7 = MathHelper.floor_double(this.field_12254_d - (double)this.field_12252_f - 1.0D);
+		int var30 = MathHelper.floor_double(this.field_12254_d + (double)this.field_12252_f + 1.0D);
+		List var9 = this.field_12249_i.getEntitiesWithinAABBExcludingEntity(this.field_12253_e, AxisAlignedBB.getBoundingBoxFromPool((double)var3, (double)var5, (double)var7, (double)var4, (double)var29, (double)var30));
+		Vec3D var31 = Vec3D.createVector(this.field_12256_b, this.field_12255_c, this.field_12254_d);
 
-		double var55;
-		double var56;
-		double var57;
-		for(int var21 = 0; var21 < var19.size(); ++var21) {
-			Entity var49 = (Entity)var19.get(var21);
-			double var23 = var49.getDistance(var3, var5, var7) / (double)var9;
-			if(var23 <= 1.0D) {
-				var25 = var49.posX - var3;
-				var27 = var49.posY - var5;
-				var29 = var49.posZ - var7;
-				var55 = (double)MathHelper.sqrt_double(var25 * var25 + var27 * var27 + var29 * var29);
-				var25 /= var55;
-				var27 /= var55;
-				var29 /= var55;
-				var56 = (double)var1.getBlockDensity(var47, var49.boundingBox);
-				var57 = (1.0D - var23) * var56;
-				var49.attackEntityFrom(var2, (int)((var57 * var57 + var57) / 2.0D * 8.0D * (double)var9 + 1.0D));
-				var49.motionX += var25 * var57;
-				var49.motionY += var27 * var57;
-				var49.motionZ += var29 * var57;
+		for(int var11 = 0; var11 < var9.size(); ++var11) {
+			Entity var33 = (Entity)var9.get(var11);
+			double var13 = var33.getDistance(this.field_12256_b, this.field_12255_c, this.field_12254_d) / (double)this.field_12252_f;
+			if(var13 <= 1.0D) {
+				var15 = var33.posX - this.field_12256_b;
+				var17 = var33.posY - this.field_12255_c;
+				var19 = var33.posZ - this.field_12254_d;
+				double var39 = (double)MathHelper.sqrt_double(var15 * var15 + var17 * var17 + var19 * var19);
+				var15 /= var39;
+				var17 /= var39;
+				var19 /= var39;
+				double var40 = (double)this.field_12249_i.func_675_a(var31, var33.boundingBox);
+				double var41 = (1.0D - var13) * var40;
+				var33.canAttackEntity(this.field_12253_e, (int)((var41 * var41 + var41) / 2.0D * 8.0D * (double)this.field_12252_f + 1.0D));
+				var33.motionX += var15 * var41;
+				var33.motionY += var17 * var41;
+				var33.motionZ += var19 * var41;
 			}
 		}
 
-		var9 = var11;
-		ArrayList var48 = new ArrayList();
-		var48.addAll(var10);
+		this.field_12252_f = var1;
+		ArrayList var32 = new ArrayList();
+		var32.addAll(this.field_12251_g);
+		if(this.field_12257_a) {
+			for(int var34 = var32.size() - 1; var34 >= 0; --var34) {
+				ChunkPosition var35 = (ChunkPosition)var32.get(var34);
+				int var36 = var35.x;
+				int var37 = var35.y;
+				int var16 = var35.z;
+				int var38 = this.field_12249_i.getBlockId(var36, var37, var16);
+				int var18 = this.field_12249_i.getBlockId(var36, var37 - 1, var16);
+				if(var38 == 0 && Block.opaqueCubeLookup[var18] && this.field_12250_h.nextInt(3) == 0) {
+					this.field_12249_i.setBlockWithNotify(var36, var37, var16, Block.fire.blockID);
+				}
+			}
+		}
 
-		for(int var50 = var48.size() - 1; var50 >= 0; --var50) {
-			ChunkPosition var51 = (ChunkPosition)var48.get(var50);
-			int var52 = var51.x;
-			int var53 = var51.y;
-			int var26 = var51.z;
-			int var54 = var1.getBlockId(var52, var53, var26);
+	}
 
-			for(int var28 = 0; var28 < 1; ++var28) {
-				var29 = (double)((float)var52 + var1.rand.nextFloat());
-				var55 = (double)((float)var53 + var1.rand.nextFloat());
-				var56 = (double)((float)var26 + var1.rand.nextFloat());
-				var57 = var29 - var3;
-				double var37 = var55 - var5;
-				double var39 = var56 - var7;
-				double var41 = (double)MathHelper.sqrt_double(var57 * var57 + var37 * var37 + var39 * var39);
-				var57 /= var41;
-				var37 /= var41;
-				var39 /= var41;
-				double var43 = 0.5D / (var41 / (double)var9 + 0.1D);
-				var43 *= (double)(var1.rand.nextFloat() * var1.rand.nextFloat() + 0.3F);
-				var57 *= var43;
-				var37 *= var43;
-				var39 *= var43;
-				var1.spawnParticle("explode", (var29 + var3 * 1.0D) / 2.0D, (var55 + var5 * 1.0D) / 2.0D, (var56 + var7 * 1.0D) / 2.0D, var57, var37, var39);
-				var1.spawnParticle("smoke", var29, var55, var56, var57, var37, var39);
+	public void func_12247_b() {
+		this.field_12249_i.playSoundEffect(this.field_12256_b, this.field_12255_c, this.field_12254_d, "random.explode", 4.0F, (1.0F + (this.field_12249_i.rand.nextFloat() - this.field_12249_i.rand.nextFloat()) * 0.2F) * 0.7F);
+		ArrayList var1 = new ArrayList();
+		var1.addAll(this.field_12251_g);
+
+		for(int var2 = var1.size() - 1; var2 >= 0; --var2) {
+			ChunkPosition var3 = (ChunkPosition)var1.get(var2);
+			int var4 = var3.x;
+			int var5 = var3.y;
+			int var6 = var3.z;
+			int var7 = this.field_12249_i.getBlockId(var4, var5, var6);
+
+			for(int var8 = 0; var8 < 1; ++var8) {
+				double var9 = (double)((float)var4 + this.field_12249_i.rand.nextFloat());
+				double var11 = (double)((float)var5 + this.field_12249_i.rand.nextFloat());
+				double var13 = (double)((float)var6 + this.field_12249_i.rand.nextFloat());
+				double var15 = var9 - this.field_12256_b;
+				double var17 = var11 - this.field_12255_c;
+				double var19 = var13 - this.field_12254_d;
+				double var21 = (double)MathHelper.sqrt_double(var15 * var15 + var17 * var17 + var19 * var19);
+				var15 /= var21;
+				var17 /= var21;
+				var19 /= var21;
+				double var23 = 0.5D / (var21 / (double)this.field_12252_f + 0.1D);
+				var23 *= (double)(this.field_12249_i.rand.nextFloat() * this.field_12249_i.rand.nextFloat() + 0.3F);
+				var15 *= var23;
+				var17 *= var23;
+				var19 *= var23;
+				this.field_12249_i.spawnParticle("explode", (var9 + this.field_12256_b * 1.0D) / 2.0D, (var11 + this.field_12255_c * 1.0D) / 2.0D, (var13 + this.field_12254_d * 1.0D) / 2.0D, var15, var17, var19);
+				this.field_12249_i.spawnParticle("smoke", var9, var11, var13, var15, var17, var19);
 			}
 
-			if(var54 > 0) {
-				Block.blocksList[var54].dropBlockAsItemWithChance(var1, var52, var53, var26, var1.getBlockMetadata(var52, var53, var26), 0.3F);
-				var1.setBlockWithNotify(var52, var53, var26, 0);
-				Block.blocksList[var54].onBlockDestroyedByExplosion(var1, var52, var53, var26);
+			if(var7 > 0) {
+				Block.blocksList[var7].dropBlockAsItemWithChance(this.field_12249_i, var4, var5, var6, this.field_12249_i.getBlockMetadata(var4, var5, var6), 0.3F);
+				this.field_12249_i.setBlockWithNotify(var4, var5, var6, 0);
+				Block.blocksList[var7].onBlockDestroyedByExplosion(this.field_12249_i, var4, var5, var6);
 			}
 		}
 

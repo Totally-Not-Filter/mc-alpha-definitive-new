@@ -22,8 +22,8 @@ public class Packet31RelEntityMove extends Packet30Entity {
 		this.zPosition = var1.readByte();
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
-		super.writePacket(var1);
+	public void writePacketData(DataOutputStream var1) throws IOException {
+		super.writePacketData(var1);
 		var1.writeByte(this.xPosition);
 		var1.writeByte(this.yPosition);
 		var1.writeByte(this.zPosition);

@@ -28,7 +28,7 @@ class ThreadDownloadImage extends Thread {
 				if(this.buffer == null) {
 					this.imageData.image = ImageIO.read(var1.getInputStream());
 				} else {
-					this.imageData.image = this.buffer.parseUserSkin(ImageIO.read(var1.getInputStream()));
+					this.imageData.image = this.buffer.func_883_a(ImageIO.read(var1.getInputStream()));
 				}
 
 				return;

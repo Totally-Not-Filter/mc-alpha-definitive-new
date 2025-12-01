@@ -25,11 +25,11 @@ public class BlockSand extends Block {
 		if(canFallBelow(var1, var2, var3 - 1, var4) && var3 >= 0) {
 			EntityFallingSand var8 = new EntityFallingSand(var1, (float)var2 + 0.5F, (float)var3 + 0.5F, (float)var4 + 0.5F, this.blockID);
 			if(fallInstantly) {
-				while(!var8.isDead) {
+				while(!var8.field_304_B) {
 					var8.onUpdate();
 				}
 			} else {
-				var1.spawnEntityInWorld(var8);
+				var1.entityJoinedWorld(var8);
 			}
 		}
 
@@ -46,7 +46,7 @@ public class BlockSand extends Block {
 		} else if(var4 == Block.fire.blockID) {
 			return true;
 		} else {
-			Material var5 = Block.blocksList[var4].material;
+			Material var5 = Block.blocksList[var4].blockMaterial;
 			return var5 == Material.water ? true : var5 == Material.lava;
 		}
 	}

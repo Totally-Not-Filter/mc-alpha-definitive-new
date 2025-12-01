@@ -14,7 +14,7 @@ public class MinecraftAppletImpl extends Minecraft {
 		this.mainFrame = var1;
 	}
 
-	public void displayUnexpectedThrowable(UnexpectedThrowable var1) {
+	public void func_4007_a(UnexpectedThrowable var1) {
 		this.mainFrame.removeAll();
 		this.mainFrame.setLayout(new BorderLayout());
 		this.mainFrame.add(new PanelCrashReport(var1), "Center");

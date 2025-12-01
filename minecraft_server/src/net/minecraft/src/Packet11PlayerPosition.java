@@ -17,12 +17,12 @@ public class Packet11PlayerPosition extends Packet10Flying {
 		super.readPacketData(var1);
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeDouble(this.xPosition);
 		var1.writeDouble(this.yPosition);
 		var1.writeDouble(this.stance);
 		var1.writeDouble(this.zPosition);
-		super.writePacket(var1);
+		super.writePacketData(var1);
 	}
 
 	public int getPacketSize() {

@@ -7,5 +7,5 @@ public interface IBlockAccess {
 
 	Material getBlockMaterial(int var1, int var2, int var3);
 
-	boolean isBlockNormalCube(int var1, int var2, int var3);
+	boolean doesBlockAllowAttachment(int var1, int var2, int var3);
 }

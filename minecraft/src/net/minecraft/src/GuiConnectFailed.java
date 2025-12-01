@@ -1,12 +1,12 @@
 package net.minecraft.src;
 
 public class GuiConnectFailed extends GuiScreen {
-	private String message;
-	private String description;
+	private String errorMessage;
+	private String errorDetail;
 
 	public GuiConnectFailed(String var1, String var2) {
-		this.message = var1;
-		this.description = var2;
+		this.errorMessage = var1;
+		this.errorDetail = var2;
 	}
 
 	public void updateScreen() {
@@ -29,8 +29,8 @@ public class GuiConnectFailed extends GuiScreen {
 
 	public void drawScreen(int var1, int var2, float var3) {
 		this.drawDefaultBackground();
-		this.drawCenteredString(this.fontRenderer, this.message, this.width / 2, this.height / 2 - 50, 16777215);
-		this.drawCenteredString(this.fontRenderer, this.description, this.width / 2, this.height / 2 - 10, 16777215);
+		this.drawCenteredString(this.fontRenderer, this.errorMessage, this.width / 2, this.height / 2 - 50, 16777215);
+		this.drawCenteredString(this.fontRenderer, this.errorDetail, this.width / 2, this.height / 2 - 10, 16777215);
 		super.drawScreen(var1, var2, var3);
 	}
 }

@@ -17,10 +17,10 @@ public class BlockFurnace extends BlockContainer {
 
 	public void onBlockAdded(World var1, int var2, int var3, int var4) {
 		super.onBlockAdded(var1, var2, var3, var4);
-		this.setDefaultDirection(var1, var2, var3, var4);
+		this.func_284_h(var1, var2, var3, var4);
 	}
 
-	private void setDefaultDirection(World var1, int var2, int var3, int var4) {
+	private void func_284_h(World var1, int var2, int var3, int var4) {
 		int var5 = var1.getBlockId(var2, var3, var4 - 1);
 		int var6 = var1.getBlockId(var2, var3, var4 + 1);
 		int var7 = var1.getBlockId(var2 - 1, var3, var4);
@@ -104,7 +104,27 @@ public class BlockFurnace extends BlockContainer {
 		var1.setBlockTileEntity(var2, var3, var4, var6);
 	}
 
-	protected TileEntity getBlockEntity() {
+	protected TileEntity SetBlockEntity() {
 		return new TileEntityFurnace();
+	}
+
+	public void onBlockPlacedBy(World var1, int var2, int var3, int var4, EntityLiving var5) {
+		int var6 = MathHelper.floor_double((double)(var5.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		if(var6 == 0) {
+			var1.setBlockMetadataWithNotify(var2, var3, var4, 2);
+		}
+
+		if(var6 == 1) {
+			var1.setBlockMetadataWithNotify(var2, var3, var4, 5);
+		}
+
+		if(var6 == 2) {
+			var1.setBlockMetadataWithNotify(var2, var3, var4, 3);
+		}
+
+		if(var6 == 3) {
+			var1.setBlockMetadataWithNotify(var2, var3, var4, 4);
+		}
+
 	}
 }

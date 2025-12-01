@@ -6,7 +6,7 @@ public class ChunkProviderIso implements IChunkProvider {
 	private Chunk[] chunks = new Chunk[256];
 	private World worldObj;
 	private IChunkLoader chunkLoader;
-	byte[] blocks = new byte[-Short.MIN_VALUE];
+	byte[] field_899_a = new byte[-Short.MIN_VALUE];
 
 	public ChunkProviderIso(World var1, IChunkLoader var2) {
 		this.worldObj = var1;
@@ -23,10 +23,10 @@ public class ChunkProviderIso implements IChunkProvider {
 
 		try {
 			if(!this.chunkExists(var1, var2)) {
-				Chunk var4 = this.getChunkAt(var1, var2);
+				Chunk var4 = this.func_543_c(var1, var2);
 				if(var4 == null) {
-					var4 = new Chunk(this.worldObj, this.blocks, var1, var2);
-					var4.isChunkRendered = true;
+					var4 = new Chunk(this.worldObj, this.field_899_a, var1, var2);
+					var4.field_1524_q = true;
 					var4.neverSave = true;
 				}
 
@@ -40,7 +40,7 @@ public class ChunkProviderIso implements IChunkProvider {
 		}
 	}
 
-	private synchronized Chunk getChunkAt(int var1, int var2) {
+	private synchronized Chunk func_543_c(int var1, int var2) {
 		try {
 			return this.chunkLoader.loadChunk(this.worldObj, var1, var2);
 		} catch (IOException var4) {
@@ -56,11 +56,11 @@ public class ChunkProviderIso implements IChunkProvider {
 		return true;
 	}
 
-	public boolean unload100OldestChunks() {
+	public boolean func_532_a() {
 		return false;
 	}
 
-	public boolean canSave() {
+	public boolean func_536_b() {
 		return false;
 	}
 }

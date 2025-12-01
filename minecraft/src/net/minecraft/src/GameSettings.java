@@ -20,6 +20,7 @@ public class GameSettings {
 	public boolean anaglyph = false;
 	public boolean limitFramerate = false;
 	public boolean fancyGraphics = true;
+	public String skin = "Default";
 	public KeyBinding keyBindForward = new KeyBinding("Forward", 17);
 	public KeyBinding keyBindLeft = new KeyBinding("Left", 30);
 	public KeyBinding keyBindBack = new KeyBinding("Back", 31);
@@ -36,6 +37,7 @@ public class GameSettings {
 	public int numberOfOptions = 10;
 	public int difficulty = 2;
 	public boolean thirdPersonView = false;
+	public String field_12259_z = "";
 
 	public GameSettings(Minecraft var1, File var2) {
 		this.mc = var1;
@@ -46,7 +48,7 @@ public class GameSettings {
 	public GameSettings() {
 	}
 
-	public String getKeyBindingDescription(int var1) {
+	public String getKeyBinding(int var1) {
 		return this.keyBindings[var1].keyDescription + ": " + Keyboard.getKeyName(this.keyBindings[var1].keyCode);
 	}
 
@@ -100,13 +102,13 @@ public class GameSettings {
 
 		if(var1 == 9) {
 			this.fancyGraphics = !this.fancyGraphics;
-			this.mc.renderGlobal.loadRenderers();
+			this.mc.field_6323_f.func_958_a();
 		}
 
 		this.saveOptions();
 	}
 
-	public int isSlider(int var1) {
+	public int getOptionControlType(int var1) {
 		return var1 == 0 ? 1 : (var1 == 1 ? 1 : (var1 == 3 ? 1 : 0));
 	}
 
@@ -175,6 +177,14 @@ public class GameSettings {
 					this.fancyGraphics = var3[1].equals("true");
 				}
 
+				if(var3[0].equals("skin")) {
+					this.skin = var3[1];
+				}
+
+				if(var3[0].equals("lastServer")) {
+					this.field_12259_z = var3[1];
+				}
+
 				for(int var4 = 0; var4 < this.keyBindings.length; ++var4) {
 					if(var3[0].equals("key_" + this.keyBindings[var4].keyDescription)) {
 						this.keyBindings[var4].keyCode = Integer.parseInt(var3[1]);
@@ -205,6 +215,8 @@ public class GameSettings {
 			var1.println("limitFramerate:" + this.limitFramerate);
 			var1.println("difficulty:" + this.difficulty);
 			var1.println("fancyGraphics:" + this.fancyGraphics);
+			var1.println("skin:" + this.skin);
+			var1.println("lastServer:" + this.field_12259_z);
 
 			for(int var2 = 0; var2 < this.keyBindings.length; ++var2) {
 				var1.println("key_" + this.keyBindings[var2].keyDescription + ":" + this.keyBindings[var2].keyCode);

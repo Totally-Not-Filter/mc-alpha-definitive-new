@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,7 +19,7 @@ public class ServerConfigurationManager {
 	private MinecraftServer mcServer;
 	private PlayerManager playerManagerObj;
 	private int maxPlayers;
-	private Set bannedPlayers = new HashSet();
+	private Set field_9252_f = new HashSet();
 	private Set bannedIPs = new HashSet();
 	private Set ops = new HashSet();
 	private File bannedPlayersFile;
@@ -44,39 +43,39 @@ public class ServerConfigurationManager {
 	}
 
 	public void setPlayerManager(WorldServer var1) {
-		this.playerNBTManagerObj = new PlayerNBTManager(new File(var1.saveDirectory, "players"));
+		this.playerNBTManagerObj = new PlayerNBTManager(new File(var1.field_797_s, "players"));
 	}
 
-	public int getMaxTrackingDistance() {
-		return this.playerManagerObj.getMaxTrackingDistance();
+	public int func_640_a() {
+		return this.playerManagerObj.func_542_b();
 	}
 
 	public void playerLoggedIn(EntityPlayerMP var1) {
 		this.playerEntities.add(var1);
-		this.playerNBTManagerObj.readPlayerNBT(var1);
-		this.mcServer.worldMngr.chunkProviderServer.loadChunk((int)var1.posX >> 4, (int)var1.posZ >> 4);
+		this.playerNBTManagerObj.readPlayerData(var1);
+		this.mcServer.worldMngr.A.loadChunk((int)var1.posX >> 4, (int)var1.posZ >> 4);
 
 		while(this.mcServer.worldMngr.getCollidingBoundingBoxes(var1, var1.boundingBox).size() != 0) {
 			var1.setPosition(var1.posX, var1.posY + 1.0D, var1.posZ);
 		}
 
-		this.mcServer.worldMngr.spawnEntityInWorld(var1);
-		this.playerManagerObj.addPlayer(var1);
+		this.mcServer.worldMngr.entityJoinedWorld(var1);
+		this.playerManagerObj.func_9214_a(var1);
 	}
 
-	public void serverUpdateMountedMovingPlayer(EntityPlayerMP var1) {
-		this.playerManagerObj.updateMountedMovingPlayer(var1);
+	public void func_613_b(EntityPlayerMP var1) {
+		this.playerManagerObj.func_543_c(var1);
 	}
 
 	public void playerLoggedOut(EntityPlayerMP var1) {
-		this.playerManagerObj.removePlayer(var1);
-		this.playerNBTManagerObj.writePlayerNBT(var1);
-		this.mcServer.worldMngr.setEntityDead(var1);
+		this.playerNBTManagerObj.writePlayerData(var1);
+		this.mcServer.worldMngr.func_12016_d(var1);
 		this.playerEntities.remove(var1);
+		this.playerManagerObj.func_9213_b(var1);
 	}
 
 	public EntityPlayerMP login(NetLoginHandler var1, String var2, String var3) {
-		if(this.bannedPlayers.contains(var2.trim().toLowerCase())) {
+		if(this.field_9252_f.contains(var2.trim().toLowerCase())) {
 			var1.kickUser("You are banned from this server!");
 			return null;
 		} else {
@@ -93,7 +92,7 @@ public class ServerConfigurationManager {
 				for(int var5 = 0; var5 < this.playerEntities.size(); ++var5) {
 					EntityPlayerMP var6 = (EntityPlayerMP)this.playerEntities.get(var5);
 					if(var6.username.equalsIgnoreCase(var2)) {
-						var6.playerNetServerHandler.kickPlayer("You logged in from another location");
+						var6.field_421_a.func_43_c("You logged in from another location");
 					}
 				}
 
@@ -102,18 +101,41 @@ public class ServerConfigurationManager {
 		}
 	}
 
-	public void onTick() throws IOException {
-		this.playerManagerObj.updatePlayerInstances();
+	public EntityPlayerMP func_9242_d(EntityPlayerMP var1) {
+		this.mcServer.field_6028_k.func_9238_a(var1);
+		this.mcServer.field_6028_k.func_610_b(var1);
+		this.playerManagerObj.func_9213_b(var1);
+		this.playerEntities.remove(var1);
+		this.mcServer.worldMngr.func_12014_e(var1);
+		EntityPlayerMP var2 = new EntityPlayerMP(this.mcServer, this.mcServer.worldMngr, var1.username, new ItemInWorldManager(this.mcServer.worldMngr));
+		var2.field_331_c = var1.field_331_c;
+		var2.field_421_a = var1.field_421_a;
+		this.mcServer.worldMngr.A.loadChunk((int)var2.posX >> 4, (int)var2.posZ >> 4);
+
+		while(this.mcServer.worldMngr.getCollidingBoundingBoxes(var2, var2.boundingBox).size() != 0) {
+			var2.setPosition(var2.posX, var2.posY + 1.0D, var2.posZ);
+		}
+
+		var2.field_421_a.sendPacket(new Packet9());
+		var2.field_421_a.func_41_a(var2.posX, var2.posY, var2.posZ, var2.rotationYaw, var2.rotationPitch);
+		this.playerManagerObj.func_9214_a(var2);
+		this.mcServer.worldMngr.entityJoinedWorld(var2);
+		this.playerEntities.add(var2);
+		return var2;
 	}
 
-	public void markBlockNeedsUpdate(int var1, int var2, int var3) {
-		this.playerManagerObj.markBlockNeedsUpdate(var1, var2, var3);
+	public void func_637_b() {
+		this.playerManagerObj.func_538_a();
+	}
+
+	public void func_622_a(int var1, int var2, int var3) {
+		this.playerManagerObj.func_535_a(var1, var2, var3);
 	}
 
 	public void sendPacketToAllPlayers(Packet var1) {
 		for(int var2 = 0; var2 < this.playerEntities.size(); ++var2) {
 			EntityPlayerMP var3 = (EntityPlayerMP)this.playerEntities.get(var2);
-			var3.playerNetServerHandler.sendPacket(var1);
+			var3.field_421_a.sendPacket(var1);
 		}
 
 	}
@@ -133,18 +155,18 @@ public class ServerConfigurationManager {
 	}
 
 	public void banPlayer(String var1) {
-		this.bannedPlayers.add(var1.toLowerCase());
+		this.field_9252_f.add(var1.toLowerCase());
 		this.writeBannedPlayers();
 	}
 
-	public void pardonPlayer(String var1) {
-		this.bannedPlayers.remove(var1.toLowerCase());
+	public void unbanPlayer(String var1) {
+		this.field_9252_f.remove(var1.toLowerCase());
 		this.writeBannedPlayers();
 	}
 
 	private void readBannedPlayers() {
 		try {
-			this.bannedPlayers.clear();
+			this.field_9252_f.clear();
 			BufferedReader var1 = new BufferedReader(new FileReader(this.bannedPlayersFile));
 			String var2 = "";
 
@@ -155,7 +177,7 @@ public class ServerConfigurationManager {
 					break;
 				}
 
-				this.bannedPlayers.add(var2.trim().toLowerCase());
+				this.field_9252_f.add(var2.trim().toLowerCase());
 			}
 		} catch (Exception var3) {
 			logger.warning("Failed to load ban list: " + var3);
@@ -166,7 +188,7 @@ public class ServerConfigurationManager {
 	private void writeBannedPlayers() {
 		try {
 			PrintWriter var1 = new PrintWriter(new FileWriter(this.bannedPlayersFile, false));
-			Iterator var2 = this.bannedPlayers.iterator();
+			Iterator var2 = this.field_9252_f.iterator();
 
 			while(var2.hasNext()) {
 				String var3 = (String)var2.next();
@@ -185,7 +207,7 @@ public class ServerConfigurationManager {
 		this.saveBannedList();
 	}
 
-	public void pardonIP(String var1) {
+	public void unbanIP(String var1) {
 		this.bannedIPs.remove(var1.toLowerCase());
 		this.saveBannedList();
 	}
@@ -294,18 +316,31 @@ public class ServerConfigurationManager {
 	public void sendChatMessageToPlayer(String var1, String var2) {
 		EntityPlayerMP var3 = this.getPlayerEntity(var1);
 		if(var3 != null) {
-			var3.playerNetServerHandler.sendPacket(new Packet3Chat(var2));
+			var3.field_421_a.sendPacket(new Packet3Chat(var2));
 		}
 
 	}
 
-	public void sendChatMessageToAllOps(String var1) {
+	public void func_12022_a(double var1, double var3, double var5, double var7, Packet var9) {
+		for(int var10 = 0; var10 < this.playerEntities.size(); ++var10) {
+			EntityPlayerMP var11 = (EntityPlayerMP)this.playerEntities.get(var10);
+			double var12 = var1 - var11.posX;
+			double var14 = var3 - var11.posY;
+			double var16 = var5 - var11.posZ;
+			if(var12 * var12 + var14 * var14 + var16 * var16 < var7 * var7) {
+				var11.field_421_a.sendPacket(var9);
+			}
+		}
+
+	}
+
+	public void sendChatMessageToAllPlayers(String var1) {
 		Packet3Chat var2 = new Packet3Chat(var1);
 
 		for(int var3 = 0; var3 < this.playerEntities.size(); ++var3) {
 			EntityPlayerMP var4 = (EntityPlayerMP)this.playerEntities.get(var3);
 			if(this.isOp(var4.username)) {
-				var4.playerNetServerHandler.sendPacket(var2);
+				var4.field_421_a.sendPacket(var2);
 			}
 		}
 
@@ -314,7 +349,7 @@ public class ServerConfigurationManager {
 	public boolean sendPacketToPlayer(String var1, Packet var2) {
 		EntityPlayerMP var3 = this.getPlayerEntity(var1);
 		if(var3 != null) {
-			var3.playerNetServerHandler.sendPacket(var2);
+			var3.field_421_a.sendPacket(var2);
 			return true;
 		} else {
 			return false;
@@ -322,12 +357,12 @@ public class ServerConfigurationManager {
 	}
 
 	public void sentTileEntityToPlayer(int var1, int var2, int var3, TileEntity var4) {
-		this.playerManagerObj.sendTileEntity(new Packet59ComplexEntity(var1, var2, var3, var4), var1, var2, var3);
+		this.playerManagerObj.func_541_a(new Packet59ComplexEntity(var1, var2, var3, var4), var1, var2, var3);
 	}
 
 	public void savePlayerStates() {
 		for(int var1 = 0; var1 < this.playerEntities.size(); ++var1) {
-			this.playerNBTManagerObj.writePlayerNBT((EntityPlayerMP)this.playerEntities.get(var1));
+			this.playerNBTManagerObj.writePlayerData((EntityPlayerMP)this.playerEntities.get(var1));
 		}
 
 	}

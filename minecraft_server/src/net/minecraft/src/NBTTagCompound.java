@@ -15,7 +15,7 @@ public class NBTTagCompound extends NBTBase {
 
 		while(var2.hasNext()) {
 			NBTBase var3 = (NBTBase)var2.next();
-			NBTBase.writeNamedTag(var3, var1);
+			NBTBase.writeTag(var3, var1);
 		}
 
 		var1.writeByte(0);
@@ -25,7 +25,7 @@ public class NBTTagCompound extends NBTBase {
 		this.tagMap.clear();
 
 		while(true) {
-			NBTBase var2 = NBTBase.readNamedTag(var1);
+			NBTBase var2 = NBTBase.readTag(var1);
 			if(var2.getType() == 0) {
 				return;
 			}

@@ -1,26 +1,26 @@
 package net.minecraft.src;
 
-public class OSMap {
-	public static final int[] osValues = new int[EnumOS.values().length];
+class OsMap {
+	static final int[] field_1193_a = new int[EnumOS1.values().length];
 
 	static {
 		try {
-			osValues[EnumOS.linux.ordinal()] = 1;
+			field_1193_a[EnumOS1.linux.ordinal()] = 1;
 		} catch (NoSuchFieldError var4) {
 		}
 
 		try {
-			osValues[EnumOS.solaris.ordinal()] = 2;
+			field_1193_a[EnumOS1.solaris.ordinal()] = 2;
 		} catch (NoSuchFieldError var3) {
 		}
 
 		try {
-			osValues[EnumOS.windows.ordinal()] = 3;
+			field_1193_a[EnumOS1.windows.ordinal()] = 3;
 		} catch (NoSuchFieldError var2) {
 		}
 
 		try {
-			osValues[EnumOS.macos.ordinal()] = 4;
+			field_1193_a[EnumOS1.macos.ordinal()] = 4;
 		} catch (NoSuchFieldError var1) {
 		}
 

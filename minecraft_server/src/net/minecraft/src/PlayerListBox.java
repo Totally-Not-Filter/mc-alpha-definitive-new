@@ -6,15 +6,15 @@ import net.minecraft.server.MinecraftServer;
 
 public class PlayerListBox extends JList implements IUpdatePlayerListBox {
 	private MinecraftServer mcServer;
-	private int playerCount = 0;
+	private int updateCounter = 0;
 
 	public PlayerListBox(MinecraftServer var1) {
 		this.mcServer = var1;
-		var1.addToOnlinePlayerList(this);
+		var1.func_6022_a(this);
 	}
 
-	public void addAllPlayers() {
-		if(this.playerCount++ % 20 == 0) {
+	public void update() {
+		if(this.updateCounter++ % 20 == 0) {
 			Vector var1 = new Vector();
 
 			for(int var2 = 0; var2 < this.mcServer.configManager.playerEntities.size(); ++var2) {

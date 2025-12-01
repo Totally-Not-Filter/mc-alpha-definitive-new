@@ -7,9 +7,9 @@ public interface IChunkLoader {
 
 	void saveChunk(World var1, Chunk var2) throws IOException;
 
-	void saveExtraChunkData(World var1, Chunk var2);
+	void saveExtraChunkData(World var1, Chunk var2) throws IOException;
 
-	void chunkTick();
+	void func_814_a();
 
 	void saveExtraData();
 }

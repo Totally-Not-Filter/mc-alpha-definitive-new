@@ -4,11 +4,11 @@ public class ItemTool extends Item {
 	private Block[] blocksEffectiveAgainst;
 	private float efficiencyOnProperMaterial = 4.0F;
 	private int damageVsEntity;
-	protected int toolMaterial;
+	protected int ingredientQuality;
 
 	public ItemTool(int var1, int var2, int var3, Block[] var4) {
 		super(var1);
-		this.toolMaterial = var3;
+		this.ingredientQuality = var3;
 		this.blocksEffectiveAgainst = var4;
 		this.maxStackSize = 1;
 		this.maxDamage = 32 << var3;
@@ -34,7 +34,7 @@ public class ItemTool extends Item {
 		var1.damageItem(2);
 	}
 
-	public void onBlockDestroyed(ItemStack var1, int var2, int var3, int var4, int var5) {
+	public void hitBlock(ItemStack var1, int var2, int var3, int var4, int var5) {
 		var1.damageItem(1);
 	}
 

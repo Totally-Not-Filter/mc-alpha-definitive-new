@@ -4,10 +4,10 @@ import org.lwjgl.opengl.GL11;
 
 public abstract class Render {
 	protected RenderManager renderManager;
-	private ModelBase modelBase = new ModelBiped();
-	private RenderBlocks renderBlocks = new RenderBlocks();
-	protected float shadowSize = 0.0F;
-	protected float shadowOpaque = 1.0F;
+	private ModelBase unusedModelBiped = new ModelBiped();
+	private RenderBlocks unusedRenderBlocks = new RenderBlocks();
+	protected float field_9246_c = 0.0F;
+	protected float field_194_c = 1.0F;
 
 	public abstract void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9);
 
@@ -16,7 +16,7 @@ public abstract class Render {
 		var2.bindTexture(var2.getTexture(var1));
 	}
 
-	protected void loadDownloadableImageTexture(String var1, String var2) {
+	protected void func_140_a(String var1, String var2) {
 		RenderEngine var3 = this.renderManager.renderEngine;
 		var3.bindTexture(var3.getTextureForDownloadableImage(var1, var2));
 	}
@@ -40,8 +40,8 @@ public abstract class Render {
 		float var19 = 0.5F;
 		float var20 = 0.0F;
 		float var21 = var1.height / var1.width;
-		GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-		GL11.glTranslatef(0.0F, 0.0F, 0.4F + (float)((int)var21) * 0.02F);
+		GL11.glRotatef(-this.renderManager.field_1225_i, 0.0F, 1.0F, 0.0F);
+		GL11.glTranslatef(0.0F, 0.0F, -0.4F + (float)((int)var21) * 0.02F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		var17.startDrawingQuads();
 
@@ -65,12 +65,12 @@ public abstract class Render {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		RenderEngine var10 = this.renderManager.renderEngine;
-		var10.bindTexture(var10.getTexture("%%/shadow.png"));
+		var10.bindTexture(var10.getTexture("%clamp%/misc/shadow.png"));
 		World var11 = this.getWorldFromRenderManager();
 		GL11.glDepthMask(false);
-		float var12 = this.shadowSize;
+		float var12 = this.field_9246_c;
 		double var13 = var1.lastTickPosX + (var1.posX - var1.lastTickPosX) * (double)var9;
-		double var15 = var1.lastTickPosY + (var1.posY - var1.lastTickPosY) * (double)var9 + (double)var1.getShadowSize();
+		double var15 = var1.lastTickPosY + (var1.posY - var1.lastTickPosY) * (double)var9 + (double)var1.func_392_h_();
 		double var17 = var1.lastTickPosZ + (var1.posZ - var1.lastTickPosZ) * (double)var9;
 		int var19 = MathHelper.floor_double(var13 - (double)var12);
 		int var20 = MathHelper.floor_double(var13 + (double)var12);
@@ -89,7 +89,7 @@ public abstract class Render {
 				for(int var34 = var23; var34 <= var24; ++var34) {
 					int var35 = var11.getBlockId(var32, var33 - 1, var34);
 					if(var35 > 0 && var11.getBlockLightValue(var32, var33, var34) > 3) {
-						this.renderShadowOnBlock(Block.blocksList[var35], var2, var4 + (double)var1.getShadowSize(), var6, var32, var33, var34, var8, var12, var25, var27 + (double)var1.getShadowSize(), var29);
+						this.renderShadowOnBlock(Block.blocksList[var35], var2, var4 + (double)var1.func_392_h_(), var6, var32, var33, var34, var8, var12, var25, var27 + (double)var1.func_392_h_(), var29);
 					}
 				}
 			}
@@ -108,14 +108,14 @@ public abstract class Render {
 	private void renderShadowOnBlock(Block var1, double var2, double var4, double var6, int var8, int var9, int var10, float var11, float var12, double var13, double var15, double var17) {
 		Tessellator var19 = Tessellator.instance;
 		if(var1.renderAsNormalBlock()) {
-			double var20 = ((double)var11 - (var4 - ((double)var9 + var15)) / 2.0D) * 0.5D * (double)this.getWorldFromRenderManager().getBrightness(var8, var9, var10);
+			double var20 = ((double)var11 - (var4 - ((double)var9 + var15)) / 2.0D) * 0.5D * (double)this.getWorldFromRenderManager().getLightBrightness(var8, var9, var10);
 			if(var20 >= 0.0D) {
 				if(var20 > 1.0D) {
 					var20 = 1.0D;
 				}
 
 				var19.setColorRGBA_F(1.0F, 1.0F, 1.0F, (float)var20);
-				double var22 = (double)var8 + var1.minX + var13;
+				double var22 = (double)var8 + var1.field_370_bf + var13;
 				double var24 = (double)var8 + var1.maxX + var13;
 				double var26 = (double)var9 + var1.minY + var15 + 1.0D / 64.0D;
 				double var28 = (double)var10 + var1.minZ + var17;
@@ -208,15 +208,15 @@ public abstract class Render {
 	}
 
 	public void doRenderShadowAndFire(Entity var1, double var2, double var4, double var6, float var8, float var9) {
-		if(this.renderManager.options.fancyGraphics && this.shadowSize > 0.0F) {
-			double var10 = this.renderManager.getDistanceToCamera(var1.posX, var1.posY, var1.posZ);
-			float var12 = (float)((1.0D - var10 / 256.0D) * (double)this.shadowOpaque);
+		if(this.renderManager.options.fancyGraphics && this.field_9246_c > 0.0F) {
+			double var10 = this.renderManager.func_851_a(var1.posX, var1.posY, var1.posZ);
+			float var12 = (float)((1.0D - var10 / 256.0D) * (double)this.field_194_c);
 			if(var12 > 0.0F) {
 				this.renderShadow(var1, var2, var4, var6, var12, var9);
 			}
 		}
 
-		if(var1.fire > 0) {
+		if(var1.fire > 0 || var1.field_9299_bv) {
 			this.renderEntityOnFire(var1, var2, var4, var6, var9);
 		}
 

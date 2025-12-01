@@ -1,19 +1,19 @@
 package net.minecraft.src;
 
-public class EntitySpider extends EntityMob {
+public class EntitySpider extends EntityMobs {
 	public EntitySpider(World var1) {
 		super(var1);
 		this.texture = "/mob/spider.png";
 		this.setSize(1.4F, 0.9F);
-		this.moveSpeed = 0.8F;
+		this.field_9333_am = 0.8F;
 	}
 
-	public double getMountedYOffset() {
+	public double func_402_h() {
 		return (double)this.height * 0.75D - 0.5D;
 	}
 
 	protected Entity findPlayerToAttack() {
-		float var1 = this.getBrightness(1.0F);
+		float var1 = this.getEntityBrightness(1.0F);
 		if(var1 < 0.5F) {
 			double var2 = 16.0D;
 			return this.worldObj.getClosestPlayerToEntity(this, var2);
@@ -35,9 +35,9 @@ public class EntitySpider extends EntityMob {
 	}
 
 	protected void attackEntity(Entity var1, float var2) {
-		float var3 = this.getBrightness(1.0F);
+		float var3 = this.getEntityBrightness(1.0F);
 		if(var3 > 0.5F && this.rand.nextInt(100) == 0) {
-			this.entityToAttack = null;
+			this.playerToAttack = null;
 		} else {
 			if(var2 > 2.0F && var2 < 6.0F && this.rand.nextInt(10) == 0) {
 				if(this.onGround) {

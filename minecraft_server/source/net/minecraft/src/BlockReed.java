@@ -36,10 +36,10 @@ public class BlockReed extends Block {
 	}
 
 	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
-		this.checkBlockCoordValid(var1, var2, var3, var4);
+		this.func_4037_g(var1, var2, var3, var4);
 	}
 
-	protected final void checkBlockCoordValid(World var1, int var2, int var3, int var4) {
+	protected final void func_4037_g(World var1, int var2, int var3, int var4) {
 		if(!this.canBlockStay(var1, var2, var3, var4)) {
 			this.dropBlockAsItem(var1, var2, var3, var4, var1.getBlockMetadata(var2, var3, var4));
 			var1.setBlockWithNotify(var2, var3, var4, 0);
@@ -56,14 +56,10 @@ public class BlockReed extends Block {
 	}
 
 	public int idDropped(int var1, Random var2) {
-		return Item.reed.shiftedIndex;
+		return Item.reed.swiftedIndex;
 	}
 
-	public boolean isOpaqueCube() {
+	public boolean allowsAttachment() {
 		return false;
-	}
-
-	public int getRenderType() {
-		return 1;
 	}
 }

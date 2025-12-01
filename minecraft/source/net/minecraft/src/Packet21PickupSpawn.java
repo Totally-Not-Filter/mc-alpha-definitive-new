@@ -12,15 +12,15 @@ public class Packet21PickupSpawn extends Packet {
 	public byte rotation;
 	public byte pitch;
 	public byte roll;
-	public int itemID;
+	public int itemId;
 	public int count;
 
 	public Packet21PickupSpawn() {
 	}
 
 	public Packet21PickupSpawn(EntityItem var1) {
-		this.entityId = var1.entityID;
-		this.itemID = var1.item.itemID;
+		this.entityId = var1.field_620_ab;
+		this.itemId = var1.item.itemID;
 		this.count = var1.item.stackSize;
 		this.xPosition = MathHelper.floor_double(var1.posX * 32.0D);
 		this.yPosition = MathHelper.floor_double(var1.posY * 32.0D);
@@ -32,7 +32,7 @@ public class Packet21PickupSpawn extends Packet {
 
 	public void readPacketData(DataInputStream var1) throws IOException {
 		this.entityId = var1.readInt();
-		this.itemID = var1.readShort();
+		this.itemId = var1.readShort();
 		this.count = var1.readByte();
 		this.xPosition = var1.readInt();
 		this.yPosition = var1.readInt();
@@ -42,9 +42,9 @@ public class Packet21PickupSpawn extends Packet {
 		this.roll = var1.readByte();
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeInt(this.entityId);
-		var1.writeShort(this.itemID);
+		var1.writeShort(this.itemId);
 		var1.writeByte(this.count);
 		var1.writeInt(this.xPosition);
 		var1.writeInt(this.yPosition);

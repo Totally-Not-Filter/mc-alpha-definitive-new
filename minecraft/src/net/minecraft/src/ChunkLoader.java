@@ -3,6 +3,7 @@ package net.minecraft.src;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Iterator;
 
 public class ChunkLoader implements IChunkLoader {
@@ -40,12 +41,12 @@ public class ChunkLoader implements IChunkLoader {
 		return !var6.exists() && !this.createIfNecessary ? null : var6;
 	}
 
-	public Chunk loadChunk(World var1, int var2, int var3) {
+	public Chunk loadChunk(World var1, int var2, int var3) throws IOException {
 		File var4 = this.chunkFileForXZ(var2, var3);
 		if(var4 != null && var4.exists()) {
 			try {
 				FileInputStream var5 = new FileInputStream(var4);
-				NBTTagCompound var6 = CompressedStreamTools.readCompressed(var5);
+				NBTTagCompound var6 = CompressedStreamTools.func_1138_a(var5);
 				if(!var6.hasKey("Level")) {
 					System.out.println("Chunk file at " + var2 + "," + var3 + " is missing level data, skipping");
 					return null;
@@ -73,8 +74,8 @@ public class ChunkLoader implements IChunkLoader {
 		return null;
 	}
 
-	public void saveChunk(World var1, Chunk var2) {
-		var1.checkSessionLock();
+	public void saveChunk(World var1, Chunk var2) throws IOException {
+		var1.func_663_l();
 		File var3 = this.chunkFileForXZ(var2.xPosition, var2.zPosition);
 		if(var3.exists()) {
 			var1.sizeOnDisk -= var3.length();
@@ -87,7 +88,7 @@ public class ChunkLoader implements IChunkLoader {
 			NBTTagCompound var7 = new NBTTagCompound();
 			var6.setTag("Level", var7);
 			this.storeChunkInCompound(var2, var1, var7);
-			CompressedStreamTools.writeCompressed(var6, var5);
+			CompressedStreamTools.writeGzippedCompoundToOutputStream(var6, var5);
 			var5.close();
 			if(var3.exists()) {
 				var3.delete();
@@ -102,7 +103,7 @@ public class ChunkLoader implements IChunkLoader {
 	}
 
 	public void storeChunkInCompound(Chunk var1, World var2, NBTTagCompound var3) {
-		var2.checkSessionLock();
+		var2.func_663_l();
 		var3.setInteger("xPos", var1.xPosition);
 		var3.setInteger("zPos", var1.zPosition);
 		var3.setLong("LastUpdate", var2.worldTime);
@@ -124,7 +125,7 @@ public class ChunkLoader implements IChunkLoader {
 				Entity var7 = (Entity)var6.next();
 				var1.hasEntities = true;
 				var8 = new NBTTagCompound();
-				if(var7.addEntityID(var8)) {
+				if(var7.func_358_c(var8)) {
 					var4.setTag(var8);
 				}
 			}
@@ -161,12 +162,12 @@ public class ChunkLoader implements IChunkLoader {
 		if(var4.heightMap == null || !var4.skylightMap.isValid()) {
 			var4.heightMap = new byte[256];
 			var4.skylightMap = new NibbleArray(var4.blocks.length);
-			var4.generateSkylightMap();
+			var4.func_1024_c();
 		}
 
 		if(!var4.blocklightMap.isValid()) {
 			var4.blocklightMap = new NibbleArray(var4.blocks.length);
-			var4.doNothing();
+			var4.func_1014_a();
 		}
 
 		NBTTagList var5 = var1.getTagList("Entities");
@@ -187,7 +188,7 @@ public class ChunkLoader implements IChunkLoader {
 				NBTTagCompound var12 = (NBTTagCompound)var10.tagAt(var11);
 				TileEntity var9 = TileEntity.createAndLoadEntity(var12);
 				if(var9 != null) {
-					var4.addTileEntity(var9);
+					var4.func_1001_a(var9);
 				}
 			}
 		}
@@ -195,12 +196,12 @@ public class ChunkLoader implements IChunkLoader {
 		return var4;
 	}
 
-	public void chunkTick() {
+	public void func_814_a() {
 	}
 
 	public void saveExtraData() {
 	}
 
-	public void saveExtraChunkData(World var1, Chunk var2) {
+	public void saveExtraChunkData(World var1, Chunk var2) throws IOException {
 	}
 }

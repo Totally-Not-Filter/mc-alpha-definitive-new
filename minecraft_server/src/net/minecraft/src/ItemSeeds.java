@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
 public class ItemSeeds extends Item {
-	private int blockType;
+	private int field_271_a;
 
 	public ItemSeeds(int var1, int var2) {
 		super(var1);
-		this.blockType = var2;
+		this.field_271_a = var2;
 	}
 
 	public boolean onItemUse(ItemStack var1, EntityPlayer var2, World var3, int var4, int var5, int var6, int var7) {
@@ -14,7 +14,7 @@ public class ItemSeeds extends Item {
 		} else {
 			int var8 = var3.getBlockId(var4, var5, var6);
 			if(var8 == Block.tilledField.blockID) {
-				var3.setBlockWithNotify(var4, var5 + 1, var6, this.blockType);
+				var3.setBlockWithNotify(var4, var5 + 1, var6, this.field_271_a);
 				--var1.stackSize;
 				return true;
 			} else {

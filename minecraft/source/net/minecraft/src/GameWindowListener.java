@@ -6,18 +6,18 @@ import net.minecraft.client.Minecraft;
 
 public final class GameWindowListener extends WindowAdapter {
 	final Minecraft mc;
-	final Thread thread;
+	final Thread mcThread;
 
 	public GameWindowListener(Minecraft var1, Thread var2) {
 		this.mc = var1;
-		this.thread = var2;
+		this.mcThread = var2;
 	}
 
 	public void windowClosing(WindowEvent var1) {
 		this.mc.shutdown();
 
 		try {
-			this.thread.join();
+			this.mcThread.join();
 		} catch (InterruptedException var3) {
 			var3.printStackTrace();
 		}

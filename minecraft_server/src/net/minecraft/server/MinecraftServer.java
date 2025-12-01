@@ -4,6 +4,7 @@ import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,38 +30,40 @@ import net.minecraft.src.ServerConfigurationManager;
 import net.minecraft.src.ServerGUI;
 import net.minecraft.src.ThreadCommandReader;
 import net.minecraft.src.ThreadServerApplication;
-import net.minecraft.src.ThreadSleepForeverServer;
+import net.minecraft.src.ThreadSleepForever;
 import net.minecraft.src.Vec3D;
 import net.minecraft.src.WorldManager;
 import net.minecraft.src.WorldServer;
 
 public class MinecraftServer implements ICommandListener, Runnable {
 	public static Logger logger = Logger.getLogger("Minecraft");
-	public static HashMap playerList = new HashMap();
-	public NetworkListenThread networkServer;
+	public static HashMap field_6037_b = new HashMap();
+	public NetworkListenThread field_6036_c;
 	public PropertyManager propertyManagerObj;
 	public WorldServer worldMngr;
 	public ServerConfigurationManager configManager;
-	private boolean serverRunning = true;
-	public boolean serverStopped = false;
-	int deathTime = 0;
-	public String currentTask;
-	public int percentDone;
-	private List playersOnline = new ArrayList();
+	private boolean field_6025_n = true;
+	public boolean field_6032_g = false;
+	int field_9014_h = 0;
+	public String field_9013_i;
+	public int field_9012_j;
+	private List field_9010_p = new ArrayList();
 	private List commands = Collections.synchronizedList(new ArrayList());
-	public EntityTracker entityTracker;
+	public EntityTracker field_6028_k;
 	public boolean onlineMode;
+	public boolean noAnimals;
+	public boolean field_9011_n;
 
 	public MinecraftServer() {
-		new ThreadSleepForeverServer(this);
+		new ThreadSleepForever(this);
 	}
 
-	private boolean startServer() throws IOException {
+	private boolean func_6008_d() throws UnknownHostException {
 		ThreadCommandReader var1 = new ThreadCommandReader(this);
 		var1.setDaemon(true);
 		var1.start();
 		ConsoleLogManager.init();
-		logger.info("Starting minecraft server version 0.2.1");
+		logger.info("Starting minecraft server version 0.2.8");
 		if(Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L) {
 			logger.warning("**** NOT ENOUGH RAM!");
 			logger.warning("To start the server with more ram, launch it as \"java -Xmx1024M -Xms1024M -jar minecraft_server.jar\"");
@@ -70,6 +73,8 @@ public class MinecraftServer implements ICommandListener, Runnable {
 		this.propertyManagerObj = new PropertyManager(new File("server.properties"));
 		String var2 = this.propertyManagerObj.getStringProperty("server-ip", "");
 		this.onlineMode = this.propertyManagerObj.getBooleanProperty("online-mode", true);
+		this.noAnimals = this.propertyManagerObj.getBooleanProperty("spawn-animals", true);
+		this.field_9011_n = this.propertyManagerObj.getBooleanProperty("pvp", true);
 		InetAddress var3 = null;
 		if(var2.length() > 0) {
 			var3 = InetAddress.getByName(var2);
@@ -79,7 +84,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
 		logger.info("Starting Minecraft server on " + (var2.length() == 0 ? "*" : var2) + ":" + var4);
 
 		try {
-			this.networkServer = new NetworkListenThread(this, var3, var4);
+			this.field_6036_c = new NetworkListenThread(this, var3, var4);
 		} catch (IOException var6) {
 			logger.warning("**** FAILED TO BIND TO PORT!");
 			logger.log(Level.WARNING, "The exception was: " + var6.toString());
@@ -95,76 +100,76 @@ public class MinecraftServer implements ICommandListener, Runnable {
 		}
 
 		this.configManager = new ServerConfigurationManager(this);
-		this.entityTracker = new EntityTracker(this);
+		this.field_6028_k = new EntityTracker(this);
 		String var5 = this.propertyManagerObj.getStringProperty("level-name", "world");
 		logger.info("Preparing level \"" + var5 + "\"");
-		this.initWorld(var5);
+		this.func_6017_c(var5);
 		logger.info("Done! For help, type \"help\" or \"?\"");
 		return true;
 	}
 
-	private void initWorld(String var1) {
+	private void func_6017_c(String var1) {
 		logger.info("Preparing start region");
-		this.worldMngr = new WorldServer(new File("."), var1, this.propertyManagerObj.getBooleanProperty("monsters", false));
-		this.worldMngr.addWorldAccess(new WorldManager(this));
-		this.worldMngr.difficultySetting = 1;
+		this.worldMngr = new WorldServer(this, new File("."), var1, this.propertyManagerObj.getBooleanProperty("hellworld", false) ? -1 : 0);
+		this.worldMngr.func_4072_a(new WorldManager(this));
+		this.worldMngr.monstersEnabled = this.propertyManagerObj.getBooleanProperty("spawn-monsters", true) ? 1 : 0;
 		this.configManager.setPlayerManager(this.worldMngr);
 		byte var2 = 10;
 
 		for(int var3 = -var2; var3 <= var2; ++var3) {
-			this.outputPercentRemaining("Preparing spawn area", (var3 + var2) * 100 / (var2 + var2 + 1));
+			this.func_6019_a("Preparing spawn area", (var3 + var2) * 100 / (var2 + var2 + 1));
 
 			for(int var4 = -var2; var4 <= var2; ++var4) {
-				if(!this.serverRunning) {
+				if(!this.field_6025_n) {
 					return;
 				}
 
-				this.worldMngr.chunkProviderServer.loadChunk((this.worldMngr.spawnX >> 4) + var3, (this.worldMngr.spawnZ >> 4) + var4);
+				this.worldMngr.A.loadChunk((this.worldMngr.spawnX >> 4) + var3, (this.worldMngr.spawnZ >> 4) + var4);
 			}
 		}
 
-		this.clearCurrentTask();
+		this.func_6011_e();
 	}
 
-	private void outputPercentRemaining(String var1, int var2) {
-		this.currentTask = var1;
-		this.percentDone = var2;
+	private void func_6019_a(String var1, int var2) {
+		this.field_9013_i = var1;
+		this.field_9012_j = var2;
 		System.out.println(var1 + ": " + var2 + "%");
 	}
 
-	private void clearCurrentTask() {
-		this.currentTask = null;
-		this.percentDone = 0;
+	private void func_6011_e() {
+		this.field_9013_i = null;
+		this.field_9012_j = 0;
 	}
 
-	private void save() {
+	private void saveServerWorld() {
 		logger.info("Saving chunks");
-		this.worldMngr.saveWorld(true, (IProgressUpdate)null);
+		this.worldMngr.func_485_a(true, (IProgressUpdate)null);
 	}
 
-	private void stop() {
+	private void func_6013_g() {
 		logger.info("Stopping server");
 		if(this.configManager != null) {
 			this.configManager.savePlayerStates();
 		}
 
 		if(this.worldMngr != null) {
-			this.save();
+			this.saveServerWorld();
 		}
 
 	}
 
-	public void stopRunning() {
-		this.serverRunning = false;
+	public void func_6016_a() {
+		this.field_6025_n = false;
 	}
 
 	public void run() {
 		try {
-			if(this.startServer()) {
+			if(this.func_6008_d()) {
 				long var1 = System.currentTimeMillis();
 				long var3 = 0L;
 
-				while(this.serverRunning) {
+				while(this.field_6025_n) {
 					long var5 = System.currentTimeMillis();
 					long var7 = var5 - var1;
 					if(var7 > 2000L) {
@@ -182,13 +187,13 @@ public class MinecraftServer implements ICommandListener, Runnable {
 
 					while(var3 > 50L) {
 						var3 -= 50L;
-						this.doTick();
+						this.func_6018_h();
 					}
 
 					Thread.sleep(1L);
 				}
 			} else {
-				while(this.serverRunning) {
+				while(this.field_6025_n) {
 					this.commandLineParser();
 
 					try {
@@ -202,7 +207,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
 			var16.printStackTrace();
 			logger.log(Level.SEVERE, "Unexpected exception", var16);
 
-			while(this.serverRunning) {
+			while(this.field_6025_n) {
 				this.commandLineParser();
 
 				try {
@@ -212,22 +217,22 @@ public class MinecraftServer implements ICommandListener, Runnable {
 				}
 			}
 		} finally {
-			this.stop();
-			this.serverStopped = true;
+			this.func_6013_g();
+			this.field_6032_g = true;
 			System.exit(0);
 		}
 
 	}
 
-	private void doTick() throws IOException {
+	private void func_6018_h() {
 		ArrayList var1 = new ArrayList();
-		Iterator var2 = playerList.keySet().iterator();
+		Iterator var2 = field_6037_b.keySet().iterator();
 
 		while(var2.hasNext()) {
 			String var3 = (String)var2.next();
-			int var4 = ((Integer)playerList.get(var3)).intValue();
+			int var4 = ((Integer)field_6037_b.get(var3)).intValue();
 			if(var4 > 0) {
-				playerList.put(var3, Integer.valueOf(var4 - 1));
+				field_6037_b.put(var3, Integer.valueOf(var4 - 1));
 			} else {
 				var1.add(var3);
 			}
@@ -235,28 +240,28 @@ public class MinecraftServer implements ICommandListener, Runnable {
 
 		int var6;
 		for(var6 = 0; var6 < var1.size(); ++var6) {
-			playerList.remove(var1.get(var6));
+			field_6037_b.remove(var1.get(var6));
 		}
 
 		AxisAlignedBB.clearBoundingBoxPool();
 		Vec3D.initialize();
-		++this.deathTime;
-		if(this.deathTime % 20 == 0) {
+		++this.field_9014_h;
+		if(this.field_9014_h % 20 == 0) {
 			this.configManager.sendPacketToAllPlayers(new Packet4UpdateTime(this.worldMngr.worldTime));
 		}
 
 		this.worldMngr.tick();
 
-		while(this.worldMngr.updatingLighting()) {
+		while(this.worldMngr.func_6156_d()) {
 		}
 
-		this.worldMngr.updateEntities();
-		this.networkServer.handleNetworkListenThread();
-		this.configManager.onTick();
-		this.entityTracker.updateTrackedEntities();
+		this.worldMngr.func_459_b();
+		this.field_6036_c.func_715_a();
+		this.configManager.func_637_b();
+		this.field_6028_k.func_607_a();
 
-		for(var6 = 0; var6 < this.playersOnline.size(); ++var6) {
-			((IUpdatePlayerListBox)this.playersOnline.get(var6)).addAllPlayers();
+		for(var6 = 0; var6 < this.field_9010_p.size(); ++var6) {
+			((IUpdatePlayerListBox)this.field_9010_p.get(var6)).update();
 		}
 
 		try {
@@ -279,54 +284,54 @@ public class MinecraftServer implements ICommandListener, Runnable {
 			String var4 = var3.getUsername();
 			if(!var2.toLowerCase().startsWith("help") && !var2.toLowerCase().startsWith("?")) {
 				if(var2.toLowerCase().startsWith("list")) {
-					var3.addHelpCommandMessage("Connected players: " + this.configManager.getPlayerList());
+					var3.log("Connected players: " + this.configManager.getPlayerList());
 				} else if(var2.toLowerCase().startsWith("stop")) {
-					this.print(var4, "Stopping the server..");
-					this.serverRunning = false;
+					this.func_6014_a(var4, "Stopping the server..");
+					this.field_6025_n = false;
 				} else if(var2.toLowerCase().startsWith("save-all")) {
-					this.print(var4, "Forcing save..");
-					this.worldMngr.saveWorld(true, (IProgressUpdate)null);
-					this.print(var4, "Save complete.");
+					this.func_6014_a(var4, "Forcing save..");
+					this.worldMngr.func_485_a(true, (IProgressUpdate)null);
+					this.func_6014_a(var4, "Save complete.");
 				} else if(var2.toLowerCase().startsWith("save-off")) {
-					this.print(var4, "Disabling level saving..");
-					this.worldMngr.levelSaving = true;
+					this.func_6014_a(var4, "Disabling level saving..");
+					this.worldMngr.field_816_A = true;
 				} else if(var2.toLowerCase().startsWith("save-on")) {
-					this.print(var4, "Enabling level saving..");
-					this.worldMngr.levelSaving = false;
+					this.func_6014_a(var4, "Enabling level saving..");
+					this.worldMngr.field_816_A = false;
 				} else {
 					String var11;
 					if(var2.toLowerCase().startsWith("op ")) {
 						var11 = var2.substring(var2.indexOf(" ")).trim();
 						this.configManager.opPlayer(var11);
-						this.print(var4, "Opping " + var11);
+						this.func_6014_a(var4, "Opping " + var11);
 						this.configManager.sendChatMessageToPlayer(var11, "\u00a7eYou are now op!");
 					} else if(var2.toLowerCase().startsWith("deop ")) {
 						var11 = var2.substring(var2.indexOf(" ")).trim();
 						this.configManager.deopPlayer(var11);
 						this.configManager.sendChatMessageToPlayer(var11, "\u00a7eYou are no longer op!");
-						this.print(var4, "De-opping " + var11);
+						this.func_6014_a(var4, "De-opping " + var11);
 					} else if(var2.toLowerCase().startsWith("ban-ip ")) {
 						var11 = var2.substring(var2.indexOf(" ")).trim();
 						this.configManager.banIP(var11);
-						this.print(var4, "Banning ip " + var11);
+						this.func_6014_a(var4, "Banning ip " + var11);
 					} else if(var2.toLowerCase().startsWith("pardon-ip ")) {
 						var11 = var2.substring(var2.indexOf(" ")).trim();
-						this.configManager.pardonIP(var11);
-						this.print(var4, "Pardoning ip " + var11);
+						this.configManager.unbanIP(var11);
+						this.func_6014_a(var4, "Pardoning ip " + var11);
 					} else {
 						EntityPlayerMP var12;
 						if(var2.toLowerCase().startsWith("ban ")) {
 							var11 = var2.substring(var2.indexOf(" ")).trim();
 							this.configManager.banPlayer(var11);
-							this.print(var4, "Banning " + var11);
+							this.func_6014_a(var4, "Banning " + var11);
 							var12 = this.configManager.getPlayerEntity(var11);
 							if(var12 != null) {
-								var12.playerNetServerHandler.kickPlayer("Banned by admin");
+								var12.field_421_a.func_43_c("Banned by admin");
 							}
 						} else if(var2.toLowerCase().startsWith("pardon ")) {
 							var11 = var2.substring(var2.indexOf(" ")).trim();
-							this.configManager.pardonPlayer(var11);
-							this.print(var4, "Pardoning " + var11);
+							this.configManager.unbanPlayer(var11);
+							this.func_6014_a(var4, "Pardoning " + var11);
 						} else if(var2.toLowerCase().startsWith("kick ")) {
 							var11 = var2.substring(var2.indexOf(" ")).trim();
 							var12 = null;
@@ -339,10 +344,10 @@ public class MinecraftServer implements ICommandListener, Runnable {
 							}
 
 							if(var12 != null) {
-								var12.playerNetServerHandler.kickPlayer("Kicked by admin");
-								this.print(var4, "Kicking " + var12.username);
+								var12.field_421_a.func_43_c("Kicked by admin");
+								this.func_6014_a(var4, "Kicking " + var12.username);
 							} else {
-								var3.addHelpCommandMessage("Can\'t find user " + var11 + ". No kick.");
+								var3.log("Can\'t find user " + var11 + ". No kick.");
 							}
 						} else {
 							String[] var5;
@@ -353,15 +358,15 @@ public class MinecraftServer implements ICommandListener, Runnable {
 									var12 = this.configManager.getPlayerEntity(var5[1]);
 									var7 = this.configManager.getPlayerEntity(var5[2]);
 									if(var12 == null) {
-										var3.addHelpCommandMessage("Can\'t find user " + var5[1] + ". No tp.");
+										var3.log("Can\'t find user " + var5[1] + ". No tp.");
 									} else if(var7 == null) {
-										var3.addHelpCommandMessage("Can\'t find user " + var5[2] + ". No tp.");
+										var3.log("Can\'t find user " + var5[2] + ". No tp.");
 									} else {
-										var12.playerNetServerHandler.teleportTo(var7.posX, var7.posY, var7.posZ, var7.rotationYaw, var7.rotationPitch);
-										this.print(var4, "Teleporting " + var5[1] + " to " + var5[2] + ".");
+										var12.field_421_a.func_41_a(var7.posX, var7.posY, var7.posZ, var7.rotationYaw, var7.rotationPitch);
+										this.func_6014_a(var4, "Teleporting " + var5[1] + " to " + var5[2] + ".");
 									}
 								} else {
-									var3.addHelpCommandMessage("Syntax error, please provice a source and a target.");
+									var3.log("Syntax error, please provice a source and a target.");
 								}
 							} else if(var2.toLowerCase().startsWith("give ")) {
 								var5 = var2.split(" ");
@@ -375,10 +380,10 @@ public class MinecraftServer implements ICommandListener, Runnable {
 									try {
 										int var8 = Integer.parseInt(var5[2]);
 										if(Item.itemsList[var8] != null) {
-											this.print(var4, "Giving " + var7.username + " some " + var8);
+											this.func_6014_a(var4, "Giving " + var7.username + " some " + var8);
 											int var9 = 1;
 											if(var5.length > 3) {
-												var9 = this.parseInt(var5[3], 1);
+												var9 = this.func_6020_b(var5[3], 1);
 											}
 
 											if(var9 < 1) {
@@ -389,15 +394,15 @@ public class MinecraftServer implements ICommandListener, Runnable {
 												var9 = 64;
 											}
 
-											var7.dropPlayerItem(new ItemStack(var8, var9));
+											var7.func_161_a(new ItemStack(var8, var9));
 										} else {
-											var3.addHelpCommandMessage("There\'s no item with id " + var8);
+											var3.log("There\'s no item with id " + var8);
 										}
 									} catch (NumberFormatException var10) {
-										var3.addHelpCommandMessage("There\'s no item with id " + var5[2]);
+										var3.log("There\'s no item with id " + var5[2]);
 									}
 								} else {
-									var3.addHelpCommandMessage("Can\'t find user " + var6);
+									var3.log("Can\'t find user " + var6);
 								}
 							} else if(var2.toLowerCase().startsWith("say ")) {
 								var2 = var2.substring(var2.indexOf(" ")).trim();
@@ -409,11 +414,10 @@ public class MinecraftServer implements ICommandListener, Runnable {
 									var2 = var2.substring(var2.indexOf(" ")).trim();
 									var2 = var2.substring(var2.indexOf(" ")).trim();
 									logger.info("[" + var4 + "->" + var5[1] + "] " + var2);
-									this.configManager.sendPacketToAllPlayers(new Packet3Chat("\u00a7d[Server] " + var2));
 									var2 = "\u00a77" + var4 + " whispers " + var2;
 									logger.info(var2);
 									if(!this.configManager.sendPacketToPlayer(var5[1], new Packet3Chat(var2))) {
-										var3.addHelpCommandMessage("There\'s no player by that name online.");
+										var3.log("There\'s no player by that name online.");
 									}
 								}
 							} else {
@@ -423,38 +427,38 @@ public class MinecraftServer implements ICommandListener, Runnable {
 					}
 				}
 			} else {
-				var3.addHelpCommandMessage("To run the server without a gui, start it like this:");
-				var3.addHelpCommandMessage("   java -Xmx1024M -Xms1024M -jar minecraft_server.jar nogui");
-				var3.addHelpCommandMessage("Console commands:");
-				var3.addHelpCommandMessage("   help  or  ?               shows this message");
-				var3.addHelpCommandMessage("   kick <player>             removes a player from the server");
-				var3.addHelpCommandMessage("   ban <player>              bans a player from the server");
-				var3.addHelpCommandMessage("   pardon <player>           pardons a banned player so that they can connect again");
-				var3.addHelpCommandMessage("   ban-ip <ip>               bans an IP address from the server");
-				var3.addHelpCommandMessage("   pardon-ip <ip>            pardons a banned IP address so that they can connect again");
-				var3.addHelpCommandMessage("   op <player>               turns a player into an op");
-				var3.addHelpCommandMessage("   deop <player>             removes op status from a player");
-				var3.addHelpCommandMessage("   tp <player1> <player2>    moves one player to the same location as another player");
-				var3.addHelpCommandMessage("   give <player> <id> [num]  gives a player a resource");
-				var3.addHelpCommandMessage("   tell <player> <message>   sends a private message to a player");
-				var3.addHelpCommandMessage("   stop                      gracefully stops the server");
-				var3.addHelpCommandMessage("   save-all                  forces a server-wide level save");
-				var3.addHelpCommandMessage("   save-off                  disables terrain saving (useful for backup scripts)");
-				var3.addHelpCommandMessage("   save-on                   re-enables terrain saving");
-				var3.addHelpCommandMessage("   list                      lists all currently connected players");
-				var3.addHelpCommandMessage("   say <message>             broadcasts a message to all players");
+				var3.log("To run the server without a gui, start it like this:");
+				var3.log("   java -Xmx1024M -Xms1024M -jar minecraft_server.jar nogui");
+				var3.log("Console commands:");
+				var3.log("   help  or  ?               shows this message");
+				var3.log("   kick <player>             removes a player from the server");
+				var3.log("   ban <player>              bans a player from the server");
+				var3.log("   pardon <player>           pardons a banned player so that they can connect again");
+				var3.log("   ban-ip <ip>               bans an IP address from the server");
+				var3.log("   pardon-ip <ip>            pardons a banned IP address so that they can connect again");
+				var3.log("   op <player>               turns a player into an op");
+				var3.log("   deop <player>             removes op status from a player");
+				var3.log("   tp <player1> <player2>    moves one player to the same location as another player");
+				var3.log("   give <player> <id> [num]  gives a player a resource");
+				var3.log("   tell <player> <message>   sends a private message to a player");
+				var3.log("   stop                      gracefully stops the server");
+				var3.log("   save-all                  forces a server-wide level save");
+				var3.log("   save-off                  disables terrain saving (useful for backup scripts)");
+				var3.log("   save-on                   re-enables terrain saving");
+				var3.log("   list                      lists all currently connected players");
+				var3.log("   say <message>             broadcasts a message to all players");
 			}
 		}
 
 	}
 
-	private void print(String var1, String var2) {
+	private void func_6014_a(String var1, String var2) {
 		String var3 = var1 + ": " + var2;
-		this.configManager.sendChatMessageToAllOps("\u00a77(" + var3 + ")");
+		this.configManager.sendChatMessageToAllPlayers("\u00a77(" + var3 + ")");
 		logger.info(var3);
 	}
 
-	private int parseInt(String var1, int var2) {
+	private int func_6020_b(String var1, int var2) {
 		try {
 			return Integer.parseInt(var1);
 		} catch (NumberFormatException var4) {
@@ -462,8 +466,8 @@ public class MinecraftServer implements ICommandListener, Runnable {
 		}
 	}
 
-	public void addToOnlinePlayerList(IUpdatePlayerListBox var1) {
-		this.playersOnline.add(var1);
+	public void func_6022_a(IUpdatePlayerListBox var1) {
+		this.field_9010_p.add(var1);
 	}
 
 	public static void main(String[] var0) {
@@ -484,7 +488,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
 		return new File(var1);
 	}
 
-	public void addHelpCommandMessage(String var1) {
+	public void log(String var1) {
 		logger.info(var1);
 	}
 
@@ -492,7 +496,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
 		return "CONSOLE";
 	}
 
-	public static boolean isServerRunning(MinecraftServer var0) {
-		return var0.serverRunning;
+	public static boolean func_6015_a(MinecraftServer var0) {
+		return var0.field_6025_n;
 	}
 }

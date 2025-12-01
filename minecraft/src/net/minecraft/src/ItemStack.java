@@ -4,7 +4,7 @@ public final class ItemStack {
 	public int stackSize;
 	public int animationsToGo;
 	public int itemID;
-	public int itemDmg;
+	public int itemDamage;
 
 	public ItemStack(Block var1) {
 		this((Block)var1, 1);
@@ -36,7 +36,7 @@ public final class ItemStack {
 		this.stackSize = 0;
 		this.itemID = var1;
 		this.stackSize = var2;
-		this.itemDmg = var3;
+		this.itemDamage = var3;
 	}
 
 	public ItemStack(NBTTagCompound var1) {
@@ -46,7 +46,7 @@ public final class ItemStack {
 
 	public ItemStack splitStack(int var1) {
 		this.stackSize -= var1;
-		return new ItemStack(this.itemID, var1, this.itemDmg);
+		return new ItemStack(this.itemID, var1, this.itemDamage);
 	}
 
 	public Item getItem() {
@@ -72,14 +72,14 @@ public final class ItemStack {
 	public NBTTagCompound writeToNBT(NBTTagCompound var1) {
 		var1.setShort("id", (short)this.itemID);
 		var1.setByte("Count", (byte)this.stackSize);
-		var1.setShort("Damage", (short)this.itemDmg);
+		var1.setShort("Damage", (short)this.itemDamage);
 		return var1;
 	}
 
 	public void readFromNBT(NBTTagCompound var1) {
 		this.itemID = var1.getShort("id");
 		this.stackSize = var1.getByte("Count");
-		this.itemDmg = var1.getShort("Damage");
+		this.itemDamage = var1.getShort("Damage");
 	}
 
 	public int getMaxStackSize() {
@@ -91,14 +91,14 @@ public final class ItemStack {
 	}
 
 	public void damageItem(int var1) {
-		this.itemDmg += var1;
-		if(this.itemDmg > this.getMaxDamage()) {
+		this.itemDamage += var1;
+		if(this.itemDamage > this.getMaxDamage()) {
 			--this.stackSize;
 			if(this.stackSize < 0) {
 				this.stackSize = 0;
 			}
 
-			this.itemDmg = 0;
+			this.itemDamage = 0;
 		}
 
 	}
@@ -107,8 +107,8 @@ public final class ItemStack {
 		Item.itemsList[this.itemID].hitEntity(this, var1);
 	}
 
-	public void onDestroyBlock(int var1, int var2, int var3, int var4) {
-		Item.itemsList[this.itemID].onBlockDestroyed(this, var1, var2, var3, var4);
+	public void hitBlock(int var1, int var2, int var3, int var4) {
+		Item.itemsList[this.itemID].hitBlock(this, var1, var2, var3, var4);
 	}
 
 	public int getDamageVsEntity(Entity var1) {
@@ -119,14 +119,14 @@ public final class ItemStack {
 		return Item.itemsList[this.itemID].canHarvestBlock(var1);
 	}
 
-	public void onItemDestroyedByUse(EntityPlayer var1) {
+	public void func_1097_a(EntityPlayer var1) {
 	}
 
 	public void useItemOnEntity(EntityLiving var1) {
-		Item.itemsList[this.itemID].saddleEntity(this, var1);
+		Item.itemsList[this.itemID].func_4019_b(this, var1);
 	}
 
 	public ItemStack copy() {
-		return new ItemStack(this.itemID, this.stackSize, this.itemDmg);
+		return new ItemStack(this.itemID, this.stackSize, this.itemDamage);
 	}
 }

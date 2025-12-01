@@ -19,7 +19,7 @@ public class GuiStatsComponent extends JComponent {
 		this.setBackground(Color.BLACK);
 	}
 
-	private void update() {
+	private void updateStats() {
 		long var1 = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 		System.gc();
 		this.displayStrings[0] = "Memory use: " + var1 / 1024L / 1024L + " mb (" + Runtime.getRuntime().freeMemory() * 100L / Runtime.getRuntime().maxMemory() + "% free)";
@@ -51,6 +51,6 @@ public class GuiStatsComponent extends JComponent {
 	}
 
 	static void update(GuiStatsComponent var0) {
-		var0.update();
+		var0.updateStats();
 	}
 }

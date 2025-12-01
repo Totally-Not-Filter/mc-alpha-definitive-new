@@ -11,7 +11,7 @@ public class Packet4UpdateTime extends Packet {
 		this.time = var1.readLong();
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeLong(this.time);
 	}
 

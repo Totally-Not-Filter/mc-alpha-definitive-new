@@ -18,7 +18,7 @@ public class Packet29DestroyEntity extends Packet {
 		this.entityId = var1.readInt();
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeInt(this.entityId);
 	}
 

@@ -6,27 +6,27 @@ public class EntityTNTPrimed extends Entity {
 	public EntityTNTPrimed(World var1) {
 		super(var1);
 		this.fuse = 0;
-		this.preventEntitySpawning = true;
+		this.field_329_e = true;
 		this.setSize(0.98F, 0.98F);
 		this.yOffset = this.height / 2.0F;
 	}
 
-	public EntityTNTPrimed(World var1, float var2, float var3, float var4) {
+	public EntityTNTPrimed(World var1, double var2, double var4, double var6) {
 		this(var1);
-		this.setPosition((double)var2, (double)var3, (double)var4);
-		float var5 = (float)(Math.random() * (double)((float)Math.PI) * 2.0D);
-		this.motionX = (double)(-MathHelper.sin(var5 * (float)Math.PI / 180.0F) * 0.02F);
+		this.setPosition(var2, var4, var6);
+		float var8 = (float)(Math.random() * (double)((float)Math.PI) * 2.0D);
+		this.motionX = (double)(-MathHelper.sin(var8 * (float)Math.PI / 180.0F) * 0.02F);
 		this.motionY = (double)0.2F;
-		this.motionZ = (double)(-MathHelper.cos(var5 * (float)Math.PI / 180.0F) * 0.02F);
-		this.canTriggerWalking = false;
+		this.motionZ = (double)(-MathHelper.cos(var8 * (float)Math.PI / 180.0F) * 0.02F);
+		this.entityWalks = false;
 		this.fuse = 80;
-		this.prevPosX = (double)var2;
-		this.prevPosY = (double)var3;
-		this.prevPosZ = (double)var4;
+		this.prevPosX = var2;
+		this.prevPosY = var4;
+		this.prevPosZ = var6;
 	}
 
-	public boolean canBeCollidedWith() {
-		return !this.isDead;
+	public boolean func_129_c_() {
+		return !this.field_304_B;
 	}
 
 	public void onUpdate() {
@@ -55,7 +55,7 @@ public class EntityTNTPrimed extends Entity {
 
 	private void explode() {
 		float var1 = 4.0F;
-		this.worldObj.createExplosion((Entity)null, this.posX, this.posY, this.posZ, var1);
+		this.worldObj.func_12013_a((Entity)null, this.posX, this.posY, this.posZ, var1);
 	}
 
 	protected void writeEntityToNBT(NBTTagCompound var1) {

@@ -52,7 +52,7 @@ public class WorldGenTrees extends WorldGenerator {
 
 							for(int var14 = var5 - var11; var14 <= var5 + var11; ++var14) {
 								int var15 = var14 - var5;
-								if((Math.abs(var13) != var11 || Math.abs(var15) != var11 || var2.nextInt(2) != 0 && var10 != 0) && !Block.opaqueCubeLookup[var1.getBlockId(var12, var16, var14)]) {
+								if((Math.abs(var13) != var11 || Math.abs(var15) != var11 || var2.nextInt(2) != 0 && var10 != 0) && !Block.field_540_p[var1.getBlockId(var12, var16, var14)]) {
 									var1.setBlock(var12, var16, var14, Block.leaves.blockID);
 								}
 							}

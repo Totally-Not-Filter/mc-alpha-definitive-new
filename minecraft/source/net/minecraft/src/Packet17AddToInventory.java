@@ -5,20 +5,20 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class Packet17AddToInventory extends Packet {
-	public int itemID;
+	public int id;
 	public int count;
-	public int itemDamage;
+	public int durability;
 
 	public void readPacketData(DataInputStream var1) throws IOException {
-		this.itemID = var1.readShort();
+		this.id = var1.readShort();
 		this.count = var1.readByte();
-		this.itemDamage = var1.readShort();
+		this.durability = var1.readShort();
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
-		var1.writeShort(this.itemID);
+	public void writePacketData(DataOutputStream var1) throws IOException {
+		var1.writeShort(this.id);
 		var1.writeByte(this.count);
-		var1.writeShort(this.itemDamage);
+		var1.writeShort(this.durability);
 	}
 
 	public void processPacket(NetHandler var1) {

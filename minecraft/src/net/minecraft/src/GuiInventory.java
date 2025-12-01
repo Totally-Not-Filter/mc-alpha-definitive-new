@@ -4,20 +4,20 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class GuiInventory extends GuiContainer {
-	private CraftingInventoryPlayerCB craftingInventory;
+	private CraftingInventoryPlayerCB field_977_j;
 	private float xSize_lo;
 	private float ySize_lo;
 
 	public GuiInventory(IInventory var1, ItemStack[] var2) {
-		this.allowUserInput = true;
-		this.craftingInventory = new CraftingInventoryPlayerCB(var2);
-		this.inventorySlots.add(new SlotCrafting(this, this.craftingInventory.craftMatrix, this.craftingInventory.craftResult, 0, 144, 36));
+		this.field_948_f = true;
+		this.field_977_j = new CraftingInventoryPlayerCB(var2);
+		this.inventorySlots.add(new SlotCrafting(this, this.field_977_j.craftMatrix, this.field_977_j.craftResult, 0, 144, 36));
 
 		int var3;
 		int var4;
 		for(var3 = 0; var3 < 2; ++var3) {
 			for(var4 = 0; var4 < 2; ++var4) {
-				this.inventorySlots.add(new SlotInventory(this, this.craftingInventory.craftMatrix, var4 + var3 * 2, 88 + var4 * 18, 26 + var3 * 18));
+				this.inventorySlots.add(new SlotInventory(this, this.field_977_j.craftMatrix, var4 + var3 * 2, 88 + var4 * 18, 26 + var3 * 18));
 			}
 		}
 
@@ -61,7 +61,7 @@ public class GuiInventory extends GuiContainer {
 		float var5 = 30.0F;
 		GL11.glScalef(-var5, var5, var5);
 		GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-		float var6 = this.mc.thePlayer.renderYawOffset;
+		float var6 = this.mc.thePlayer.field_735_n;
 		float var7 = this.mc.thePlayer.rotationYaw;
 		float var8 = this.mc.thePlayer.rotationPitch;
 		float var9 = (float)(var3 + 51) - this.xSize_lo;
@@ -70,12 +70,12 @@ public class GuiInventory extends GuiContainer {
 		RenderHelper.enableStandardItemLighting();
 		GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(-((float)Math.atan((double)(var10 / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
-		this.mc.thePlayer.renderYawOffset = (float)Math.atan((double)(var9 / 40.0F)) * 20.0F;
+		this.mc.thePlayer.field_735_n = (float)Math.atan((double)(var9 / 40.0F)) * 20.0F;
 		this.mc.thePlayer.rotationYaw = (float)Math.atan((double)(var9 / 40.0F)) * 40.0F;
 		this.mc.thePlayer.rotationPitch = -((float)Math.atan((double)(var10 / 40.0F))) * 20.0F;
 		GL11.glTranslatef(0.0F, this.mc.thePlayer.yOffset, 0.0F);
-		RenderManager.instance.renderEntityWithPosYaw(this.mc.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-		this.mc.thePlayer.renderYawOffset = var6;
+		RenderManager.instance.func_853_a(this.mc.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+		this.mc.thePlayer.field_735_n = var6;
 		this.mc.thePlayer.rotationYaw = var7;
 		this.mc.thePlayer.rotationPitch = var8;
 		GL11.glPopMatrix();

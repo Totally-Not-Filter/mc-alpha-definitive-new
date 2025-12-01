@@ -13,13 +13,13 @@ public class SoundPool {
 	private Map nameToSoundPoolEntriesMapping = new HashMap();
 	private List allSoundPoolEntries = new ArrayList();
 	public int numberOfSoundPoolEntries = 0;
-	public boolean isGetRandomSound = true;
+	public boolean field_1657_b = true;
 
 	public SoundPoolEntry addSound(String var1, File var2) {
 		try {
 			String var3 = var1;
 			var1 = var1.substring(0, var1.indexOf("."));
-			if(this.isGetRandomSound) {
+			if(this.field_1657_b) {
 				while(Character.isDigit(var1.charAt(var1.length() - 1))) {
 					var1 = var1.substring(0, var1.length() - 1);
 				}

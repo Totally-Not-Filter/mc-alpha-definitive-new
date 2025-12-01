@@ -7,22 +7,22 @@ import org.lwjgl.opengl.GL12;
 public class RenderPainting extends Render {
 	private Random rand = new Random();
 
-	public void renderThePainting(EntityPainting var1, double var2, double var4, double var6, float var8, float var9) {
+	public void a(EntityPainting var1, double var2, double var4, double var6, float var8, float var9) {
 		this.rand.setSeed(187L);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)var2, (float)var4, (float)var6);
 		GL11.glRotatef(var8, 0.0F, 1.0F, 0.0F);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		this.loadTexture("/art/kz.png");
-		EnumArt var10 = var1.art;
+		EnumArt var10 = var1.field_690_b;
 		float var11 = 1.0F / 16.0F;
 		GL11.glScalef(var11, var11, var11);
-		this.setSizes(var1, var10.sizeX, var10.sizeY, var10.offsetX, var10.offsetY);
+		this.func_159_a(var1, var10.field_1623_z, var10.field_1636_A, var10.field_1634_B, var10.field_1632_C);
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
 	}
 
-	private void setSizes(EntityPainting var1, int var2, int var3, int var4, int var5) {
+	private void func_159_a(EntityPainting var1, int var2, int var3, int var4, int var5) {
 		float var6 = (float)(-var2) / 2.0F;
 		float var7 = (float)(-var3) / 2.0F;
 		float var8 = -0.5F;
@@ -34,7 +34,7 @@ public class RenderPainting extends Render {
 				float var13 = var6 + (float)(var10 * 16);
 				float var14 = var7 + (float)((var11 + 1) * 16);
 				float var15 = var7 + (float)(var11 * 16);
-				this.getOffset(var1, (var12 + var13) / 2.0F, (var14 + var15) / 2.0F);
+				this.func_160_a(var1, (var12 + var13) / 2.0F, (var14 + var15) / 2.0F);
 				float var16 = (float)(var4 + var2 - var10 * 16) / 256.0F;
 				float var17 = (float)(var4 + var2 - (var10 + 1) * 16) / 256.0F;
 				float var18 = (float)(var5 + var3 - var11 * 16) / 256.0F;
@@ -89,31 +89,31 @@ public class RenderPainting extends Render {
 
 	}
 
-	private void getOffset(EntityPainting var1, float var2, float var3) {
+	private void func_160_a(EntityPainting var1, float var2, float var3) {
 		int var4 = MathHelper.floor_double(var1.posX);
 		int var5 = MathHelper.floor_double(var1.posY + (double)(var3 / 16.0F));
 		int var6 = MathHelper.floor_double(var1.posZ);
-		if(var1.direction == 0) {
+		if(var1.field_691_a == 0) {
 			var4 = MathHelper.floor_double(var1.posX + (double)(var2 / 16.0F));
 		}
 
-		if(var1.direction == 1) {
+		if(var1.field_691_a == 1) {
 			var6 = MathHelper.floor_double(var1.posZ - (double)(var2 / 16.0F));
 		}
 
-		if(var1.direction == 2) {
+		if(var1.field_691_a == 2) {
 			var4 = MathHelper.floor_double(var1.posX - (double)(var2 / 16.0F));
 		}
 
-		if(var1.direction == 3) {
+		if(var1.field_691_a == 3) {
 			var6 = MathHelper.floor_double(var1.posZ + (double)(var2 / 16.0F));
 		}
 
-		float var7 = this.renderManager.worldObj.getBrightness(var4, var5, var6);
+		float var7 = this.renderManager.worldObj.getLightBrightness(var4, var5, var6);
 		GL11.glColor3f(var7, var7, var7);
 	}
 
 	public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
-		this.renderThePainting((EntityPainting)var1, var2, var4, var6, var8, var9);
+		this.a((EntityPainting)var1, var2, var4, var6, var8, var9);
 	}
 }

@@ -6,10 +6,10 @@ import org.lwjgl.opengl.GL12;
 
 public class ItemRenderer {
 	private Minecraft mc;
-	private ItemStack itemToRender = null;
-	private float equippedProgress = 0.0F;
-	private float prevEquippedProgress = 0.0F;
-	private RenderBlocks renderBlocksInstance = new RenderBlocks();
+	private ItemStack field_9451_b = null;
+	private float field_9453_c = 0.0F;
+	private float field_9452_d = 0.0F;
+	private RenderBlocks field_1357_e = new RenderBlocks();
 
 	public ItemRenderer(Minecraft var1) {
 		this.mc = var1;
@@ -17,9 +17,9 @@ public class ItemRenderer {
 
 	public void renderItem(ItemStack var1) {
 		GL11.glPushMatrix();
-		if(var1.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var1.itemID].getRenderType())) {
+		if(var1.itemID < 256 && RenderBlocks.func_1219_a(Block.blocksList[var1.itemID].getRenderType())) {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
-			this.renderBlocksInstance.renderBlockOnInventory(Block.blocksList[var1.itemID]);
+			this.field_1357_e.func_1227_a(Block.blocksList[var1.itemID]);
 		} else {
 			if(var1.itemID < 256) {
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
@@ -28,10 +28,10 @@ public class ItemRenderer {
 			}
 
 			Tessellator var2 = Tessellator.instance;
-			float var3 = (float)(var1.getIconIndex() % 16 * 16 + 0) / 256.0F;
-			float var4 = (float)(var1.getIconIndex() % 16 * 16 + 16) / 256.0F;
-			float var5 = (float)(var1.getIconIndex() / 16 * 16 + 0) / 256.0F;
-			float var6 = (float)(var1.getIconIndex() / 16 * 16 + 16) / 256.0F;
+			float var3 = ((float)(var1.getIconIndex() % 16 * 16) + 0.0F) / 256.0F;
+			float var4 = ((float)(var1.getIconIndex() % 16 * 16) + 15.99F) / 256.0F;
+			float var5 = ((float)(var1.getIconIndex() / 16 * 16) + 0.0F) / 256.0F;
+			float var6 = ((float)(var1.getIconIndex() / 16 * 16) + 15.99F) / 256.0F;
 			float var7 = 1.0F;
 			float var8 = 0.0F;
 			float var9 = 0.3F;
@@ -124,66 +124,75 @@ public class ItemRenderer {
 	}
 
 	public void renderItemInFirstPerson(float var1) {
-		float var2 = this.prevEquippedProgress + (this.equippedProgress - this.prevEquippedProgress) * var1;
+		float var2 = this.field_9452_d + (this.field_9453_c - this.field_9452_d) * var1;
 		EntityPlayerSP var3 = this.mc.thePlayer;
 		GL11.glPushMatrix();
 		GL11.glRotatef(var3.prevRotationPitch + (var3.rotationPitch - var3.prevRotationPitch) * var1, 1.0F, 0.0F, 0.0F);
 		GL11.glRotatef(var3.prevRotationYaw + (var3.rotationYaw - var3.prevRotationYaw) * var1, 0.0F, 1.0F, 0.0F);
 		RenderHelper.enableStandardItemLighting();
 		GL11.glPopMatrix();
-		float var4 = this.mc.theWorld.getBrightness(MathHelper.floor_double(var3.posX), MathHelper.floor_double(var3.posY), MathHelper.floor_double(var3.posZ));
+		float var4 = this.mc.theWorld.getLightBrightness(MathHelper.floor_double(var3.posX), MathHelper.floor_double(var3.posY), MathHelper.floor_double(var3.posZ));
 		GL11.glColor4f(var4, var4, var4, 1.0F);
-		float var5;
+		ItemStack var5 = this.field_9451_b;
+		if(var3.fishEntity != null) {
+			var5 = new ItemStack(Item.stick.shiftedIndex);
+		}
+
 		float var6;
 		float var7;
 		float var8;
-		if(this.itemToRender != null) {
+		float var9;
+		if(var5 != null) {
 			GL11.glPushMatrix();
-			var5 = 0.8F;
-			var6 = var3.getSwingProgress(var1);
-			var7 = MathHelper.sin(var6 * (float)Math.PI);
-			var8 = MathHelper.sin(MathHelper.sqrt_float(var6) * (float)Math.PI);
-			GL11.glTranslatef(-var8 * 0.4F, MathHelper.sin(MathHelper.sqrt_float(var6) * (float)Math.PI * 2.0F) * 0.2F, -var7 * 0.2F);
-			GL11.glTranslatef(0.7F * var5, -0.65F * var5 - (1.0F - var2) * 0.6F, -0.9F * var5);
+			var6 = 0.8F;
+			var7 = var3.getSwingProgress(var1);
+			var8 = MathHelper.sin(var7 * (float)Math.PI);
+			var9 = MathHelper.sin(MathHelper.sqrt_float(var7) * (float)Math.PI);
+			GL11.glTranslatef(-var9 * 0.4F, MathHelper.sin(MathHelper.sqrt_float(var7) * (float)Math.PI * 2.0F) * 0.2F, -var8 * 0.2F);
+			GL11.glTranslatef(0.7F * var6, -0.65F * var6 - (1.0F - var2) * 0.6F, -0.9F * var6);
 			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-			var6 = var3.getSwingProgress(var1);
-			var7 = MathHelper.sin(var6 * var6 * (float)Math.PI);
-			var8 = MathHelper.sin(MathHelper.sqrt_float(var6) * (float)Math.PI);
-			GL11.glRotatef(-var7 * 20.0F, 0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(-var8 * 20.0F, 0.0F, 0.0F, 1.0F);
-			GL11.glRotatef(-var8 * 80.0F, 1.0F, 0.0F, 0.0F);
-			var6 = 0.4F;
-			GL11.glScalef(var6, var6, var6);
-			this.renderItem(this.itemToRender);
+			var7 = var3.getSwingProgress(var1);
+			var8 = MathHelper.sin(var7 * var7 * (float)Math.PI);
+			var9 = MathHelper.sin(MathHelper.sqrt_float(var7) * (float)Math.PI);
+			GL11.glRotatef(-var8 * 20.0F, 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(-var9 * 20.0F, 0.0F, 0.0F, 1.0F);
+			GL11.glRotatef(-var9 * 80.0F, 1.0F, 0.0F, 0.0F);
+			var7 = 0.4F;
+			GL11.glScalef(var7, var7, var7);
+			if(var5.getItem().shouldRotateAroundWhenRendering()) {
+				GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+			}
+
+			this.renderItem(var5);
 			GL11.glPopMatrix();
 		} else {
 			GL11.glPushMatrix();
-			var5 = 0.8F;
-			var6 = var3.getSwingProgress(var1);
-			var7 = MathHelper.sin(var6 * (float)Math.PI);
-			var8 = MathHelper.sin(MathHelper.sqrt_float(var6) * (float)Math.PI);
-			GL11.glTranslatef(-var8 * 0.3F, MathHelper.sin(MathHelper.sqrt_float(var6) * (float)Math.PI * 2.0F) * 0.4F, -var7 * 0.4F);
-			GL11.glTranslatef(0.8F * var5, -(12.0F / 16.0F) * var5 - (1.0F - var2) * 0.6F, -0.9F * var5);
+			var6 = 0.8F;
+			var7 = var3.getSwingProgress(var1);
+			var8 = MathHelper.sin(var7 * (float)Math.PI);
+			var9 = MathHelper.sin(MathHelper.sqrt_float(var7) * (float)Math.PI);
+			GL11.glTranslatef(-var9 * 0.3F, MathHelper.sin(MathHelper.sqrt_float(var7) * (float)Math.PI * 2.0F) * 0.4F, -var8 * 0.4F);
+			GL11.glTranslatef(0.8F * var6, -(12.0F / 16.0F) * var6 - (1.0F - var2) * 0.6F, -0.9F * var6);
 			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-			var6 = var3.getSwingProgress(var1);
-			var7 = MathHelper.sin(var6 * var6 * (float)Math.PI);
-			var8 = MathHelper.sin(MathHelper.sqrt_float(var6) * (float)Math.PI);
-			GL11.glRotatef(var8 * 70.0F, 0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(-var7 * 20.0F, 0.0F, 0.0F, 1.0F);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTextureForDownloadableImage(this.mc.thePlayer.skinUrl, this.mc.thePlayer.getTexture()));
+			var7 = var3.getSwingProgress(var1);
+			var8 = MathHelper.sin(var7 * var7 * (float)Math.PI);
+			var9 = MathHelper.sin(MathHelper.sqrt_float(var7) * (float)Math.PI);
+			GL11.glRotatef(var9 * 70.0F, 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(-var8 * 20.0F, 0.0F, 0.0F, 1.0F);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTextureForDownloadableImage(this.mc.thePlayer.skinUrl, this.mc.thePlayer.getEntityTexture()));
 			GL11.glTranslatef(-1.0F, 3.6F, 3.5F);
 			GL11.glRotatef(120.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glRotatef(200.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glScalef(1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef(5.6F, 0.0F, 0.0F);
-			Render var9 = RenderManager.instance.getEntityRenderObject(this.mc.thePlayer);
-			RenderPlayer var10 = (RenderPlayer)var9;
-			var8 = 1.0F;
-			GL11.glScalef(var8, var8, var8);
-			var10.drawFirstPersonHand();
+			Render var10 = RenderManager.instance.func_855_a(this.mc.thePlayer);
+			RenderPlayer var11 = (RenderPlayer)var10;
+			var9 = 1.0F;
+			GL11.glScalef(var9, var9, var9);
+			var11.drawFirstPersonHand();
 			GL11.glPopMatrix();
 		}
 
@@ -194,13 +203,13 @@ public class ItemRenderer {
 	public void renderOverlays(float var1) {
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		int var2;
-		if(this.mc.thePlayer.fire > 0) {
+		if(this.mc.thePlayer.fire > 0 || this.mc.thePlayer.field_9299_bv) {
 			var2 = this.mc.renderEngine.getTexture("/terrain.png");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var2);
 			this.renderFireInFirstPerson(var1);
 		}
 
-		if(this.mc.thePlayer.isEntityInsideOpaqueBlock()) {
+		if(this.mc.thePlayer.func_345_I()) {
 			var2 = MathHelper.floor_double(this.mc.thePlayer.posX);
 			int var3 = MathHelper.floor_double(this.mc.thePlayer.posY);
 			int var4 = MathHelper.floor_double(this.mc.thePlayer.posZ);
@@ -213,7 +222,7 @@ public class ItemRenderer {
 		}
 
 		if(this.mc.thePlayer.isInsideOfMaterial(Material.water)) {
-			var2 = this.mc.renderEngine.getTexture("/water.png");
+			var2 = this.mc.renderEngine.getTexture("/misc/water.png");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var2);
 			this.renderWarpedTextureOverlay(var1);
 		}
@@ -223,7 +232,7 @@ public class ItemRenderer {
 
 	private void renderInsideOfBlock(float var1, int var2) {
 		Tessellator var3 = Tessellator.instance;
-		this.mc.thePlayer.getBrightness(var1);
+		this.mc.thePlayer.getEntityBrightness(var1);
 		float var4 = 0.1F;
 		GL11.glColor4f(var4, var4, var4, 0.5F);
 		GL11.glPushMatrix();
@@ -249,7 +258,7 @@ public class ItemRenderer {
 
 	private void renderWarpedTextureOverlay(float var1) {
 		Tessellator var2 = Tessellator.instance;
-		float var3 = this.mc.thePlayer.getBrightness(var1);
+		float var3 = this.mc.thePlayer.getEntityBrightness(var1);
 		GL11.glColor4f(var3, var3, var3, 0.5F);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -309,13 +318,13 @@ public class ItemRenderer {
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 
-	public void updateEquippedItem() {
-		this.prevEquippedProgress = this.equippedProgress;
+	public void func_895_a() {
+		this.field_9452_d = this.field_9453_c;
 		EntityPlayerSP var1 = this.mc.thePlayer;
 		ItemStack var2 = var1.inventory.getCurrentItem();
 		float var4 = 0.4F;
-		float var5 = var2 == this.itemToRender ? 1.0F : 0.0F;
-		float var6 = var5 - this.equippedProgress;
+		float var5 = var2 == this.field_9451_b ? 1.0F : 0.0F;
+		float var6 = var5 - this.field_9453_c;
 		if(var6 < -var4) {
 			var6 = -var4;
 		}
@@ -324,18 +333,18 @@ public class ItemRenderer {
 			var6 = var4;
 		}
 
-		this.equippedProgress += var6;
-		if(this.equippedProgress < 0.1F) {
-			this.itemToRender = var2;
+		this.field_9453_c += var6;
+		if(this.field_9453_c < 0.1F) {
+			this.field_9451_b = var2;
 		}
 
 	}
 
-	public void resetEquippedProgress() {
-		this.equippedProgress = 0.0F;
+	public void func_9449_b() {
+		this.field_9453_c = 0.0F;
 	}
 
-	public void resetEquippedProgress2() {
-		this.equippedProgress = 0.0F;
+	public void func_9450_c() {
+		this.field_9453_c = 0.0F;
 	}
 }

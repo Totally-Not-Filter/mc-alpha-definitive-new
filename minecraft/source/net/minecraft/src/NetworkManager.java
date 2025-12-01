@@ -4,8 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 public class NetworkManager {
@@ -13,13 +14,14 @@ public class NetworkManager {
 	public static int numReadThreads;
 	public static int numWriteThreads;
 	private Object sendQueueLock = new Object();
-	private Socket networkSocket;
+	private Socket field_12258_e;
+	private final SocketAddress networkSocket;
 	private DataInputStream socketInputStream;
 	private DataOutputStream socketOutputStream;
 	private boolean isRunning = true;
-	private List readPackets = Collections.synchronizedList(new LinkedList());
-	private List dataPackets = Collections.synchronizedList(new LinkedList());
-	private List chunkDataPackets = Collections.synchronizedList(new LinkedList());
+	private List readPackets = Collections.synchronizedList(new ArrayList());
+	private List dataPackets = Collections.synchronizedList(new ArrayList());
+	private List chunkDataPackets = Collections.synchronizedList(new ArrayList());
 	private NetHandler netHandler;
 	private boolean isServerTerminating = false;
 	private Thread writeThread;
@@ -31,7 +33,8 @@ public class NetworkManager {
 	private int chunkDataSendCounter = 0;
 
 	public NetworkManager(Socket var1, String var2, NetHandler var3) throws IOException {
-		this.networkSocket = var1;
+		this.field_12258_e = var1;
+		this.networkSocket = var1.getRemoteSocketAddress();
 		this.netHandler = var3;
 		var1.setTrafficClass(24);
 		this.socketInputStream = new DataInputStream(var1.getInputStream());
@@ -127,16 +130,19 @@ public class NetworkManager {
 
 			try {
 				this.socketInputStream.close();
+				this.socketInputStream = null;
 			} catch (Throwable var5) {
 			}
 
 			try {
 				this.socketOutputStream.close();
+				this.socketOutputStream = null;
 			} catch (Throwable var4) {
 			}
 
 			try {
-				this.networkSocket.close();
+				this.field_12258_e.close();
+				this.field_12258_e = null;
 			} catch (Throwable var3) {
 			}
 

@@ -67,7 +67,7 @@ public class TileEntity {
 	}
 
 	public void onInventoryChanged() {
-		this.worldObj.updateTileEntityChunkAndDoNothing(this.xCoord, this.yCoord, this.zCoord, this);
+		this.worldObj.func_698_b(this.xCoord, this.yCoord, this.zCoord, this);
 	}
 
 	public double getDistanceFrom(double var1, double var3, double var5) {

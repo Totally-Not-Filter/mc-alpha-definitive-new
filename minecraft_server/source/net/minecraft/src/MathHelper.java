@@ -1,14 +1,14 @@
 package net.minecraft.src;
 
 public class MathHelper {
-	private static float[] SIN_TABLE = new float[65536];
+	private static float[] field_886_a = new float[65536];
 
 	public static final float sin(float var0) {
-		return SIN_TABLE[(int)(var0 * 10430.378F) & '\uffff'];
+		return field_886_a[(int)(var0 * 10430.378F) & '\uffff'];
 	}
 
 	public static final float cos(float var0) {
-		return SIN_TABLE[(int)(var0 * 10430.378F + 16384.0F) & '\uffff'];
+		return field_886_a[(int)(var0 * 10430.378F + 16384.0F) & '\uffff'];
 	}
 
 	public static final float sqrt_float(float var0) {
@@ -47,7 +47,7 @@ public class MathHelper {
 
 	static {
 		for(int var0 = 0; var0 < 65536; ++var0) {
-			SIN_TABLE[var0] = (float)Math.sin((double)var0 * Math.PI * 2.0D / 65536.0D);
+			field_886_a[var0] = (float)Math.sin((double)var0 * Math.PI * 2.0D / 65536.0D);
 		}
 
 	}

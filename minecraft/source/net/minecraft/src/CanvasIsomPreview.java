@@ -20,31 +20,31 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CanvasIsomPreview extends Canvas implements KeyListener, MouseListener, MouseMotionListener, Runnable {
-	private int currentRender = 0;
-	private int zoomLevel = 2;
-	private boolean displayHelpText = true;
-	private World level;
-	private File dataFolder = this.getWorkingDirectory();
-	private boolean running = true;
-	private List zonesToRender = Collections.synchronizedList(new LinkedList());
-	private IsoImageBuffer[][] zoneMap = new IsoImageBuffer[64][64];
-	private int translateX;
-	private int translateY;
-	private int xPosition;
-	private int yPosition;
+	private int field_1793_a = 0;
+	private int field_1792_b = 2;
+	private boolean field_1791_c = true;
+	private World worldObj;
+	private File dataFolder = this.getDataFolder();
+	private boolean field_1788_f = true;
+	private List field_1787_g = Collections.synchronizedList(new LinkedList());
+	private IsoImageBuffer[][] field_1786_h = new IsoImageBuffer[64][64];
+	private int field_1785_i;
+	private int field_1784_j;
+	private int field_1783_k;
+	private int field_1782_l;
 
-	public File getWorkingDirectory() {
+	public File getDataFolder() {
 		if(this.dataFolder == null) {
-			this.dataFolder = this.getWorkingDirectory("minecraft");
+			this.dataFolder = this.func_1264_a("minecraft");
 		}
 
 		return this.dataFolder;
 	}
 
-	public File getWorkingDirectory(String var1) {
+	public File func_1264_a(String var1) {
 		String var2 = System.getProperty("user.home", ".");
 		File var3;
-		switch(OSMapIsom.osValues[getPlatform().ordinal()]) {
+		switch(OsMap.field_1193_a[func_1269_e().ordinal()]) {
 		case 1:
 		case 2:
 			var3 = new File(var2, '.' + var1 + '/');
@@ -71,15 +71,15 @@ public class CanvasIsomPreview extends Canvas implements KeyListener, MouseListe
 		}
 	}
 
-	private static EnumOSIsom getPlatform() {
+	private static EnumOS1 func_1269_e() {
 		String var0 = System.getProperty("os.name").toLowerCase();
-		return var0.contains("win") ? EnumOSIsom.windows : (var0.contains("mac") ? EnumOSIsom.macos : (var0.contains("solaris") ? EnumOSIsom.solaris : (var0.contains("sunos") ? EnumOSIsom.solaris : (var0.contains("linux") ? EnumOSIsom.linux : (var0.contains("unix") ? EnumOSIsom.linux : EnumOSIsom.unknown)))));
+		return var0.contains("win") ? EnumOS1.windows : (var0.contains("mac") ? EnumOS1.macos : (var0.contains("solaris") ? EnumOS1.solaris : (var0.contains("sunos") ? EnumOS1.solaris : (var0.contains("linux") ? EnumOS1.linux : (var0.contains("unix") ? EnumOS1.linux : EnumOS1.unknown)))));
 	}
 
 	public CanvasIsomPreview() {
 		for(int var1 = 0; var1 < 64; ++var1) {
 			for(int var2 = 0; var2 < 64; ++var2) {
-				this.zoneMap[var1][var2] = new IsoImageBuffer((World)null, var1, var2);
+				this.field_1786_h[var1][var2] = new IsoImageBuffer((World)null, var1, var2);
 			}
 		}
 
@@ -91,39 +91,39 @@ public class CanvasIsomPreview extends Canvas implements KeyListener, MouseListe
 		this.setBackground(Color.red);
 	}
 
-	public void loadLevel(String var1) {
-		this.translateX = this.translateY = 0;
-		this.level = new WorldIso(this, new File(this.dataFolder, "saves"), var1);
-		this.level.skylightSubtracted = 0;
-		List var2 = this.zonesToRender;
+	public void func_1270_b(String var1) {
+		this.field_1785_i = this.field_1784_j = 0;
+		this.worldObj = new WorldIso(this, new File(this.dataFolder, "saves"), var1);
+		this.worldObj.skylightSubtracted = 0;
+		List var2 = this.field_1787_g;
 		synchronized(var2) {
-			this.zonesToRender.clear();
+			this.field_1787_g.clear();
 
 			for(int var3 = 0; var3 < 64; ++var3) {
 				for(int var4 = 0; var4 < 64; ++var4) {
-					this.zoneMap[var3][var4].setLevel(this.level, var3, var4);
+					this.field_1786_h[var3][var4].func_888_a(this.worldObj, var3, var4);
 				}
 			}
 
 		}
 	}
 
-	private void setBrightness(int var1) {
-		List var2 = this.zonesToRender;
+	private void func_1266_a(int var1) {
+		List var2 = this.field_1787_g;
 		synchronized(var2) {
-			this.level.skylightSubtracted = var1;
-			this.zonesToRender.clear();
+			this.worldObj.skylightSubtracted = var1;
+			this.field_1787_g.clear();
 
 			for(int var3 = 0; var3 < 64; ++var3) {
 				for(int var4 = 0; var4 < 64; ++var4) {
-					this.zoneMap[var3][var4].setLevel(this.level, var3, var4);
+					this.field_1786_h[var3][var4].func_888_a(this.worldObj, var3, var4);
 				}
 			}
 
 		}
 	}
 
-	public void start() {
+	public void func_1272_b() {
 		(new ThreadRunIsoClient(this)).start();
 
 		for(int var1 = 0; var1 < 8; ++var1) {
@@ -132,23 +132,23 @@ public class CanvasIsomPreview extends Canvas implements KeyListener, MouseListe
 
 	}
 
-	public void stop() {
-		this.running = false;
+	public void func_1273_c() {
+		this.field_1788_f = false;
 	}
 
-	private IsoImageBuffer getZone(int var1, int var2) {
+	private IsoImageBuffer func_1267_a(int var1, int var2) {
 		int var3 = var1 & 63;
 		int var4 = var2 & 63;
-		IsoImageBuffer var5 = this.zoneMap[var3][var4];
-		if(var5.x == var1 && var5.y == var2) {
+		IsoImageBuffer var5 = this.field_1786_h[var3][var4];
+		if(var5.field_1354_c == var1 && var5.field_1353_d == var2) {
 			return var5;
 		} else {
-			List var6 = this.zonesToRender;
+			List var6 = this.field_1787_g;
 			synchronized(var6) {
-				this.zonesToRender.remove(var5);
+				this.field_1787_g.remove(var5);
 			}
 
-			var5.init(var1, var2);
+			var5.func_889_a(var1, var2);
 			return var5;
 		}
 	}
@@ -156,21 +156,21 @@ public class CanvasIsomPreview extends Canvas implements KeyListener, MouseListe
 	public void run() {
 		TerrainTextureManager var1 = new TerrainTextureManager();
 
-		while(this.running) {
+		while(this.field_1788_f) {
 			IsoImageBuffer var2 = null;
-			List var3 = this.zonesToRender;
+			List var3 = this.field_1787_g;
 			synchronized(var3) {
-				if(this.zonesToRender.size() > 0) {
-					var2 = (IsoImageBuffer)this.zonesToRender.remove(0);
+				if(this.field_1787_g.size() > 0) {
+					var2 = (IsoImageBuffer)this.field_1787_g.remove(0);
 				}
 			}
 
 			if(var2 != null) {
-				if(this.currentRender - var2.lastVisible < 2) {
-					var1.render(var2);
+				if(this.field_1793_a - var2.field_1350_g < 2) {
+					var1.func_799_a(var2);
 					this.repaint();
 				} else {
-					var2.addedToRenderQueue = false;
+					var2.field_1349_h = false;
 				}
 			}
 
@@ -189,26 +189,26 @@ public class CanvasIsomPreview extends Canvas implements KeyListener, MouseListe
 	public void paint(Graphics var1) {
 	}
 
-	public void render() {
+	public void func_1265_d() {
 		BufferStrategy var1 = this.getBufferStrategy();
 		if(var1 == null) {
 			this.createBufferStrategy(2);
 		} else {
-			this.render((Graphics2D)var1.getDrawGraphics());
+			this.func_1268_a((Graphics2D)var1.getDrawGraphics());
 			var1.show();
 		}
 	}
 
-	public void render(Graphics2D var1) {
-		++this.currentRender;
+	public void func_1268_a(Graphics2D var1) {
+		++this.field_1793_a;
 		AffineTransform var2 = var1.getTransform();
 		var1.setClip(0, 0, this.getWidth(), this.getHeight());
 		var1.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 		var1.translate(this.getWidth() / 2, this.getHeight() / 2);
-		var1.scale((double)this.zoomLevel, (double)this.zoomLevel);
-		var1.translate(this.translateX, this.translateY);
-		if(this.level != null) {
-			var1.translate(-(this.level.spawnX + this.level.spawnZ), -(-this.level.spawnX + this.level.spawnZ) + 64);
+		var1.scale((double)this.field_1792_b, (double)this.field_1792_b);
+		var1.translate(this.field_1785_i, this.field_1784_j);
+		if(this.worldObj != null) {
+			var1.translate(-(this.worldObj.spawnX + this.worldObj.spawnZ), -(-this.worldObj.spawnX + this.worldObj.spawnZ) + 64);
 		}
 
 		Rectangle var3 = var1.getClipBounds();
@@ -226,25 +226,25 @@ public class CanvasIsomPreview extends Canvas implements KeyListener, MouseListe
 			for(int var11 = var6; var11 <= var7; ++var11) {
 				int var12 = var11 - (var10 >> 1);
 				int var13 = var11 + (var10 + 1 >> 1);
-				IsoImageBuffer var14 = this.getZone(var12, var13);
-				var14.lastVisible = this.currentRender;
-				if(!var14.rendered) {
-					if(!var14.addedToRenderQueue) {
-						var14.addedToRenderQueue = true;
-						this.zonesToRender.add(var14);
+				IsoImageBuffer var14 = this.func_1267_a(var12, var13);
+				var14.field_1350_g = this.field_1793_a;
+				if(!var14.field_1352_e) {
+					if(!var14.field_1349_h) {
+						var14.field_1349_h = true;
+						this.field_1787_g.add(var14);
 					}
 				} else {
-					var14.addedToRenderQueue = false;
-					if(!var14.noContent) {
+					var14.field_1349_h = false;
+					if(!var14.field_1351_f) {
 						int var15 = var11 * var4 * 2 + (var10 & 1) * var4;
 						int var16 = var10 * var4 - 128 - 16;
-						var1.drawImage(var14.image, var15, var16, (ImageObserver)null);
+						var1.drawImage(var14.field_1348_a, var15, var16, (ImageObserver)null);
 					}
 				}
 			}
 		}
 
-		if(this.displayHelpText) {
+		if(this.field_1791_c) {
 			var1.setTransform(var2);
 			var10 = this.getHeight() - 32 - 4;
 			var1.setColor(new Color(Integer.MIN_VALUE, true));
@@ -258,12 +258,12 @@ public class CanvasIsomPreview extends Canvas implements KeyListener, MouseListe
 	}
 
 	public void mouseDragged(MouseEvent var1) {
-		int var2 = var1.getX() / this.zoomLevel;
-		int var3 = var1.getY() / this.zoomLevel;
-		this.translateX += var2 - this.xPosition;
-		this.translateY += var3 - this.yPosition;
-		this.xPosition = var2;
-		this.yPosition = var3;
+		int var2 = var1.getX() / this.field_1792_b;
+		int var3 = var1.getY() / this.field_1792_b;
+		this.field_1785_i += var2 - this.field_1783_k;
+		this.field_1784_j += var3 - this.field_1782_l;
+		this.field_1783_k = var2;
+		this.field_1782_l = var3;
 		this.repaint();
 	}
 
@@ -272,7 +272,7 @@ public class CanvasIsomPreview extends Canvas implements KeyListener, MouseListe
 
 	public void mouseClicked(MouseEvent var1) {
 		if(var1.getClickCount() == 2) {
-			this.zoomLevel = 3 - this.zoomLevel;
+			this.field_1792_b = 3 - this.field_1792_b;
 			this.repaint();
 		}
 
@@ -285,10 +285,10 @@ public class CanvasIsomPreview extends Canvas implements KeyListener, MouseListe
 	}
 
 	public void mousePressed(MouseEvent var1) {
-		int var2 = var1.getX() / this.zoomLevel;
-		int var3 = var1.getY() / this.zoomLevel;
-		this.xPosition = var2;
-		this.yPosition = var3;
+		int var2 = var1.getX() / this.field_1792_b;
+		int var3 = var1.getY() / this.field_1792_b;
+		this.field_1783_k = var2;
+		this.field_1782_l = var3;
 	}
 
 	public void mouseReleased(MouseEvent var1) {
@@ -296,71 +296,71 @@ public class CanvasIsomPreview extends Canvas implements KeyListener, MouseListe
 
 	public void keyPressed(KeyEvent var1) {
 		if(var1.getKeyCode() == 48) {
-			this.setBrightness(11);
+			this.func_1266_a(11);
 		}
 
 		if(var1.getKeyCode() == 49) {
-			this.setBrightness(10);
+			this.func_1266_a(10);
 		}
 
 		if(var1.getKeyCode() == 50) {
-			this.setBrightness(9);
+			this.func_1266_a(9);
 		}
 
 		if(var1.getKeyCode() == 51) {
-			this.setBrightness(7);
+			this.func_1266_a(7);
 		}
 
 		if(var1.getKeyCode() == 52) {
-			this.setBrightness(6);
+			this.func_1266_a(6);
 		}
 
 		if(var1.getKeyCode() == 53) {
-			this.setBrightness(5);
+			this.func_1266_a(5);
 		}
 
 		if(var1.getKeyCode() == 54) {
-			this.setBrightness(3);
+			this.func_1266_a(3);
 		}
 
 		if(var1.getKeyCode() == 55) {
-			this.setBrightness(2);
+			this.func_1266_a(2);
 		}
 
 		if(var1.getKeyCode() == 56) {
-			this.setBrightness(1);
+			this.func_1266_a(1);
 		}
 
 		if(var1.getKeyCode() == 57) {
-			this.setBrightness(0);
+			this.func_1266_a(0);
 		}
 
 		if(var1.getKeyCode() == 112) {
-			this.loadLevel("World1");
+			this.func_1270_b("World1");
 		}
 
 		if(var1.getKeyCode() == 113) {
-			this.loadLevel("World2");
+			this.func_1270_b("World2");
 		}
 
 		if(var1.getKeyCode() == 114) {
-			this.loadLevel("World3");
+			this.func_1270_b("World3");
 		}
 
 		if(var1.getKeyCode() == 115) {
-			this.loadLevel("World4");
+			this.func_1270_b("World4");
 		}
 
 		if(var1.getKeyCode() == 116) {
-			this.loadLevel("World5");
+			this.func_1270_b("World5");
 		}
 
 		if(var1.getKeyCode() == 32) {
-			this.translateX = this.translateY = 0;
+			this.field_1785_i = this.field_1784_j = 0;
 		}
 
 		if(var1.getKeyCode() == 27) {
-			this.displayHelpText = !this.displayHelpText;
+			this.field_1791_c = !this.field_1791_c;
 		}
 
 		this.repaint();
@@ -372,7 +372,7 @@ public class CanvasIsomPreview extends Canvas implements KeyListener, MouseListe
 	public void keyTyped(KeyEvent var1) {
 	}
 
-	static boolean isRunning(CanvasIsomPreview var0) {
-		return var0.running;
+	static boolean func_1271_a(CanvasIsomPreview var0) {
+		return var0.field_1788_f;
 	}
 }

@@ -8,16 +8,16 @@ public class BlockFire extends Block {
 
 	protected BlockFire(int var1, int var2) {
 		super(var1, var2, Material.fire);
-		this.initializeBlock(Block.planks.blockID, 5, 20);
-		this.initializeBlock(Block.wood.blockID, 5, 5);
-		this.initializeBlock(Block.leaves.blockID, 30, 60);
-		this.initializeBlock(Block.bookshelf.blockID, 30, 20);
-		this.initializeBlock(Block.tnt.blockID, 15, 100);
-		this.initializeBlock(Block.cloth.blockID, 30, 60);
+		this.setBurnRate(Block.planks.blockID, 5, 20);
+		this.setBurnRate(Block.wood.blockID, 5, 5);
+		this.setBurnRate(Block.leaves.blockID, 30, 60);
+		this.setBurnRate(Block.bookShelf.blockID, 30, 20);
+		this.setBurnRate(Block.tnt.blockID, 15, 100);
+		this.setBurnRate(Block.cloth.blockID, 30, 60);
 		this.setTickOnLoad(true);
 	}
 
-	private void initializeBlock(int var1, int var2, int var3) {
+	private void setBurnRate(int var1, int var2, int var3) {
 		this.chanceToEncourageFire[var1] = var2;
 		this.abilityToCatchFire[var1] = var3;
 	}
@@ -26,12 +26,8 @@ public class BlockFire extends Block {
 		return null;
 	}
 
-	public boolean isOpaqueCube() {
+	public boolean allowsAttachment() {
 		return false;
-	}
-
-	public int getRenderType() {
-		return 3;
 	}
 
 	public int quantityDropped(Random var1) {
@@ -43,40 +39,41 @@ public class BlockFire extends Block {
 	}
 
 	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
-		int var6 = var1.getBlockMetadata(var2, var3, var4);
-		if(var6 < 15) {
-			var1.setBlockMetadataWithNotify(var2, var3, var4, var6 + 1);
+		boolean var6 = var1.getBlockId(var2, var3 - 1, var4) == Block.bloodStone.blockID;
+		int var7 = var1.getBlockMetadata(var2, var3, var4);
+		if(var7 < 15) {
+			var1.setBlockMetadataWithNotify(var2, var3, var4, var7 + 1);
 			var1.scheduleBlockUpdate(var2, var3, var4, this.blockID);
 		}
 
-		if(!this.canNeighborBurn(var1, var2, var3, var4)) {
-			if(!var1.isBlockNormalCube(var2, var3 - 1, var4) || var6 > 3) {
+		if(!var6 && !this.func_268_g(var1, var2, var3, var4)) {
+			if(!var1.doesBlockAllowAttachment(var2, var3 - 1, var4) || var7 > 3) {
 				var1.setBlockWithNotify(var2, var3, var4, 0);
 			}
 
-		} else if(!this.canBlockCatchFire(var1, var2, var3 - 1, var4) && var6 == 15 && var5.nextInt(4) == 0) {
+		} else if(!var6 && !this.canBlockCatchFire(var1, var2, var3 - 1, var4) && var7 == 15 && var5.nextInt(4) == 0) {
 			var1.setBlockWithNotify(var2, var3, var4, 0);
 		} else {
-			if(var6 % 2 == 0 && var6 > 2) {
+			if(var7 % 2 == 0 && var7 > 2) {
 				this.tryToCatchBlockOnFire(var1, var2 + 1, var3, var4, 300, var5);
 				this.tryToCatchBlockOnFire(var1, var2 - 1, var3, var4, 300, var5);
-				this.tryToCatchBlockOnFire(var1, var2, var3 - 1, var4, 200, var5);
+				this.tryToCatchBlockOnFire(var1, var2, var3 - 1, var4, 250, var5);
 				this.tryToCatchBlockOnFire(var1, var2, var3 + 1, var4, 250, var5);
 				this.tryToCatchBlockOnFire(var1, var2, var3, var4 - 1, 300, var5);
 				this.tryToCatchBlockOnFire(var1, var2, var3, var4 + 1, 300, var5);
 
-				for(int var7 = var2 - 1; var7 <= var2 + 1; ++var7) {
-					for(int var8 = var4 - 1; var8 <= var4 + 1; ++var8) {
-						for(int var9 = var3 - 1; var9 <= var3 + 4; ++var9) {
-							if(var7 != var2 || var9 != var3 || var8 != var4) {
-								int var10 = 100;
-								if(var9 > var3 + 1) {
-									var10 += (var9 - (var3 + 1)) * 100;
+				for(int var8 = var2 - 1; var8 <= var2 + 1; ++var8) {
+					for(int var9 = var4 - 1; var9 <= var4 + 1; ++var9) {
+						for(int var10 = var3 - 1; var10 <= var3 + 4; ++var10) {
+							if(var8 != var2 || var10 != var3 || var9 != var4) {
+								int var11 = 100;
+								if(var10 > var3 + 1) {
+									var11 += (var10 - (var3 + 1)) * 100;
 								}
 
-								int var11 = this.getChanceOfNeighborsEncouragingFire(var1, var7, var9, var8);
-								if(var11 > 0 && var5.nextInt(var10) <= var11) {
-									var1.setBlockWithNotify(var7, var9, var8, this.blockID);
+								int var12 = this.getChanceOfNeighborsEncouragingFire(var1, var8, var10, var9);
+								if(var12 > 0 && var5.nextInt(var11) <= var12) {
+									var1.setBlockWithNotify(var8, var10, var9, this.blockID);
 								}
 							}
 						}
@@ -104,7 +101,7 @@ public class BlockFire extends Block {
 
 	}
 
-	private boolean canNeighborBurn(World var1, int var2, int var3, int var4) {
+	private boolean func_268_g(World var1, int var2, int var3, int var4) {
 		return this.canBlockCatchFire(var1, var2 + 1, var3, var4) ? true : (this.canBlockCatchFire(var1, var2 - 1, var3, var4) ? true : (this.canBlockCatchFire(var1, var2, var3 - 1, var4) ? true : (this.canBlockCatchFire(var1, var2, var3 + 1, var4) ? true : (this.canBlockCatchFire(var1, var2, var3, var4 - 1) ? true : this.canBlockCatchFire(var1, var2, var3, var4 + 1)))));
 	}
 
@@ -137,20 +134,22 @@ public class BlockFire extends Block {
 	}
 
 	public boolean canPlaceBlockAt(World var1, int var2, int var3, int var4) {
-		return var1.isBlockNormalCube(var2, var3 - 1, var4) || this.canNeighborBurn(var1, var2, var3, var4);
+		return var1.doesBlockAllowAttachment(var2, var3 - 1, var4) || this.func_268_g(var1, var2, var3, var4);
 	}
 
 	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
-		if(!var1.isBlockNormalCube(var2, var3 - 1, var4) && !this.canNeighborBurn(var1, var2, var3, var4)) {
+		if(!var1.doesBlockAllowAttachment(var2, var3 - 1, var4) && !this.func_268_g(var1, var2, var3, var4)) {
 			var1.setBlockWithNotify(var2, var3, var4, 0);
 		}
 	}
 
 	public void onBlockAdded(World var1, int var2, int var3, int var4) {
-		if(!var1.isBlockNormalCube(var2, var3 - 1, var4) && !this.canNeighborBurn(var1, var2, var3, var4)) {
-			var1.setBlockWithNotify(var2, var3, var4, 0);
-		} else {
-			var1.scheduleBlockUpdate(var2, var3, var4, this.blockID);
+		if(var1.getBlockId(var2, var3 - 1, var4) != Block.obsidian.blockID || !Block.portal.tryToCreatePortal(var1, var2, var3, var4)) {
+			if(!var1.doesBlockAllowAttachment(var2, var3 - 1, var4) && !this.func_268_g(var1, var2, var3, var4)) {
+				var1.setBlockWithNotify(var2, var3, var4, 0);
+			} else {
+				var1.scheduleBlockUpdate(var2, var3, var4, this.blockID);
+			}
 		}
 	}
 }

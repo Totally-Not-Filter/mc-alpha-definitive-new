@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class BlockGrass extends Block {
 	protected BlockGrass(int var1) {
-		super(var1, Material.grass);
+		super(var1, Material.ground);
 		this.blockIndexInTexture = 3;
 		this.setTickOnLoad(true);
 	}

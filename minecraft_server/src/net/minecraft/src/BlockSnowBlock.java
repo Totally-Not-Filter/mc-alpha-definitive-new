@@ -4,12 +4,12 @@ import java.util.Random;
 
 public class BlockSnowBlock extends Block {
 	protected BlockSnowBlock(int var1, int var2) {
-		super(var1, var2, Material.craftedSnow);
+		super(var1, var2, Material.builtSnow);
 		this.setTickOnLoad(true);
 	}
 
 	public int idDropped(int var1, Random var2) {
-		return Item.snowball.shiftedIndex;
+		return Item.snowball.swiftedIndex;
 	}
 
 	public int quantityDropped(Random var1) {

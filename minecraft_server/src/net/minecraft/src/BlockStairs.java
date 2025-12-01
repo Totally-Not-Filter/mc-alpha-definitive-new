@@ -4,26 +4,30 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class BlockStairs extends Block {
-	private Block modelBlock;
+	private Block field_651_a;
 
 	protected BlockStairs(int var1, Block var2) {
-		super(var1, var2.blockIndexInTexture, var2.material);
-		this.modelBlock = var2;
-		this.setHardness(var2.hardness);
-		this.setResistance(var2.resistance / 3.0F);
+		super(var1, var2.blockIndexInTexture, var2.blockMaterial);
+		this.field_651_a = var2;
+		this.setHardness(var2.blockHardness);
+		this.setResistance(var2.blockResistance / 3.0F);
 		this.setStepSound(var2.stepSound);
 	}
 
-	public boolean isOpaqueCube() {
+	public void setBlockBoundsBasedOnState(IBlockAccess var1, int var2, int var3, int var4) {
+		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+	}
+
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World var1, int var2, int var3, int var4) {
+		return super.getCollisionBoundingBoxFromPool(var1, var2, var3, var4);
+	}
+
+	public boolean allowsAttachment() {
 		return false;
 	}
 
-	public int getRenderType() {
-		return 10;
-	}
-
-	public boolean shouldSideBeRendered(IBlockAccess var1, int var2, int var3, int var4, int var5) {
-		return super.shouldSideBeRendered(var1, var2, var3, var4, var5);
+	public boolean isSideInsideCoordinate(IBlockAccess var1, int var2, int var3, int var4, int var5) {
+		return super.isSideInsideCoordinate(var1, var2, var3, var4, var5);
 	}
 
 	public void getCollidingBoundingBoxes(World var1, int var2, int var3, int var4, AxisAlignedBB var5, ArrayList var6) {
@@ -53,171 +57,100 @@ public class BlockStairs extends Block {
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
-		if(!var1.multiplayerWorld) {
-			if(var1.getBlockMaterial(var2, var3 + 1, var4).isSolid()) {
-				var1.setBlockWithNotify(var2, var3, var4, this.modelBlock.blockID);
-			} else {
-				this.updateState(var1, var2, var3, var4);
-				this.updateState(var1, var2 + 1, var3 - 1, var4);
-				this.updateState(var1, var2 - 1, var3 - 1, var4);
-				this.updateState(var1, var2, var3 - 1, var4 - 1);
-				this.updateState(var1, var2, var3 - 1, var4 + 1);
-				this.updateState(var1, var2 + 1, var3 + 1, var4);
-				this.updateState(var1, var2 - 1, var3 + 1, var4);
-				this.updateState(var1, var2, var3 + 1, var4 - 1);
-				this.updateState(var1, var2, var3 + 1, var4 + 1);
-			}
-
-			this.modelBlock.onNeighborBlockChange(var1, var2, var3, var4, var5);
-		}
-	}
-
-	private void updateState(World var1, int var2, int var3, int var4) {
-		if(this.isBlockStair(var1, var2, var3, var4)) {
-			byte var5 = -1;
-			if(this.isBlockStair(var1, var2 + 1, var3 + 1, var4)) {
-				var5 = 0;
-			}
-
-			if(this.isBlockStair(var1, var2 - 1, var3 + 1, var4)) {
-				var5 = 1;
-			}
-
-			if(this.isBlockStair(var1, var2, var3 + 1, var4 + 1)) {
-				var5 = 2;
-			}
-
-			if(this.isBlockStair(var1, var2, var3 + 1, var4 - 1)) {
-				var5 = 3;
-			}
-
-			if(var5 < 0) {
-				if(this.isBlockSolid(var1, var2 + 1, var3, var4) && !this.isBlockSolid(var1, var2 - 1, var3, var4)) {
-					var5 = 0;
-				}
-
-				if(this.isBlockSolid(var1, var2 - 1, var3, var4) && !this.isBlockSolid(var1, var2 + 1, var3, var4)) {
-					var5 = 1;
-				}
-
-				if(this.isBlockSolid(var1, var2, var3, var4 + 1) && !this.isBlockSolid(var1, var2, var3, var4 - 1)) {
-					var5 = 2;
-				}
-
-				if(this.isBlockSolid(var1, var2, var3, var4 - 1) && !this.isBlockSolid(var1, var2, var3, var4 + 1)) {
-					var5 = 3;
-				}
-			}
-
-			if(var5 < 0) {
-				if(this.isBlockStair(var1, var2 - 1, var3 - 1, var4)) {
-					var5 = 0;
-				}
-
-				if(this.isBlockStair(var1, var2 + 1, var3 - 1, var4)) {
-					var5 = 1;
-				}
-
-				if(this.isBlockStair(var1, var2, var3 - 1, var4 - 1)) {
-					var5 = 2;
-				}
-
-				if(this.isBlockStair(var1, var2, var3 - 1, var4 + 1)) {
-					var5 = 3;
-				}
-			}
-
-			if(var5 >= 0) {
-				var1.setBlockMetadataWithNotify(var2, var3, var4, var5);
-			}
-
-		}
-	}
-
-	private boolean isBlockSolid(World var1, int var2, int var3, int var4) {
-		return var1.getBlockMaterial(var2, var3, var4).isSolid();
-	}
-
-	private boolean isBlockStair(World var1, int var2, int var3, int var4) {
-		int var5 = var1.getBlockId(var2, var3, var4);
-		return var5 == 0 ? false : Block.blocksList[var5].getRenderType() == 10;
-	}
-
 	public void onBlockClicked(World var1, int var2, int var3, int var4, EntityPlayer var5) {
-		this.modelBlock.onBlockClicked(var1, var2, var3, var4, var5);
+		this.field_651_a.onBlockClicked(var1, var2, var3, var4, var5);
 	}
 
 	public void onBlockDestroyedByPlayer(World var1, int var2, int var3, int var4, int var5) {
-		this.modelBlock.onBlockDestroyedByPlayer(var1, var2, var3, var4, var5);
+		this.field_651_a.onBlockDestroyedByPlayer(var1, var2, var3, var4, var5);
 	}
 
-	public float getExplosionResistance(Entity var1) {
-		return this.modelBlock.getExplosionResistance(var1);
+	public float func_226_a(Entity var1) {
+		return this.field_651_a.func_226_a(var1);
 	}
 
 	public int idDropped(int var1, Random var2) {
-		return this.modelBlock.idDropped(var1, var2);
+		return this.field_651_a.idDropped(var1, var2);
 	}
 
 	public int quantityDropped(Random var1) {
-		return this.modelBlock.quantityDropped(var1);
+		return this.field_651_a.quantityDropped(var1);
 	}
 
 	public int getBlockTextureFromSide(int var1) {
-		return this.modelBlock.getBlockTextureFromSide(var1);
+		return this.field_651_a.getBlockTextureFromSide(var1);
 	}
 
 	public int tickRate() {
-		return this.modelBlock.tickRate();
+		return this.field_651_a.tickRate();
 	}
 
 	public void velocityToAddToEntity(World var1, int var2, int var3, int var4, Entity var5, Vec3D var6) {
-		this.modelBlock.velocityToAddToEntity(var1, var2, var3, var4, var5, var6);
+		this.field_651_a.velocityToAddToEntity(var1, var2, var3, var4, var5, var6);
 	}
 
 	public boolean isCollidable() {
-		return this.modelBlock.isCollidable();
+		return this.field_651_a.isCollidable();
 	}
 
 	public boolean canCollideCheck(int var1, boolean var2) {
-		return this.modelBlock.canCollideCheck(var1, var2);
+		return this.field_651_a.canCollideCheck(var1, var2);
 	}
 
 	public boolean canPlaceBlockAt(World var1, int var2, int var3, int var4) {
-		return this.modelBlock.canPlaceBlockAt(var1, var2, var3, var4);
+		return this.field_651_a.canPlaceBlockAt(var1, var2, var3, var4);
 	}
 
 	public void onBlockAdded(World var1, int var2, int var3, int var4) {
 		this.onNeighborBlockChange(var1, var2, var3, var4, 0);
-		this.modelBlock.onBlockAdded(var1, var2, var3, var4);
+		this.field_651_a.onBlockAdded(var1, var2, var3, var4);
 	}
 
 	public void onBlockRemoval(World var1, int var2, int var3, int var4) {
-		this.modelBlock.onBlockRemoval(var1, var2, var3, var4);
+		this.field_651_a.onBlockRemoval(var1, var2, var3, var4);
 	}
 
 	public void dropBlockAsItemWithChance(World var1, int var2, int var3, int var4, int var5, float var6) {
-		this.modelBlock.dropBlockAsItemWithChance(var1, var2, var3, var4, var5, var6);
+		this.field_651_a.dropBlockAsItemWithChance(var1, var2, var3, var4, var5, var6);
 	}
 
 	public void dropBlockAsItem(World var1, int var2, int var3, int var4, int var5) {
-		this.modelBlock.dropBlockAsItem(var1, var2, var3, var4, var5);
+		this.field_651_a.dropBlockAsItem(var1, var2, var3, var4, var5);
 	}
 
 	public void onEntityWalking(World var1, int var2, int var3, int var4, Entity var5) {
-		this.modelBlock.onEntityWalking(var1, var2, var3, var4, var5);
+		this.field_651_a.onEntityWalking(var1, var2, var3, var4, var5);
 	}
 
 	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
-		this.modelBlock.updateTick(var1, var2, var3, var4, var5);
+		this.field_651_a.updateTick(var1, var2, var3, var4, var5);
 	}
 
 	public boolean blockActivated(World var1, int var2, int var3, int var4, EntityPlayer var5) {
-		return this.modelBlock.blockActivated(var1, var2, var3, var4, var5);
+		return this.field_651_a.blockActivated(var1, var2, var3, var4, var5);
 	}
 
 	public void onBlockDestroyedByExplosion(World var1, int var2, int var3, int var4) {
-		this.modelBlock.onBlockDestroyedByExplosion(var1, var2, var3, var4);
+		this.field_651_a.onBlockDestroyedByExplosion(var1, var2, var3, var4);
+	}
+
+	public void onBlockPlacedBy(World var1, int var2, int var3, int var4, EntityLiving var5) {
+		int var6 = MathHelper.floor_double((double)(var5.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		if(var6 == 0) {
+			var1.setBlockMetadataWithNotify(var2, var3, var4, 2);
+		}
+
+		if(var6 == 1) {
+			var1.setBlockMetadataWithNotify(var2, var3, var4, 1);
+		}
+
+		if(var6 == 2) {
+			var1.setBlockMetadataWithNotify(var2, var3, var4, 3);
+		}
+
+		if(var6 == 3) {
+			var1.setBlockMetadataWithNotify(var2, var3, var4, 0);
+		}
+
 	}
 }

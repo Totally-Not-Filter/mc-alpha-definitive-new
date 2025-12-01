@@ -46,12 +46,12 @@ public class GuiChat extends GuiScreen {
 	}
 
 	protected void mouseClicked(int var1, int var2, int var3) {
-		if(var3 == 0 && this.mc.ingameGUI.testMessage != null) {
+		if(var3 == 0 && this.mc.ingameGUI.field_933_a != null) {
 			if(this.message.length() > 0 && !this.message.endsWith(" ")) {
 				this.message = this.message + " ";
 			}
 
-			this.message = this.message + this.mc.ingameGUI.testMessage;
+			this.message = this.message + this.mc.ingameGUI.field_933_a;
 			byte var4 = 100;
 			if(this.message.length() > var4) {
 				this.message = this.message.substring(0, var4);

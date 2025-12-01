@@ -23,7 +23,7 @@ public class Packet10Flying extends Packet {
 		this.onGround = var1.read() != 0;
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.write(this.onGround ? 1 : 0);
 	}
 

@@ -6,14 +6,14 @@ import java.util.logging.LogRecord;
 import javax.swing.JTextArea;
 
 public class GuiLogOutputHandler extends Handler {
-	private int[] allNums = new int[1024];
-	private int currentNum = 0;
-	Formatter formatter = new GuiLogFormatter(this);
-	private JTextArea textArea;
+	private int[] field_998_b = new int[1024];
+	private int field_1001_c = 0;
+	Formatter field_999_a = new GuiLogFormatter(this);
+	private JTextArea field_1000_d;
 
 	public GuiLogOutputHandler(JTextArea var1) {
-		this.setFormatter(this.formatter);
-		this.textArea = var1;
+		this.setFormatter(this.field_999_a);
+		this.field_1000_d = var1;
 	}
 
 	public void close() {
@@ -23,15 +23,15 @@ public class GuiLogOutputHandler extends Handler {
 	}
 
 	public void publish(LogRecord var1) {
-		int var2 = this.textArea.getDocument().getLength();
-		this.textArea.append(this.formatter.format(var1));
-		this.textArea.setCaretPosition(this.textArea.getDocument().getLength());
-		int var3 = this.textArea.getDocument().getLength() - var2;
-		if(this.allNums[this.currentNum] != 0) {
-			this.textArea.replaceRange("", 0, this.allNums[this.currentNum]);
+		int var2 = this.field_1000_d.getDocument().getLength();
+		this.field_1000_d.append(this.field_999_a.format(var1));
+		this.field_1000_d.setCaretPosition(this.field_1000_d.getDocument().getLength());
+		int var3 = this.field_1000_d.getDocument().getLength() - var2;
+		if(this.field_998_b[this.field_1001_c] != 0) {
+			this.field_1000_d.replaceRange("", 0, this.field_998_b[this.field_1001_c]);
 		}
 
-		this.allNums[this.currentNum] = var3;
-		this.currentNum = (this.currentNum + 1) % 1024;
+		this.field_998_b[this.field_1001_c] = var3;
+		this.field_1001_c = (this.field_1001_c + 1) % 1024;
 	}
 }

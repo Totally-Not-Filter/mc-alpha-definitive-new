@@ -29,33 +29,29 @@ public class BlockLadder extends Block {
 		return super.getCollisionBoundingBoxFromPool(var1, var2, var3, var4);
 	}
 
-	public boolean isOpaqueCube() {
+	public boolean allowsAttachment() {
 		return false;
 	}
 
-	public int getRenderType() {
-		return 8;
-	}
-
 	public boolean canPlaceBlockAt(World var1, int var2, int var3, int var4) {
-		return var1.isBlockNormalCube(var2 - 1, var3, var4) ? true : (var1.isBlockNormalCube(var2 + 1, var3, var4) ? true : (var1.isBlockNormalCube(var2, var3, var4 - 1) ? true : var1.isBlockNormalCube(var2, var3, var4 + 1)));
+		return var1.doesBlockAllowAttachment(var2 - 1, var3, var4) ? true : (var1.doesBlockAllowAttachment(var2 + 1, var3, var4) ? true : (var1.doesBlockAllowAttachment(var2, var3, var4 - 1) ? true : var1.doesBlockAllowAttachment(var2, var3, var4 + 1)));
 	}
 
 	public void onBlockPlaced(World var1, int var2, int var3, int var4, int var5) {
 		int var6 = var1.getBlockMetadata(var2, var3, var4);
-		if((var6 == 0 || var5 == 2) && var1.isBlockNormalCube(var2, var3, var4 + 1)) {
+		if((var6 == 0 || var5 == 2) && var1.doesBlockAllowAttachment(var2, var3, var4 + 1)) {
 			var6 = 2;
 		}
 
-		if((var6 == 0 || var5 == 3) && var1.isBlockNormalCube(var2, var3, var4 - 1)) {
+		if((var6 == 0 || var5 == 3) && var1.doesBlockAllowAttachment(var2, var3, var4 - 1)) {
 			var6 = 3;
 		}
 
-		if((var6 == 0 || var5 == 4) && var1.isBlockNormalCube(var2 + 1, var3, var4)) {
+		if((var6 == 0 || var5 == 4) && var1.doesBlockAllowAttachment(var2 + 1, var3, var4)) {
 			var6 = 4;
 		}
 
-		if((var6 == 0 || var5 == 5) && var1.isBlockNormalCube(var2 - 1, var3, var4)) {
+		if((var6 == 0 || var5 == 5) && var1.doesBlockAllowAttachment(var2 - 1, var3, var4)) {
 			var6 = 5;
 		}
 
@@ -65,19 +61,19 @@ public class BlockLadder extends Block {
 	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
 		int var6 = var1.getBlockMetadata(var2, var3, var4);
 		boolean var7 = false;
-		if(var6 == 2 && var1.isBlockNormalCube(var2, var3, var4 + 1)) {
+		if(var6 == 2 && var1.doesBlockAllowAttachment(var2, var3, var4 + 1)) {
 			var7 = true;
 		}
 
-		if(var6 == 3 && var1.isBlockNormalCube(var2, var3, var4 - 1)) {
+		if(var6 == 3 && var1.doesBlockAllowAttachment(var2, var3, var4 - 1)) {
 			var7 = true;
 		}
 
-		if(var6 == 4 && var1.isBlockNormalCube(var2 + 1, var3, var4)) {
+		if(var6 == 4 && var1.doesBlockAllowAttachment(var2 + 1, var3, var4)) {
 			var7 = true;
 		}
 
-		if(var6 == 5 && var1.isBlockNormalCube(var2 - 1, var3, var4)) {
+		if(var6 == 5 && var1.doesBlockAllowAttachment(var2 - 1, var3, var4)) {
 			var7 = true;
 		}
 

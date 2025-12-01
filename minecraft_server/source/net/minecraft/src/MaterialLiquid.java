@@ -5,11 +5,11 @@ public class MaterialLiquid extends Material {
 		return true;
 	}
 
-	public boolean getIsSolid() {
+	public boolean func_218_c() {
 		return false;
 	}
 
-	public boolean isSolid() {
+	public boolean func_216_a() {
 		return false;
 	}
 }

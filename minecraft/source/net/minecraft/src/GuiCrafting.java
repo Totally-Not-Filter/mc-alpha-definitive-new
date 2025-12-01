@@ -3,16 +3,16 @@ package net.minecraft.src;
 import org.lwjgl.opengl.GL11;
 
 public class GuiCrafting extends GuiContainer {
-	public CraftingInventoryWorkbenchCB craftingInventory = new CraftingInventoryWorkbenchCB();
+	public CraftingInventoryWorkbenchCB field_979_j = new CraftingInventoryWorkbenchCB();
 
 	public GuiCrafting(InventoryPlayer var1) {
-		this.inventorySlots.add(new SlotCrafting(this, this.craftingInventory.craftMatrix, this.craftingInventory.craftResult, 0, 124, 35));
+		this.inventorySlots.add(new SlotCrafting(this, this.field_979_j.craftMatrix, this.field_979_j.craftResult, 0, 124, 35));
 
 		int var2;
 		int var3;
 		for(var2 = 0; var2 < 3; ++var2) {
 			for(var3 = 0; var3 < 3; ++var3) {
-				this.inventorySlots.add(new SlotInventory(this, this.craftingInventory.craftMatrix, var3 + var2 * 3, 30 + var3 * 18, 17 + var2 * 18));
+				this.inventorySlots.add(new SlotInventory(this, this.field_979_j.craftMatrix, var3 + var2 * 3, 30 + var3 * 18, 17 + var2 * 18));
 			}
 		}
 
@@ -30,7 +30,7 @@ public class GuiCrafting extends GuiContainer {
 
 	public void onGuiClosed() {
 		super.onGuiClosed();
-		this.craftingInventory.onCraftGuiClosed(this.mc.thePlayer);
+		this.field_979_j.onCraftGuiClosed(this.mc.thePlayer);
 	}
 
 	protected void drawGuiContainerForegroundLayer() {

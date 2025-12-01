@@ -16,7 +16,7 @@ public class GuiSelectWorld extends GuiScreen {
 		File var1 = Minecraft.getMinecraftDir();
 
 		for(int var2 = 0; var2 < 5; ++var2) {
-			NBTTagCompound var3 = World.getLevelData(var1, "World" + (var2 + 1));
+			NBTTagCompound var3 = World.func_629_a(var1, "World" + (var2 + 1));
 			if(var3 == null) {
 				this.controlList.add(new GuiButton(var2, this.width / 2 - 100, this.height / 6 + 24 * var2, "- empty -"));
 			} else {
@@ -27,15 +27,15 @@ public class GuiSelectWorld extends GuiScreen {
 			}
 		}
 
-		this.initButtons();
+		this.initGui2();
 	}
 
-	protected String getSaveName(int var1) {
+	protected String getWorldName(int var1) {
 		File var2 = Minecraft.getMinecraftDir();
-		return World.getLevelData(var2, "World" + var1) != null ? "World" + var1 : null;
+		return World.func_629_a(var2, "World" + var1) != null ? "World" + var1 : null;
 	}
 
-	public void initButtons() {
+	public void initGui2() {
 		this.controlList.add(new GuiButton(5, this.width / 2 - 100, this.height / 6 + 120 + 12, "Delete world..."));
 		this.controlList.add(new GuiButton(6, this.width / 2 - 100, this.height / 6 + 168, "Cancel"));
 	}
@@ -57,8 +57,8 @@ public class GuiSelectWorld extends GuiScreen {
 		this.mc.displayGuiScreen((GuiScreen)null);
 		if(!this.selected) {
 			this.selected = true;
-			this.mc.playerController = new PlayerControllerSP(this.mc);
-			this.mc.startWorld("World" + var1);
+			this.mc.field_6327_b = new PlayerControllerSP(this.mc);
+			this.mc.func_6247_b("World" + var1);
 			this.mc.displayGuiScreen((GuiScreen)null);
 		}
 	}

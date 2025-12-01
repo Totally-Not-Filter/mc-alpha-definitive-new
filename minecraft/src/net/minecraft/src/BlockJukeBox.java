@@ -28,8 +28,8 @@ public class BlockJukeBox extends Block {
 		double var10 = (double)(var1.rand.nextFloat() * var7) + (double)(1.0F - var7) * 0.2D + 0.6D;
 		double var12 = (double)(var1.rand.nextFloat() * var7) + (double)(1.0F - var7) * 0.5D;
 		EntityItem var14 = new EntityItem(var1, (double)var2 + var8, (double)var3 + var10, (double)var4 + var12, new ItemStack(var6));
-		var14.delayBeforeCanPickup = 10;
-		var1.spawnEntityInWorld(var14);
+		var14.field_805_c = 10;
+		var1.entityJoinedWorld(var14);
 	}
 
 	public void dropBlockAsItemWithChance(World var1, int var2, int var3, int var4, int var5, float var6) {

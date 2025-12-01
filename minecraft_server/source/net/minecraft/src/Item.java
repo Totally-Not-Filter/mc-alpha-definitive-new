@@ -5,10 +5,10 @@ import java.util.Random;
 public class Item {
 	protected static Random rand = new Random();
 	public static Item[] itemsList = new Item[32000];
-	public static Item shovel = (new ItemSpade(0, 2)).setIconIndex(82);
+	public static Item shovelSteel = (new ItemSpade(0, 2)).setIconIndex(82);
 	public static Item pickaxeSteel = (new ItemPickaxe(1, 2)).setIconIndex(98);
 	public static Item axeSteel = (new ItemAxe(2, 2)).setIconIndex(114);
-	public static Item striker = (new ItemFlintAndSteel(3)).setIconIndex(5);
+	public static Item flintAndSteel = (new ItemFlintAndSteel(3)).setIconIndex(5);
 	public static Item appleRed = (new ItemFood(4, 4)).setIconIndex(10);
 	public static Item bow = (new ItemBow(5)).setIconIndex(21);
 	public static Item arrow = (new Item(6)).setIconIndex(37);
@@ -75,8 +75,8 @@ public class Item {
 	public static Item sign = (new ItemSign(67)).setIconIndex(42);
 	public static Item doorWood = (new ItemDoor(68, Material.wood)).setIconIndex(43);
 	public static Item bucketEmpty = (new ItemBucket(69, 0)).setIconIndex(74);
-	public static Item bucketWater = (new ItemBucket(70, Block.waterMoving.blockID)).setIconIndex(75);
-	public static Item bucketLava = (new ItemBucket(71, Block.lavaMoving.blockID)).setIconIndex(76);
+	public static Item bucketWater = (new ItemBucket(70, Block.waterStill.blockID)).setIconIndex(75);
+	public static Item bucketLava = (new ItemBucket(71, Block.lavaStill.blockID)).setIconIndex(76);
 	public static Item minecartEmpty = (new ItemMinecart(72, 0)).setIconIndex(135);
 	public static Item saddle = (new ItemSaddle(73)).setIconIndex(104);
 	public static Item doorSteel = (new ItemDoor(74, Material.iron)).setIconIndex(44);
@@ -91,21 +91,25 @@ public class Item {
 	public static Item paper = (new Item(83)).setIconIndex(58);
 	public static Item book = (new Item(84)).setIconIndex(59);
 	public static Item slimeBall = (new Item(85)).setIconIndex(30);
-	public static Item minecartBox = (new ItemMinecart(86, 1)).setIconIndex(151);
-	public static Item minecartEngine = (new ItemMinecart(87, 2)).setIconIndex(167);
+	public static Item minecartCrate = (new ItemMinecart(86, 1)).setIconIndex(151);
+	public static Item minecartPowered = (new ItemMinecart(87, 2)).setIconIndex(167);
 	public static Item egg = (new Item(88)).setIconIndex(12);
 	public static Item compass = (new Item(89)).setIconIndex(54);
-	public static Item fishingRod = (new Item(90)).setIconIndex(69);
+	public static Item fishingRod = (new ItemFishingRod(90)).setIconIndex(69);
+	public static Item pocketSundial = (new Item(91)).setIconIndex(70);
+	public static Item lightStoneDust = (new Item(92)).setIconIndex(73);
+	public static Item fishRaw = (new ItemFood(93, 2)).setIconIndex(89);
+	public static Item fishCooked = (new ItemFood(94, 5)).setIconIndex(90);
 	public static Item record13 = (new ItemRecord(2000, "13")).setIconIndex(240);
 	public static Item recordCat = (new ItemRecord(2001, "cat")).setIconIndex(241);
-	public final int shiftedIndex;
+	public final int swiftedIndex;
 	protected int maxStackSize = 64;
 	protected int maxDamage = 32;
 	protected int iconIndex;
 	protected boolean bFull3D = false;
 
 	protected Item(int var1) {
-		this.shiftedIndex = 256 + var1;
+		this.swiftedIndex = 256 + var1;
 		if(itemsList[256 + var1] != null) {
 			System.out.println("CONFLICT @ " + var1);
 		}
@@ -126,6 +130,10 @@ public class Item {
 		return 1.0F;
 	}
 
+	public ItemStack onItemRightClick(ItemStack var1, World var2, EntityPlayer var3) {
+		return var1;
+	}
+
 	public int getItemStackLimit() {
 		return this.maxStackSize;
 	}
@@ -134,11 +142,21 @@ public class Item {
 		return this.maxDamage;
 	}
 
-	public void onBlockDestroyed(ItemStack var1, int var2, int var3, int var4, int var5) {
+	public void func_9201_a(ItemStack var1, EntityLiving var2) {
+	}
+
+	public void hitBlock(ItemStack var1, int var2, int var3, int var4, int var5) {
+	}
+
+	public int func_9203_a(Entity var1) {
+		return 1;
 	}
 
 	public boolean canHarvestBlock(Block var1) {
 		return false;
+	}
+
+	public void func_9202_b(ItemStack var1, EntityLiving var2) {
 	}
 
 	public Item setFull3D() {

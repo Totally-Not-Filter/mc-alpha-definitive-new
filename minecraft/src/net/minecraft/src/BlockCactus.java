@@ -66,13 +66,13 @@ public class BlockCactus extends Block {
 	}
 
 	public boolean canBlockStay(World var1, int var2, int var3, int var4) {
-		if(var1.getBlockMaterial(var2 - 1, var3, var4).isSolid()) {
+		if(var1.getBlockMaterial(var2 - 1, var3, var4).func_878_a()) {
 			return false;
-		} else if(var1.getBlockMaterial(var2 + 1, var3, var4).isSolid()) {
+		} else if(var1.getBlockMaterial(var2 + 1, var3, var4).func_878_a()) {
 			return false;
-		} else if(var1.getBlockMaterial(var2, var3, var4 - 1).isSolid()) {
+		} else if(var1.getBlockMaterial(var2, var3, var4 - 1).func_878_a()) {
 			return false;
-		} else if(var1.getBlockMaterial(var2, var3, var4 + 1).isSolid()) {
+		} else if(var1.getBlockMaterial(var2, var3, var4 + 1).func_878_a()) {
 			return false;
 		} else {
 			int var5 = var1.getBlockId(var2, var3 - 1, var4);
@@ -81,6 +81,6 @@ public class BlockCactus extends Block {
 	}
 
 	public void onEntityCollidedWithBlock(World var1, int var2, int var3, int var4, Entity var5) {
-		var5.attackEntityFrom((Entity)null, 1);
+		var5.canAttackEntity((Entity)null, 1);
 	}
 }

@@ -11,14 +11,14 @@ public class NibbleArray {
 		this.data = var1;
 	}
 
-	public int get(int var1, int var2, int var3) {
+	public int getNibble(int var1, int var2, int var3) {
 		int var4 = var1 << 11 | var3 << 7 | var2;
 		int var5 = var4 >> 1;
 		int var6 = var4 & 1;
 		return var6 == 0 ? this.data[var5] & 15 : this.data[var5] >> 4 & 15;
 	}
 
-	public void set(int var1, int var2, int var3, int var4) {
+	public void setNibble(int var1, int var2, int var3, int var4) {
 		int var5 = var1 << 11 | var3 << 7 | var2;
 		int var6 = var5 >> 1;
 		int var7 = var5 & 1;

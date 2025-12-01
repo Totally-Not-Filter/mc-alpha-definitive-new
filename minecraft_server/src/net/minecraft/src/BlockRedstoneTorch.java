@@ -8,7 +8,7 @@ public class BlockRedstoneTorch extends BlockTorch {
 	private boolean torchActive = false;
 	private static List torchUpdates = new ArrayList();
 
-	private boolean checkForBurnout(World var1, int var2, int var3, int var4, boolean var5) {
+	private boolean func_280_a(World var1, int var2, int var3, int var4, boolean var5) {
 		if(var5) {
 			torchUpdates.add(new RedstoneUpdateInfo(var2, var3, var4, var1.worldTime));
 		}
@@ -17,7 +17,7 @@ public class BlockRedstoneTorch extends BlockTorch {
 
 		for(int var7 = 0; var7 < torchUpdates.size(); ++var7) {
 			RedstoneUpdateInfo var8 = (RedstoneUpdateInfo)torchUpdates.get(var7);
-			if(var8.x == var2 && var8.y == var3 && var8.z == var4) {
+			if(var8.field_775_a == var2 && var8.field_774_b == var3 && var8.field_777_c == var4) {
 				++var6;
 				if(var6 >= 8) {
 					return true;
@@ -75,22 +75,22 @@ public class BlockRedstoneTorch extends BlockTorch {
 		}
 	}
 
-	private boolean isIndirectlyPowered(World var1, int var2, int var3, int var4) {
+	private boolean func_15001_g(World var1, int var2, int var3, int var4) {
 		int var5 = var1.getBlockMetadata(var2, var3, var4);
 		return var5 == 5 && var1.isBlockIndirectlyProvidingPowerTo(var2, var3 - 1, var4, 0) ? true : (var5 == 3 && var1.isBlockIndirectlyProvidingPowerTo(var2, var3, var4 - 1, 2) ? true : (var5 == 4 && var1.isBlockIndirectlyProvidingPowerTo(var2, var3, var4 + 1, 3) ? true : (var5 == 1 && var1.isBlockIndirectlyProvidingPowerTo(var2 - 1, var3, var4, 4) ? true : var5 == 2 && var1.isBlockIndirectlyProvidingPowerTo(var2 + 1, var3, var4, 5))));
 	}
 
 	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
-		boolean var6 = this.isIndirectlyPowered(var1, var2, var3, var4);
+		boolean var6 = this.func_15001_g(var1, var2, var3, var4);
 
-		while(torchUpdates.size() > 0 && var1.worldTime - ((RedstoneUpdateInfo)torchUpdates.get(0)).updateTime > 100L) {
+		while(torchUpdates.size() > 0 && var1.worldTime - ((RedstoneUpdateInfo)torchUpdates.get(0)).field_776_d > 100L) {
 			torchUpdates.remove(0);
 		}
 
 		if(this.torchActive) {
 			if(var6) {
-				var1.setBlockAndMetadataWithNotify(var2, var3, var4, Block.torchRedstoneIdle.blockID, var1.getBlockMetadata(var2, var3, var4));
-				if(this.checkForBurnout(var1, var2, var3, var4, true)) {
+				var1.func_507_b(var2, var3, var4, Block.torchRedstoneIdle.blockID, var1.getBlockMetadata(var2, var3, var4));
+				if(this.func_280_a(var1, var2, var3, var4, true)) {
 					var1.playSoundEffect((double)((float)var2 + 0.5F), (double)((float)var3 + 0.5F), (double)((float)var4 + 0.5F), "random.fizz", 0.5F, 2.6F + (var1.rand.nextFloat() - var1.rand.nextFloat()) * 0.8F);
 
 					for(int var7 = 0; var7 < 5; ++var7) {
@@ -101,8 +101,8 @@ public class BlockRedstoneTorch extends BlockTorch {
 					}
 				}
 			}
-		} else if(!var6 && !this.checkForBurnout(var1, var2, var3, var4, false)) {
-			var1.setBlockAndMetadataWithNotify(var2, var3, var4, Block.torchRedstoneActive.blockID, var1.getBlockMetadata(var2, var3, var4));
+		} else if(!var6 && !this.func_280_a(var1, var2, var3, var4, false)) {
+			var1.func_507_b(var2, var3, var4, Block.torchRedstoneActive.blockID, var1.getBlockMetadata(var2, var3, var4));
 		}
 
 	}

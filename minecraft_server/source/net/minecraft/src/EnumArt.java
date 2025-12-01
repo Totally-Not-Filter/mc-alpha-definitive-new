@@ -26,17 +26,17 @@ public enum EnumArt {
 	Skeleton("Skeleton", 64, 48, 192, 64),
 	DonkeyKong("DonkeyKong", 64, 48, 192, 112);
 
-	public final String title;
-	public final int sizeX;
-	public final int sizeY;
-	public final int offsetX;
-	public final int offsetY;
+	public final String field_857_y;
+	public final int field_856_z;
+	public final int field_869_A;
+	public final int field_867_B;
+	public final int field_865_C;
 
 	private EnumArt(String var3, int var4, int var5, int var6, int var7) {
-		this.title = var3;
-		this.sizeX = var4;
-		this.sizeY = var5;
-		this.offsetX = var6;
-		this.offsetY = var7;
+		this.field_857_y = var3;
+		this.field_856_z = var4;
+		this.field_869_A = var5;
+		this.field_867_B = var6;
+		this.field_865_C = var7;
 	}
 }

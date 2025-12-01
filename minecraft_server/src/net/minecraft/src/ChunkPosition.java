@@ -1,14 +1,14 @@
 package net.minecraft.src;
 
 public class ChunkPosition {
-	public final int x;
-	public final int y;
-	public final int z;
+	public final int field_846_a;
+	public final int field_845_b;
+	public final int field_847_c;
 
 	public ChunkPosition(int var1, int var2, int var3) {
-		this.x = var1;
-		this.y = var2;
-		this.z = var3;
+		this.field_846_a = var1;
+		this.field_845_b = var2;
+		this.field_847_c = var3;
 	}
 
 	public boolean equals(Object var1) {
@@ -16,11 +16,11 @@ public class ChunkPosition {
 			return false;
 		} else {
 			ChunkPosition var2 = (ChunkPosition)var1;
-			return var2.x == this.x && var2.y == this.y && var2.z == this.z;
+			return var2.field_846_a == this.field_846_a && var2.field_845_b == this.field_845_b && var2.field_847_c == this.field_847_c;
 		}
 	}
 
 	public int hashCode() {
-		return this.x * 8976890 + this.y * 981131 + this.z;
+		return this.field_846_a * 8976890 + this.field_845_b * 981131 + this.field_847_c;
 	}
 }

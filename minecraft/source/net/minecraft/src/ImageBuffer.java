@@ -3,5 +3,5 @@ package net.minecraft.src;
 import java.awt.image.BufferedImage;
 
 public interface ImageBuffer {
-	BufferedImage parseUserSkin(BufferedImage var1);
+	BufferedImage func_883_a(BufferedImage var1);
 }

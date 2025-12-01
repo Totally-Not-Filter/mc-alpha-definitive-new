@@ -8,12 +8,12 @@ public class BlockLeavesBase extends Block {
 		this.graphicsLevel = var4;
 	}
 
-	public boolean isOpaqueCube() {
+	public boolean allowsAttachment() {
 		return false;
 	}
 
-	public boolean shouldSideBeRendered(IBlockAccess var1, int var2, int var3, int var4, int var5) {
+	public boolean isSideInsideCoordinate(IBlockAccess var1, int var2, int var3, int var4, int var5) {
 		int var6 = var1.getBlockId(var2, var3, var4);
-		return !this.graphicsLevel && var6 == this.blockID ? false : super.shouldSideBeRendered(var1, var2, var3, var4, var5);
+		return !this.graphicsLevel && var6 == this.blockID ? false : super.isSideInsideCoordinate(var1, var2, var3, var4, var5);
 	}
 }

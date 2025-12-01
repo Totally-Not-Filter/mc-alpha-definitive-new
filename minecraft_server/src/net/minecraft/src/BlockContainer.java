@@ -12,13 +12,13 @@ public abstract class BlockContainer extends Block {
 
 	public void onBlockAdded(World var1, int var2, int var3, int var4) {
 		super.onBlockAdded(var1, var2, var3, var4);
-		var1.setBlockTileEntity(var2, var3, var4, this.getBlockEntity());
+		var1.func_473_a(var2, var3, var4, this.func_294_a_());
 	}
 
 	public void onBlockRemoval(World var1, int var2, int var3, int var4) {
 		super.onBlockRemoval(var1, var2, var3, var4);
-		var1.removeBlockTileEntity(var2, var3, var4);
+		var1.func_513_l(var2, var3, var4);
 	}
 
-	protected abstract TileEntity getBlockEntity();
+	protected abstract TileEntity func_294_a_();
 }

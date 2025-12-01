@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 public class ItemSword extends Item {
-	private int weaponDamage;
+	private int field_4210_a;
 
 	public ItemSword(int var1, int var2) {
 		super(var1);
@@ -11,14 +11,22 @@ public class ItemSword extends Item {
 			this.maxDamage *= 4;
 		}
 
-		this.weaponDamage = 4 + var2 * 2;
+		this.field_4210_a = 4 + var2 * 2;
 	}
 
 	public float getStrVsBlock(ItemStack var1, Block var2) {
 		return 1.5F;
 	}
 
-	public void onBlockDestroyed(ItemStack var1, int var2, int var3, int var4, int var5) {
+	public void func_9201_a(ItemStack var1, EntityLiving var2) {
+		var1.damageItem(1);
+	}
+
+	public void hitBlock(ItemStack var1, int var2, int var3, int var4, int var5) {
 		var1.damageItem(2);
+	}
+
+	public int func_9203_a(Entity var1) {
+		return this.field_4210_a;
 	}
 }

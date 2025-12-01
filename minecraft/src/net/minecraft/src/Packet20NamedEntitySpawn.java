@@ -18,8 +18,8 @@ public class Packet20NamedEntitySpawn extends Packet {
 	}
 
 	public Packet20NamedEntitySpawn(EntityPlayer var1) {
-		this.entityId = var1.entityID;
-		this.name = var1.username;
+		this.entityId = var1.field_620_ab;
+		this.name = var1.field_771_i;
 		this.xPosition = MathHelper.floor_double(var1.posX * 32.0D);
 		this.yPosition = MathHelper.floor_double(var1.posY * 32.0D);
 		this.zPosition = MathHelper.floor_double(var1.posZ * 32.0D);
@@ -40,7 +40,7 @@ public class Packet20NamedEntitySpawn extends Packet {
 		this.currentItem = var1.readShort();
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeInt(this.entityId);
 		var1.writeUTF(this.name);
 		var1.writeInt(this.xPosition);

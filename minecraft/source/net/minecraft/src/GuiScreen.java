@@ -15,7 +15,7 @@ public class GuiScreen extends Gui {
 	public int width;
 	public int height;
 	protected List controlList = new ArrayList();
-	public boolean allowUserInput = false;
+	public boolean field_948_f = false;
 	protected FontRenderer fontRenderer;
 	private GuiButton selectedButton = null;
 
@@ -30,7 +30,7 @@ public class GuiScreen extends Gui {
 	protected void keyTyped(char var1, int var2) {
 		if(var2 == 1) {
 			this.mc.displayGuiScreen((GuiScreen)null);
-			this.mc.setIngameFocus();
+			this.mc.func_6259_e();
 		}
 
 	}
@@ -54,7 +54,7 @@ public class GuiScreen extends Gui {
 				GuiButton var5 = (GuiButton)this.controlList.get(var4);
 				if(var5.mousePressed(this.mc, var1, var2)) {
 					this.selectedButton = var5;
-					this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+					this.mc.sndManager.func_337_a("random.click", 1.0F, 1.0F);
 					this.actionPerformed(var5);
 				}
 			}
@@ -78,6 +78,7 @@ public class GuiScreen extends Gui {
 		this.fontRenderer = var1.fontRenderer;
 		this.width = var2;
 		this.height = var3;
+		this.controlList.clear();
 		this.initGui();
 	}
 
@@ -129,10 +130,10 @@ public class GuiScreen extends Gui {
 	}
 
 	public void drawDefaultBackground() {
-		this.drawWorldBackground(0);
+		this.func_567_a(0);
 	}
 
-	public void drawWorldBackground(int var1) {
+	public void func_567_a(int var1) {
 		if(this.mc.theWorld != null) {
 			this.drawGradientRect(0, 0, this.width, this.height, -1072689136, -804253680);
 		} else {
@@ -145,7 +146,7 @@ public class GuiScreen extends Gui {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_FOG);
 		Tessellator var2 = Tessellator.instance;
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/dirt.png"));
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/background.png"));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		float var3 = 32.0F;
 		var2.startDrawingQuads();

@@ -3,10 +3,10 @@ package net.minecraft.src;
 import org.lwjgl.opengl.GL11;
 
 public class GuiFurnace extends GuiContainer {
-	private TileEntityFurnace furnaceInventory;
+	private TileEntityFurnace field_978_j;
 
 	public GuiFurnace(InventoryPlayer var1, TileEntityFurnace var2) {
-		this.furnaceInventory = var2;
+		this.field_978_j = var2;
 		this.inventorySlots.add(new SlotInventory(this, var2, 0, 56, 17));
 		this.inventorySlots.add(new SlotInventory(this, var2, 1, 56, 53));
 		this.inventorySlots.add(new SlotInventory(this, var2, 2, 116, 35));
@@ -37,12 +37,12 @@ public class GuiFurnace extends GuiContainer {
 		int var4 = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(var3, var4, 0, 0, this.xSize, this.ySize);
 		int var5;
-		if(this.furnaceInventory.isBurning()) {
-			var5 = this.furnaceInventory.getBurnTimeRemainingScaled(12);
+		if(this.field_978_j.isBurning()) {
+			var5 = this.field_978_j.getBurnTimeRemainingScaled(12);
 			this.drawTexturedModalRect(var3 + 56, var4 + 36 + 12 - var5, 176, 12 - var5, 14, var5 + 2);
 		}
 
-		var5 = this.furnaceInventory.getCookProgressScaled(24);
+		var5 = this.field_978_j.getCookProgressScaled(24);
 		this.drawTexturedModalRect(var3 + 79, var4 + 34, 176, 14, var5 + 1, 16);
 	}
 }

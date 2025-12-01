@@ -15,7 +15,7 @@ public class Packet6SpawnPosition extends Packet {
 		this.zPosition = var1.readInt();
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeInt(this.xPosition);
 		var1.writeInt(this.yPosition);
 		var1.writeInt(this.zPosition);

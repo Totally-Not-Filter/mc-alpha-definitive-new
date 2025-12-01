@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 public class Material {
 	public static final Material air = new MaterialTransparent();
-	public static final Material grass = new Material();
+	public static final Material ground = new Material();
 	public static final Material wood = (new Material()).setBurning();
 	public static final Material rock = new Material();
 	public static final Material iron = new Material();
@@ -20,16 +20,18 @@ public class Material {
 	public static final Material unused = new Material();
 	public static final Material ice = new Material();
 	public static final Material snow = new MaterialLogic();
-	public static final Material craftedSnow = new Material();
+	public static final Material builtSnow = new Material();
 	public static final Material cactus = new Material();
 	public static final Material clay = new Material();
+	public static final Material pumpkin = new Material();
+	public static final Material field_4260_x = new Material();
 	private boolean canBurn;
 
 	public boolean getIsLiquid() {
 		return false;
 	}
 
-	public boolean isSolid() {
+	public boolean func_878_a() {
 		return true;
 	}
 
@@ -37,7 +39,7 @@ public class Material {
 		return true;
 	}
 
-	public boolean getIsSolid() {
+	public boolean func_880_c() {
 		return true;
 	}
 
@@ -46,7 +48,7 @@ public class Material {
 		return this;
 	}
 
-	public boolean getCanBurn() {
+	public boolean getBurning() {
 		return this.canBurn;
 	}
 }

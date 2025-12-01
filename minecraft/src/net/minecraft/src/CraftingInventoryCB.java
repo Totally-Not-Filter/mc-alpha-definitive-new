@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CraftingInventoryCB {
-	protected List list = new ArrayList();
+	protected List unusedList = new ArrayList();
 
 	public void onCraftGuiClosed(EntityPlayer var1) {
 		InventoryPlayer var2 = var1.inventory;
-		if(var2.draggedItemStack != null) {
-			var1.dropPlayerItem(var2.draggedItemStack);
+		if(var2.draggingItemStack != null) {
+			var1.dropPlayerItem(var2.draggingItemStack);
 		}
 
 	}

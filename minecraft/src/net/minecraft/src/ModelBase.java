@@ -1,8 +1,8 @@
 package net.minecraft.src;
 
 public abstract class ModelBase {
-	public float swingProgress;
-	public boolean isRiding = false;
+	public float field_1244_k;
+	public boolean field_1243_l = false;
 
 	public void render(float var1, float var2, float var3, float var4, float var5, float var6) {
 	}

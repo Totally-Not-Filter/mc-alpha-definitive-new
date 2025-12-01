@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 public class EntitySmokeFX extends EntityFX {
-	float smokeParticleScale;
+	float field_671_a;
 
 	public EntitySmokeFX(World var1, double var2, double var4, double var6) {
 		this(var1, var2, var4, var6, 1.0F);
@@ -12,17 +12,17 @@ public class EntitySmokeFX extends EntityFX {
 		this.motionX *= (double)0.1F;
 		this.motionY *= (double)0.1F;
 		this.motionZ *= (double)0.1F;
-		this.particleRed = this.particleGreen = this.particleBlue = (float)(Math.random() * (double)0.3F);
-		this.particleScale *= 12.0F / 16.0F;
-		this.particleScale *= var8;
-		this.smokeParticleScale = this.particleScale;
-		this.particleMaxAge = (int)(8.0D / (Math.random() * 0.8D + 0.2D));
-		this.particleMaxAge = (int)((float)this.particleMaxAge * var8);
-		this.noClip = false;
+		this.field_663_i = this.field_662_j = this.field_661_k = (float)(Math.random() * (double)0.3F);
+		this.field_665_g *= 12.0F / 16.0F;
+		this.field_665_g *= var8;
+		this.field_671_a = this.field_665_g;
+		this.field_666_f = (int)(8.0D / (Math.random() * 0.8D + 0.2D));
+		this.field_666_f = (int)((float)this.field_666_f * var8);
+		this.field_9314_ba = false;
 	}
 
-	public void renderParticle(Tessellator var1, float var2, float var3, float var4, float var5, float var6, float var7) {
-		float var8 = ((float)this.particleAge + var2) / (float)this.particleMaxAge * 32.0F;
+	public void func_406_a(Tessellator var1, float var2, float var3, float var4, float var5, float var6, float var7) {
+		float var8 = ((float)this.e + var2) / (float)this.field_666_f * 32.0F;
 		if(var8 < 0.0F) {
 			var8 = 0.0F;
 		}
@@ -31,19 +31,19 @@ public class EntitySmokeFX extends EntityFX {
 			var8 = 1.0F;
 		}
 
-		this.particleScale = this.smokeParticleScale * var8;
-		super.renderParticle(var1, var2, var3, var4, var5, var6, var7);
+		this.field_665_g = this.field_671_a * var8;
+		super.func_406_a(var1, var2, var3, var4, var5, var6, var7);
 	}
 
 	public void onUpdate() {
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
-		if(this.particleAge++ >= this.particleMaxAge) {
+		if(this.e++ >= this.field_666_f) {
 			this.setEntityDead();
 		}
 
-		this.particleTextureIndex = 7 - this.particleAge * 8 / this.particleMaxAge;
+		this.field_670_b = 7 - this.e * 8 / this.field_666_f;
 		this.motionY += 0.004D;
 		this.moveEntity(this.motionX, this.motionY, this.motionZ);
 		if(this.posY == this.prevPosY) {

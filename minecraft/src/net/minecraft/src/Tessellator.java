@@ -274,6 +274,13 @@ public class Tessellator {
 		this.setColorOpaque(var2, var3, var4);
 	}
 
+	public void setColorRGBA_I(int var1, int var2) {
+		int var3 = var1 >> 16 & 255;
+		int var4 = var1 >> 8 & 255;
+		int var5 = var1 & 255;
+		this.setColorRGBA(var3, var4, var5, var2);
+	}
+
 	public void disableColor() {
 		this.isColorDisabled = true;
 	}

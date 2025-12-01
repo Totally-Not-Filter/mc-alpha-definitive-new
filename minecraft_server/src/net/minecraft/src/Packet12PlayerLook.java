@@ -15,10 +15,10 @@ public class Packet12PlayerLook extends Packet10Flying {
 		super.readPacketData(var1);
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeFloat(this.yaw);
 		var1.writeFloat(this.pitch);
-		super.writePacket(var1);
+		super.writePacketData(var1);
 	}
 
 	public int getPacketSize() {

@@ -7,11 +7,19 @@ public class BlockStairs extends Block {
 	private Block modelBlock;
 
 	protected BlockStairs(int var1, Block var2) {
-		super(var1, var2.blockIndexInTexture, var2.material);
+		super(var1, var2.blockIndexInTexture, var2.blockMaterial);
 		this.modelBlock = var2;
-		this.setHardness(var2.hardness);
-		this.setResistance(var2.resistance / 3.0F);
+		this.setHardness(var2.blockHardness);
+		this.setResistance(var2.blockResistance / 3.0F);
 		this.setStepSound(var2.stepSound);
+	}
+
+	public void setBlockBoundsBasedOnState(IBlockAccess var1, int var2, int var3, int var4) {
+		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+	}
+
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World var1, int var2, int var3, int var4) {
+		return super.getCollisionBoundingBoxFromPool(var1, var2, var3, var4);
 	}
 
 	public boolean isOpaqueCube() {
@@ -57,97 +65,6 @@ public class BlockStairs extends Block {
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
-		if(!var1.multiplayerWorld) {
-			if(var1.getBlockMaterial(var2, var3 + 1, var4).isSolid()) {
-				var1.setBlockWithNotify(var2, var3, var4, this.modelBlock.blockID);
-			} else {
-				this.updateState(var1, var2, var3, var4);
-				this.updateState(var1, var2 + 1, var3 - 1, var4);
-				this.updateState(var1, var2 - 1, var3 - 1, var4);
-				this.updateState(var1, var2, var3 - 1, var4 - 1);
-				this.updateState(var1, var2, var3 - 1, var4 + 1);
-				this.updateState(var1, var2 + 1, var3 + 1, var4);
-				this.updateState(var1, var2 - 1, var3 + 1, var4);
-				this.updateState(var1, var2, var3 + 1, var4 - 1);
-				this.updateState(var1, var2, var3 + 1, var4 + 1);
-			}
-
-			this.modelBlock.onNeighborBlockChange(var1, var2, var3, var4, var5);
-		}
-	}
-
-	private void updateState(World var1, int var2, int var3, int var4) {
-		if(this.isBlockStair(var1, var2, var3, var4)) {
-			byte var5 = -1;
-			if(this.isBlockStair(var1, var2 + 1, var3 + 1, var4)) {
-				var5 = 0;
-			}
-
-			if(this.isBlockStair(var1, var2 - 1, var3 + 1, var4)) {
-				var5 = 1;
-			}
-
-			if(this.isBlockStair(var1, var2, var3 + 1, var4 + 1)) {
-				var5 = 2;
-			}
-
-			if(this.isBlockStair(var1, var2, var3 + 1, var4 - 1)) {
-				var5 = 3;
-			}
-
-			if(var5 < 0) {
-				if(this.isBlockSolid(var1, var2 + 1, var3, var4) && !this.isBlockSolid(var1, var2 - 1, var3, var4)) {
-					var5 = 0;
-				}
-
-				if(this.isBlockSolid(var1, var2 - 1, var3, var4) && !this.isBlockSolid(var1, var2 + 1, var3, var4)) {
-					var5 = 1;
-				}
-
-				if(this.isBlockSolid(var1, var2, var3, var4 + 1) && !this.isBlockSolid(var1, var2, var3, var4 - 1)) {
-					var5 = 2;
-				}
-
-				if(this.isBlockSolid(var1, var2, var3, var4 - 1) && !this.isBlockSolid(var1, var2, var3, var4 + 1)) {
-					var5 = 3;
-				}
-			}
-
-			if(var5 < 0) {
-				if(this.isBlockStair(var1, var2 - 1, var3 - 1, var4)) {
-					var5 = 0;
-				}
-
-				if(this.isBlockStair(var1, var2 + 1, var3 - 1, var4)) {
-					var5 = 1;
-				}
-
-				if(this.isBlockStair(var1, var2, var3 - 1, var4 - 1)) {
-					var5 = 2;
-				}
-
-				if(this.isBlockStair(var1, var2, var3 - 1, var4 + 1)) {
-					var5 = 3;
-				}
-			}
-
-			if(var5 >= 0) {
-				var1.setBlockMetadataWithNotify(var2, var3, var4, var5);
-			}
-
-		}
-	}
-
-	private boolean isBlockSolid(World var1, int var2, int var3, int var4) {
-		return var1.getBlockMaterial(var2, var3, var4).isSolid();
-	}
-
-	private boolean isBlockStair(World var1, int var2, int var3, int var4) {
-		int var5 = var1.getBlockId(var2, var3, var4);
-		return var5 == 0 ? false : Block.blocksList[var5].getRenderType() == 10;
-	}
-
 	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {
 		this.modelBlock.randomDisplayTick(var1, var2, var3, var4, var5);
 	}
@@ -164,12 +81,12 @@ public class BlockStairs extends Block {
 		return this.modelBlock.getBlockBrightness(var1, var2, var3, var4);
 	}
 
-	public float getExplosionResistance(Entity var1) {
-		return this.modelBlock.getExplosionResistance(var1);
+	public float func_227_a(Entity var1) {
+		return this.modelBlock.func_227_a(var1);
 	}
 
-	public int getRenderBlockPass() {
-		return this.modelBlock.getRenderBlockPass();
+	public int func_234_g() {
+		return this.modelBlock.func_234_g();
 	}
 
 	public int idDropped(int var1, Random var2) {
@@ -247,5 +164,25 @@ public class BlockStairs extends Block {
 
 	public void onBlockDestroyedByExplosion(World var1, int var2, int var3, int var4) {
 		this.modelBlock.onBlockDestroyedByExplosion(var1, var2, var3, var4);
+	}
+
+	public void onBlockPlacedBy(World var1, int var2, int var3, int var4, EntityLiving var5) {
+		int var6 = MathHelper.floor_double((double)(var5.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		if(var6 == 0) {
+			var1.setBlockMetadataWithNotify(var2, var3, var4, 2);
+		}
+
+		if(var6 == 1) {
+			var1.setBlockMetadataWithNotify(var2, var3, var4, 1);
+		}
+
+		if(var6 == 2) {
+			var1.setBlockMetadataWithNotify(var2, var3, var4, 3);
+		}
+
+		if(var6 == 3) {
+			var1.setBlockMetadataWithNotify(var2, var3, var4, 0);
+		}
+
 	}
 }

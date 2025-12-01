@@ -18,7 +18,7 @@ public class GuiIngameMenu extends GuiScreen {
 
 	protected void actionPerformed(GuiButton var1) {
 		if(var1.id == 0) {
-			this.mc.displayGuiScreen(new GuiOptions(this, this.mc.options));
+			this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
 		}
 
 		if(var1.id == 1) {
@@ -26,13 +26,13 @@ public class GuiIngameMenu extends GuiScreen {
 				this.mc.theWorld.sendQuittingDisconnectingPacket();
 			}
 
-			this.mc.changeWorld1((World)null);
+			this.mc.func_6261_a((World)null);
 			this.mc.displayGuiScreen(new GuiMainMenu());
 		}
 
 		if(var1.id == 4) {
 			this.mc.displayGuiScreen((GuiScreen)null);
-			this.mc.setIngameFocus();
+			this.mc.func_6259_e();
 		}
 
 	}
@@ -44,7 +44,7 @@ public class GuiIngameMenu extends GuiScreen {
 
 	public void drawScreen(int var1, int var2, float var3) {
 		this.drawDefaultBackground();
-		boolean var4 = !this.mc.theWorld.saveWorld(this.updateCounter2++);
+		boolean var4 = !this.mc.theWorld.func_650_a(this.updateCounter2++);
 		if(var4 || this.updateCounter < 20) {
 			float var5 = ((float)(this.updateCounter % 10) + var3) / 10.0F;
 			var5 = MathHelper.sin(var5 * (float)Math.PI * 2.0F) * 0.2F + 0.8F;

@@ -5,8 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 public class NetworkManager {
@@ -15,12 +15,13 @@ public class NetworkManager {
 	public static int numWriteThreads;
 	private Object sendQueueLock = new Object();
 	private Socket networkSocket;
+	private final SocketAddress field_12032_f;
 	private DataInputStream socketInputStream;
 	private DataOutputStream socketOutputStream;
 	private boolean isRunning = true;
-	private List readPackets = Collections.synchronizedList(new LinkedList());
-	private List dataPackets = Collections.synchronizedList(new LinkedList());
-	private List chunkDataPackets = Collections.synchronizedList(new LinkedList());
+	private List readPackets = Collections.synchronizedList(new ArrayList());
+	private List dataPackets = Collections.synchronizedList(new ArrayList());
+	private List chunkDataPackets = Collections.synchronizedList(new ArrayList());
 	private NetHandler netHandler;
 	private boolean isServerTerminating = false;
 	private Thread writeThread;
@@ -33,6 +34,7 @@ public class NetworkManager {
 
 	public NetworkManager(Socket var1, String var2, NetHandler var3) throws IOException {
 		this.networkSocket = var1;
+		this.field_12032_f = var1.getRemoteSocketAddress();
 		this.netHandler = var3;
 		var1.setTrafficClass(24);
 		this.socketInputStream = new DataInputStream(var1.getInputStream());
@@ -132,16 +134,19 @@ public class NetworkManager {
 
 			try {
 				this.socketInputStream.close();
+				this.socketInputStream = null;
 			} catch (Throwable var5) {
 			}
 
 			try {
 				this.socketOutputStream.close();
+				this.socketOutputStream = null;
 			} catch (Throwable var4) {
 			}
 
 			try {
 				this.networkSocket.close();
+				this.networkSocket = null;
 			} catch (Throwable var3) {
 			}
 
@@ -175,7 +180,7 @@ public class NetworkManager {
 	}
 
 	public SocketAddress getRemoteAddress() {
-		return this.networkSocket.getRemoteSocketAddress();
+		return this.field_12032_f;
 	}
 
 	public void serverShutdown() {

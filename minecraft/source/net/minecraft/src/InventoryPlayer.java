@@ -6,8 +6,8 @@ public class InventoryPlayer implements IInventory {
 	public ItemStack[] craftingInventory = new ItemStack[4];
 	public int currentItem = 0;
 	private EntityPlayer player;
-	public ItemStack draggedItemStack;
-	public boolean inventoryChanged = false;
+	public ItemStack draggingItemStack;
+	public boolean field_845_f = false;
 
 	public InventoryPlayer(EntityPlayer var1) {
 		this.player = var1;
@@ -27,7 +27,7 @@ public class InventoryPlayer implements IInventory {
 		return -1;
 	}
 
-	private int storeItemStack(int var1) {
+	private int getFirstPartialMatchingStack(int var1) {
 		for(int var2 = 0; var2 < this.mainInventory.length; ++var2) {
 			if(this.mainInventory[var2] != null && this.mainInventory[var2].itemID == var1 && this.mainInventory[var2].stackSize < this.mainInventory[var2].getMaxStackSize() && this.mainInventory[var2].stackSize < this.getInventoryStackLimit()) {
 				return var2;
@@ -72,8 +72,8 @@ public class InventoryPlayer implements IInventory {
 
 	}
 
-	private int storePartialItemStack(int var1, int var2) {
-		int var3 = this.storeItemStack(var1);
+	private int addItemsToInventory(int var1, int var2) {
+		int var3 = this.getFirstPartialMatchingStack(var1);
 		if(var3 < 0) {
 			var3 = this.getFirstEmptyStack();
 		}
@@ -128,8 +128,8 @@ public class InventoryPlayer implements IInventory {
 	}
 
 	public boolean addItemStackToInventory(ItemStack var1) {
-		if(var1.itemDmg == 0) {
-			var1.stackSize = this.storePartialItemStack(var1.itemID, var1.stackSize);
+		if(var1.itemDamage == 0) {
+			var1.stackSize = this.addItemsToInventory(var1.itemID, var1.stackSize);
 			if(var1.stackSize == 0) {
 				return true;
 			}
@@ -284,7 +284,7 @@ public class InventoryPlayer implements IInventory {
 	}
 
 	public boolean canHarvestBlock(Block var1) {
-		if(var1.material != Material.rock && var1.material != Material.iron && var1.material != Material.craftedSnow && var1.material != Material.snow) {
+		if(var1.blockMaterial != Material.rock && var1.blockMaterial != Material.iron && var1.blockMaterial != Material.builtSnow && var1.blockMaterial != Material.snow) {
 			return true;
 		} else {
 			ItemStack var2 = this.getStackInSlot(this.currentItem);
@@ -304,11 +304,11 @@ public class InventoryPlayer implements IInventory {
 		for(int var4 = 0; var4 < this.armorInventory.length; ++var4) {
 			if(this.armorInventory[var4] != null && this.armorInventory[var4].getItem() instanceof ItemArmor) {
 				int var5 = this.armorInventory[var4].getMaxDamage();
-				int var6 = this.armorInventory[var4].itemDmg;
+				int var6 = this.armorInventory[var4].itemDamage;
 				int var7 = var5 - var6;
 				var2 += var7;
 				var3 += var5;
-				int var8 = ((ItemArmor)this.armorInventory[var4].getItem()).damageReduceAmount;
+				int var8 = ((ItemArmor)this.armorInventory[var4].getItem()).damageReduceAmmount;
 				var1 += var8;
 			}
 		}
@@ -325,7 +325,7 @@ public class InventoryPlayer implements IInventory {
 			if(this.armorInventory[var2] != null && this.armorInventory[var2].getItem() instanceof ItemArmor) {
 				this.armorInventory[var2].damageItem(var1);
 				if(this.armorInventory[var2].stackSize == 0) {
-					this.armorInventory[var2].onItemDestroyedByUse(this.player);
+					this.armorInventory[var2].func_1097_a(this.player);
 					this.armorInventory[var2] = null;
 				}
 			}
@@ -352,25 +352,25 @@ public class InventoryPlayer implements IInventory {
 	}
 
 	public void onInventoryChanged() {
-		this.inventoryChanged = true;
+		this.field_845_f = true;
 	}
 
-	public boolean getInventoryEqual(InventoryPlayer var1) {
+	public boolean compareInventory(InventoryPlayer var1) {
 		int var2;
 		for(var2 = 0; var2 < this.mainInventory.length; ++var2) {
-			if(!this.getItemStacksEqual(var1.mainInventory[var2], this.mainInventory[var2])) {
+			if(!this.compareItemStack(var1.mainInventory[var2], this.mainInventory[var2])) {
 				return false;
 			}
 		}
 
 		for(var2 = 0; var2 < this.armorInventory.length; ++var2) {
-			if(!this.getItemStacksEqual(var1.armorInventory[var2], this.armorInventory[var2])) {
+			if(!this.compareItemStack(var1.armorInventory[var2], this.armorInventory[var2])) {
 				return false;
 			}
 		}
 
 		for(var2 = 0; var2 < this.craftingInventory.length; ++var2) {
-			if(!this.getItemStacksEqual(var1.craftingInventory[var2], this.craftingInventory[var2])) {
+			if(!this.compareItemStack(var1.craftingInventory[var2], this.craftingInventory[var2])) {
 				return false;
 			}
 		}
@@ -378,8 +378,8 @@ public class InventoryPlayer implements IInventory {
 		return true;
 	}
 
-	private boolean getItemStacksEqual(ItemStack var1, ItemStack var2) {
-		return var1 == null && var2 == null ? true : (var1 != null && var2 != null ? var1.itemID == var2.itemID && var1.stackSize == var2.stackSize && var1.itemDmg == var2.itemDmg : false);
+	private boolean compareItemStack(ItemStack var1, ItemStack var2) {
+		return var1 == null && var2 == null ? true : (var1 != null && var2 != null ? var1.itemID == var2.itemID && var1.stackSize == var2.stackSize && var1.itemDamage == var2.itemDamage : false);
 	}
 
 	public InventoryPlayer copyInventory() {

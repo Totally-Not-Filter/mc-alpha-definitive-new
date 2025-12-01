@@ -32,7 +32,7 @@ public class Packet52MultiBlockChange extends Packet {
 		var1.readFully(this.metadataArray);
 	}
 
-	public void writePacket(DataOutputStream var1) throws IOException {
+	public void writePacketData(DataOutputStream var1) throws IOException {
 		var1.writeInt(this.xPosition);
 		var1.writeInt(this.zPosition);
 		var1.writeShort((short)this.size);

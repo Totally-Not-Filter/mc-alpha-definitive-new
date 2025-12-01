@@ -4,13 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class GuiStatsListener implements ActionListener {
-	final GuiStatsComponent component;
+	final GuiStatsComponent statsComponent;
 
 	GuiStatsListener(GuiStatsComponent var1) {
-		this.component = var1;
+		this.statsComponent = var1;
 	}
 
 	public void actionPerformed(ActionEvent var1) {
-		GuiStatsComponent.update(this.component);
+		GuiStatsComponent.update(this.statsComponent);
 	}
 }

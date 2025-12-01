@@ -1,19 +1,19 @@
 package net.minecraft.src;
 
-public class EntitySpider extends EntityMob {
+public class EntitySpider extends EntityMobs {
 	public EntitySpider(World var1) {
 		super(var1);
-		this.texture = "/mob/spider.png";
+		this.field_9119_aG = "/mob/spider.png";
 		this.setSize(1.4F, 0.9F);
-		this.moveSpeed = 0.8F;
+		this.field_9126_bt = 0.8F;
 	}
 
-	public double getMountedYOffset() {
+	public double func_130_h() {
 		return (double)this.height * 0.75D - 0.5D;
 	}
 
-	protected Entity findPlayerToAttack() {
-		float var1 = this.getBrightness(1.0F);
+	protected Entity func_158_i() {
+		float var1 = this.getEntityBrightness(1.0F);
 		if(var1 < 0.5F) {
 			double var2 = 16.0D;
 			return this.worldObj.getClosestPlayerToEntity(this, var2);
@@ -34,12 +34,12 @@ public class EntitySpider extends EntityMob {
 		return "mob.spiderdeath";
 	}
 
-	protected void attackEntity(Entity var1, float var2) {
-		float var3 = this.getBrightness(1.0F);
-		if(var3 > 0.5F && this.rand.nextInt(100) == 0) {
-			this.entityToAttack = null;
+	protected void func_157_a(Entity var1, float var2) {
+		float var3 = this.getEntityBrightness(1.0F);
+		if(var3 > 0.5F && this.field_9064_W.nextInt(100) == 0) {
+			this.field_389_ag = null;
 		} else {
-			if(var2 > 2.0F && var2 < 6.0F && this.rand.nextInt(10) == 0) {
+			if(var2 > 2.0F && var2 < 6.0F && this.field_9064_W.nextInt(10) == 0) {
 				if(this.onGround) {
 					double var4 = var1.posX - this.posX;
 					double var6 = var1.posZ - this.posZ;
@@ -49,7 +49,7 @@ public class EntitySpider extends EntityMob {
 					this.motionY = (double)0.4F;
 				}
 			} else {
-				super.attackEntity(var1, var2);
+				super.func_157_a(var1, var2);
 			}
 
 		}
@@ -64,6 +64,6 @@ public class EntitySpider extends EntityMob {
 	}
 
 	protected int getDropItemId() {
-		return Item.silk.shiftedIndex;
+		return Item.silk.swiftedIndex;
 	}
 }

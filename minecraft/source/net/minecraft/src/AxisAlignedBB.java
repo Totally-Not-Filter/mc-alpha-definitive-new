@@ -82,7 +82,7 @@ public class AxisAlignedBB {
 		return getBoundingBoxFromPool(var7, var9, var11, var13, var15, var17);
 	}
 
-	public AxisAlignedBB expand(double var1, double var3, double var5) {
+	public AxisAlignedBB expands(double var1, double var3, double var5) {
 		double var7 = this.minX - var1;
 		double var9 = this.minY - var3;
 		double var11 = this.minZ - var5;
@@ -96,7 +96,7 @@ public class AxisAlignedBB {
 		return getBoundingBoxFromPool(this.minX + var1, this.minY + var3, this.minZ + var5, this.maxX + var1, this.maxY + var3, this.maxZ + var5);
 	}
 
-	public double calculateXOffset(AxisAlignedBB var1, double var2) {
+	public double func_1163_a(AxisAlignedBB var1, double var2) {
 		if(var1.maxY > this.minY && var1.minY < this.maxY) {
 			if(var1.maxZ > this.minZ && var1.minZ < this.maxZ) {
 				double var4;
@@ -123,7 +123,7 @@ public class AxisAlignedBB {
 		}
 	}
 
-	public double calculateYOffset(AxisAlignedBB var1, double var2) {
+	public double func_1172_b(AxisAlignedBB var1, double var2) {
 		if(var1.maxX > this.minX && var1.minX < this.maxX) {
 			if(var1.maxZ > this.minZ && var1.minZ < this.maxZ) {
 				double var4;
@@ -150,7 +150,7 @@ public class AxisAlignedBB {
 		}
 	}
 
-	public double calculateZOffset(AxisAlignedBB var1, double var2) {
+	public double func_1162_c(AxisAlignedBB var1, double var2) {
 		if(var1.maxX > this.minX && var1.minX < this.maxX) {
 			if(var1.maxY > this.minY && var1.minY < this.maxY) {
 				double var4;
@@ -191,6 +191,10 @@ public class AxisAlignedBB {
 		return this;
 	}
 
+	public boolean isVecInside(Vec3D var1) {
+		return var1.xCoord > this.minX && var1.xCoord < this.maxX ? (var1.yCoord > this.minY && var1.yCoord < this.maxY ? var1.zCoord > this.minZ && var1.zCoord < this.maxZ : false) : false;
+	}
+
 	public double getAverageEdgeLength() {
 		double var1 = this.maxX - this.minX;
 		double var3 = this.maxY - this.minY;
@@ -202,7 +206,7 @@ public class AxisAlignedBB {
 		return getBoundingBoxFromPool(this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ);
 	}
 
-	public MovingObjectPosition calculateIntercept(Vec3D var1, Vec3D var2) {
+	public MovingObjectPosition func_1169_a(Vec3D var1, Vec3D var2) {
 		Vec3D var3 = var1.getIntermediateWithXValue(var2, this.minX);
 		Vec3D var4 = var1.getIntermediateWithXValue(var2, this.maxX);
 		Vec3D var5 = var1.getIntermediateWithYValue(var2, this.minY);
